@@ -1,0 +1,898 @@
+Category,Metric,Min,Max,Mean,Median,Std Dev,CI Mean Low,CI Mean High,CI Median Low,CI Median High,Additional Info
+EE1,building_footprint,140.88,140.88,140.88,140.88,nan,nan,nan,140.88,140.88,
+EE1,storeys_above_ground,2,2,2.0,2.0,nan,nan,nan,2.0,2.0,
+EE1,length_footprint,11.41,11.41,11.41,11.41,nan,nan,nan,11.41,11.41,
+EE1,width_footprint,12.35,12.35,12.35,12.35,nan,nan,nan,12.35,12.35,
+EE1,roof_ridge_height,10.16,10.16,10.16,10.16,nan,nan,nan,10.16,10.16,
+EE1,eaves_height,3.76,3.76,3.76,3.76,nan,nan,nan,3.76,3.76,
+EE1,number_roof_surfaces,3,3,3.0,3.0,nan,nan,nan,3.0,3.0,
+EE1,roof_type,,,,,,,,,,3100: 100.0%
+EE1,development_type_code,,,,,,,,,,A12: 100.0%
+EE2,building_footprint,66.66,314.58,150.74,140.63,65.04,109.42,192.07,108.96,177.9,
+EE2,storeys_above_ground,1,2,1.83,2.0,0.39,1.59,2,2.0,2.0,
+EE2,length_footprint,10.15,17.82,12.45,11.9,2.04,11.16,13.75,11.29,13.18,
+EE2,width_footprint,5.6,17.65,11.8,11.53,3.33,9.68,13.91,9.72,14.06,
+EE2,roof_ridge_height,3.0,10.11,7.29,7.87,2.12,5.94,8.63,6.56,8.56,
+EE2,eaves_height,2.6,7.05,4.69,4.72,1.26,3.89,5.49,4.0,5.17,
+EE2,number_roof_surfaces,1,26,7.25,3.5,8.07,2.12,12.38,2.0,10.0,
+EE2,roof_slope,0.0,90.0,45.0,45.0,63.64,0.0,90.0,0.0,90.0,
+EE2,roof_type,,,,,,,,,,3100: 83.33%
+EE2,roof_type,,,,,,,,,,3200: 8.33%
+EE2,roof_type,,,,,,,,,,1000: 8.33%
+EE2,development_type_code,,,,,,,,,,A12: 50.0%
+EE2,development_type_code,,,,,,,,,,A11: 50.0%
+EE3,building_footprint,14.64,802.18,200.73,189.24,96.68,192.25,209.22,178.77,195.4,
+EE3,storeys_above_ground,1,3,1.87,2.0,0.4,1.83,1.9,2.0,2.0,
+EE3,length_footprint,3.96,29.53,13.76,13.73,3.53,13.45,14.07,13.31,14.07,
+EE3,width_footprint,2.84,28.49,13.92,13.83,3.58,13.6,14.23,13.5,14.09,
+EE3,roof_ridge_height,1.68,16.15,8.92,8.71,2.37,8.71,9.13,8.47,9.11,
+EE3,eaves_height,1.68,12.45,5.94,5.67,1.82,5.78,6.1,5.53,5.9,
+EE3,number_roof_surfaces,1,88,6.16,6.0,5.08,5.71,6.6,5.0,6.0,
+EE3,roof_slope,0.0,90.0,43.09,51.01,35.41,36.66,49.52,45.39,55.16,
+EE3,roof_type,,,,,,,,,,3100: 59.68%
+EE3,roof_type,,,,,,,,,,3200: 18.56%
+EE3,roof_type,,,,,,,,,,3400: 5.79%
+EE3,roof_type,,,,,,,,,,1000: 4.99%
+EE3,roof_type,,,,,,,,,,3300: 4.59%
+EE3,roof_type,,,,,,,,,,5000: 3.59%
+EE3,roof_type,,,,,,,,,,2100: 1.4%
+EE3,roof_type,,,,,,,,,,3500: 1.4%
+EE3,development_type_code,,,,,,,,,,A12: 48.79%
+EE3,development_type_code,,,,,,,,,,A13: 43.3%
+EE3,development_type_code,,,,,,,,,,A11: 4.18%
+EE3,development_type_code,,,,,,,,,,B12: 2.2%
+EE3,development_type_code,,,,,,,,,,C11: 0.88%
+EE3,development_type_code,,,,,,,,,,B11: 0.44%
+EE3,development_type_code,,,,,,,,,,B13: 0.22%
+EE4,building_footprint,14.61,505.26,161.68,153.54,68.0,157.39,165.97,149.21,158.4,
+EE4,storeys_above_ground,1,3,1.79,2.0,0.43,1.76,1.82,2.0,2.0,
+EE4,length_footprint,3.75,26.27,12.52,12.46,2.89,12.33,12.7,12.26,12.67,
+EE4,width_footprint,3.25,26.03,12.42,12.36,2.89,12.23,12.6,12.16,12.56,
+EE4,roof_ridge_height,2.12,14.91,9.05,9.12,2.19,8.91,9.18,8.96,9.29,
+EE4,eaves_height,1.34,10.86,5.42,5.34,1.79,5.31,5.54,5.05,5.54,
+EE4,number_roof_surfaces,1,23,4.7,4.0,2.62,4.53,4.86,4.0,5.0,
+EE4,roof_slope,0.0,90.0,42.47,46.95,34.43,37.69,47.25,42.54,51.45,
+EE4,roof_type,,,,,,,,,,3100: 53.98%
+EE4,roof_type,,,,,,,,,,3200: 30.4%
+EE4,roof_type,,,,,,,,,,1000: 5.17%
+EE4,roof_type,,,,,,,,,,3500: 3.31%
+EE4,roof_type,,,,,,,,,,5000: 2.79%
+EE4,roof_type,,,,,,,,,,2100: 1.65%
+EE4,roof_type,,,,,,,,,,3300: 1.45%
+EE4,roof_type,,,,,,,,,,3400: 1.24%
+EE4,development_type_code,,,,,,,,,,A12: 79.34%
+EE4,development_type_code,,,,,,,,,,A13: 16.83%
+EE4,development_type_code,,,,,,,,,,B12: 2.13%
+EE4,development_type_code,,,,,,,,,,A11: 0.96%
+EE4,development_type_code,,,,,,,,,,B11: 0.43%
+EE4,development_type_code,,,,,,,,,,C11: 0.32%
+EE5,building_footprint,22.62,937.35,163.87,154.05,78.51,157.32,170.42,149.08,157.99,
+EE5,storeys_above_ground,1,5,1.57,2.0,0.53,1.53,1.62,2.0,2.0,
+EE5,length_footprint,4.57,31.82,12.71,12.44,3.1,12.45,12.97,12.27,12.68,
+EE5,width_footprint,4.41,29.46,12.34,12.28,2.98,12.1,12.59,12.09,12.43,
+EE5,roof_ridge_height,2.08,12.75,7.67,8.38,2.34,7.48,7.87,8.2,8.6,
+EE5,eaves_height,1.5,12.09,4.35,4.25,1.3,4.24,4.46,4.13,4.37,
+EE5,number_roof_surfaces,1,13,3.04,2.0,1.85,2.89,3.2,2.0,3.0,
+EE5,roof_slope,0.0,90.0,37.77,41.47,36.67,31.33,44.21,0.0,51.94,
+EE5,roof_type,,,,,,,,,,3100: 78.74%
+EE5,roof_type,,,,,,,,,,1000: 10.27%
+EE5,roof_type,,,,,,,,,,3200: 5.05%
+EE5,roof_type,,,,,,,,,,5000: 2.88%
+EE5,roof_type,,,,,,,,,,2100: 1.8%
+EE5,roof_type,,,,,,,,,,3400: 0.72%
+EE5,roof_type,,,,,,,,,,3500: 0.54%
+EE5,development_type_code,,,,,,,,,,A12: 78.49%
+EE5,development_type_code,,,,,,,,,,A13: 16.79%
+EE5,development_type_code,,,,,,,,,,A11: 3.4%
+EE5,development_type_code,,,,,,,,,,B12: 0.75%
+EE5,development_type_code,,,,,,,,,,B11: 0.38%
+EE5,development_type_code,,,,,,,,,,C11: 0.19%
+EE7,building_footprint,15.1,809.39,181.7,169.29,75.16,177.26,186.14,166.26,171.78,
+EE7,storeys_above_ground,1,4,1.83,2.0,0.45,1.8,1.85,2.0,2.0,
+EE7,length_footprint,3.0,31.69,13.36,13.07,2.81,13.19,13.53,12.98,13.25,
+EE7,width_footprint,4.88,26.67,13.18,12.95,2.7,13.02,13.33,12.78,13.16,
+EE7,roof_ridge_height,1.82,17.79,8.48,8.54,1.63,8.38,8.57,8.44,8.69,
+EE7,eaves_height,1.82,14.03,5.54,5.58,1.52,5.45,5.63,5.42,5.73,
+EE7,number_roof_surfaces,1,20,3.48,3.0,2.19,3.35,3.61,3.0,3.0,
+EE7,roof_slope,0.0,90.0,37.35,44.66,35.16,33.1,41.59,30.48,51.29,
+EE7,roof_type,,,,,,,,,,3100: 51.41%
+EE7,roof_type,,,,,,,,,,3200: 18.04%
+EE7,roof_type,,,,,,,,,,1000: 14.78%
+EE7,roof_type,,,,,,,,,,3500: 8.61%
+EE7,roof_type,,,,,,,,,,3300: 3.35%
+EE7,roof_type,,,,,,,,,,5000: 2.54%
+EE7,roof_type,,,,,,,,,,3400: 0.63%
+EE7,roof_type,,,,,,,,,,2100: 0.45%
+EE7,roof_type,,,,,,,,,,3900: 0.18%
+EE7,development_type_code,,,,,,,,,,A12: 73.98%
+EE7,development_type_code,,,,,,,,,,A13: 19.96%
+EE7,development_type_code,,,,,,,,,,A11: 2.27%
+EE7,development_type_code,,,,,,,,,,B12: 1.51%
+EE7,development_type_code,,,,,,,,,,C11: 1.23%
+EE7,development_type_code,,,,,,,,,,B11: 0.76%
+EE7,development_type_code,,,,,,,,,,B13: 0.28%
+ER2,building_footprint,134.82,788.48,504.98,591.62,335.34,134.82,788.48,134.82,788.48,
+ER2,storeys_above_ground,2,3,2.33,2.0,0.58,2,3,2.0,3.0,
+ER2,length_footprint,11.25,35.88,25.24,28.59,12.65,11.25,35.88,11.25,35.88,
+ER2,width_footprint,11.98,21.98,18.22,20.69,5.44,11.98,21.98,11.98,21.98,
+ER2,roof_ridge_height,8.2,11.49,9.44,8.62,1.79,8.2,11.49,8.2,11.49,
+ER2,eaves_height,4.58,7.06,5.52,4.93,1.34,4.58,7.06,4.58,7.06,
+ER2,number_roof_surfaces,3,18,8.67,5.0,8.14,3,18,3.0,18.0,
+ER2,roof_type,,,,,,,,,,3100: 100.0%
+ER2,development_type_code,,,,,,,,,,A12: 100.0%
+ER3,building_footprint,21.0,478.76,124.31,120.39,54.17,116.22,132.39,105.77,130.05,
+ER3,storeys_above_ground,1,3,1.97,2.0,0.2,1.94,2.0,2.0,2.0,
+ER3,length_footprint,4.55,18.62,11.0,11.15,2.6,10.61,11.38,10.37,11.62,
+ER3,width_footprint,4.61,28.74,10.96,10.85,2.49,10.59,11.33,10.46,11.33,
+ER3,roof_ridge_height,4.33,15.36,10.58,10.73,1.74,10.32,10.84,10.52,10.94,
+ER3,eaves_height,2.29,13.65,6.54,6.73,1.65,6.3,6.79,6.48,6.88,
+ER3,number_roof_surfaces,1,22,4.35,4.0,2.61,3.96,4.74,3.0,4.0,
+ER3,roof_slope,0.0,90.0,40.07,49.14,37.1,32.35,47.8,0.0,58.33,
+ER3,roof_type,,,,,,,,,,3100: 51.43%
+ER3,roof_type,,,,,,,,,,3200: 34.29%
+ER3,roof_type,,,,,,,,,,3300: 9.14%
+ER3,roof_type,,,,,,,,,,3400: 4.57%
+ER3,roof_type,,,,,,,,,,1000: 0.57%
+ER3,development_type_code,,,,,,,,,,A12: 59.41%
+ER3,development_type_code,,,,,,,,,,A13: 18.82%
+ER3,development_type_code,,,,,,,,,,B11: 15.29%
+ER3,development_type_code,,,,,,,,,,C11: 3.53%
+ER3,development_type_code,,,,,,,,,,B12: 2.94%
+ER4,building_footprint,11.51,665.38,122.88,109.12,62.07,119.83,125.92,105.65,111.94,
+ER4,storeys_above_ground,1,3,1.82,2.0,0.42,1.8,1.84,2.0,2.0,
+ER4,length_footprint,1.92,25.41,11.0,10.6,2.53,10.88,11.13,10.49,10.7,
+ER4,width_footprint,3.65,26.27,10.69,10.31,2.82,10.55,10.83,10.21,10.4,
+ER4,roof_ridge_height,1.23,16.27,9.41,9.76,2.25,9.3,9.52,9.59,9.96,
+ER4,eaves_height,0.94,11.45,5.47,5.86,1.81,5.38,5.56,5.76,5.97,
+ER4,number_roof_surfaces,1,17,3.57,3.0,1.73,3.49,3.66,3.0,3.0,
+ER4,roof_slope,0.0,90.0,40.12,46.7,35.76,37.74,42.49,42.75,48.99,
+ER4,roof_type,,,,,,,,,,3100: 67.11%
+ER4,roof_type,,,,,,,,,,3200: 23.06%
+ER4,roof_type,,,,,,,,,,1000: 4.39%
+ER4,roof_type,,,,,,,,,,3300: 2.07%
+ER4,roof_type,,,,,,,,,,2100: 1.38%
+ER4,roof_type,,,,,,,,,,5000: 1.38%
+ER4,roof_type,,,,,,,,,,3400: 0.56%
+ER4,roof_type,,,,,,,,,,2500: 0.06%
+ER4,development_type_code,,,,,,,,,,A12: 50.06%
+ER4,development_type_code,,,,,,,,,,B11: 42.6%
+ER4,development_type_code,,,,,,,,,,B12: 3.45%
+ER4,development_type_code,,,,,,,,,,A13: 2.89%
+ER4,development_type_code,,,,,,,,,,C11: 0.88%
+ER4,development_type_code,,,,,,,,,,A11: 0.13%
+ER5,building_footprint,26.84,496.04,173.14,173.98,65.2,163.5,182.78,168.37,176.36,
+ER5,storeys_above_ground,1,3,1.43,1.0,0.51,1.35,1.5,1.0,1.0,
+ER5,length_footprint,5.78,26.58,13.67,13.75,2.8,13.26,14.08,13.53,14.43,
+ER5,width_footprint,4.64,22.81,12.38,11.6,3.02,11.93,12.82,11.0,12.33,
+ER5,roof_ridge_height,2.88,15.16,6.59,6.82,2.9,6.16,7.02,4.6,7.72,
+ER5,eaves_height,1.61,10.29,4.37,3.97,1.36,4.17,4.57,3.84,4.2,
+ER5,number_roof_surfaces,1,10,2.53,2.0,1.7,2.28,2.78,2.0,3.0,
+ER5,roof_slope,0.0,90.0,42.13,47.07,31.18,31.25,53.01,42.05,53.92,
+ER5,roof_type,,,,,,,,,,3100: 55.06%
+ER5,roof_type,,,,,,,,,,1000: 38.76%
+ER5,roof_type,,,,,,,,,,5000: 3.37%
+ER5,roof_type,,,,,,,,,,2100: 1.69%
+ER5,roof_type,,,,,,,,,,3200: 1.12%
+ER5,development_type_code,,,,,,,,,,A12: 47.75%
+ER5,development_type_code,,,,,,,,,,B11: 42.13%
+ER5,development_type_code,,,,,,,,,,A13: 7.87%
+ER5,development_type_code,,,,,,,,,,B12: 1.69%
+ER5,development_type_code,,,,,,,,,,A11: 0.56%
+ER7,building_footprint,23.8,1005.13,138.06,128.17,61.6,133.78,142.33,125.51,130.32,
+ER7,storeys_above_ground,1,4,2.08,2.0,0.42,2.06,2.11,2.0,2.0,
+ER7,length_footprint,4.89,36.41,11.61,11.48,2.48,11.44,11.78,11.31,11.59,
+ER7,width_footprint,4.87,29.98,11.71,11.69,2.32,11.55,11.87,11.62,11.81,
+ER7,roof_ridge_height,1.49,13.44,9.8,9.82,1.37,9.71,9.9,9.77,9.86,
+ER7,eaves_height,1.49,12.41,6.33,6.11,1.46,6.23,6.43,6.04,6.2,
+ER7,number_roof_surfaces,1,14,2.64,2.0,1.53,2.53,2.74,2.0,2.0,
+ER7,roof_slope,0.0,90.0,34.2,37.63,35.8,29.31,39.1,0.0,43.73,
+ER7,roof_type,,,,,,,,,,3100: 71.25%
+ER7,roof_type,,,,,,,,,,1000: 16.75%
+ER7,roof_type,,,,,,,,,,3200: 6.75%
+ER7,roof_type,,,,,,,,,,3300: 1.25%
+ER7,roof_type,,,,,,,,,,3500: 1.25%
+ER7,roof_type,,,,,,,,,,5000: 1.12%
+ER7,roof_type,,,,,,,,,,3400: 1.0%
+ER7,roof_type,,,,,,,,,,2100: 0.62%
+ER7,development_type_code,,,,,,,,,,A12: 37.14%
+ER7,development_type_code,,,,,,,,,,B11: 33.42%
+ER7,development_type_code,,,,,,,,,,A13: 17.51%
+ER7,development_type_code,,,,,,,,,,B12: 5.84%
+ER7,development_type_code,,,,,,,,,,A11: 2.65%
+ER7,development_type_code,,,,,,,,,,C12: 1.33%
+ER7,development_type_code,,,,,,,,,,C11: 1.19%
+ER7,development_type_code,,,,,,,,,,B13: 0.93%
+HH3,building_footprint,21.87,1145.02,217.06,184.14,153.8,198.46,235.66,164.76,204.74,
+HH3,storeys_above_ground,1,5,2.03,2.0,0.59,1.96,2.1,2.0,2.0,
+HH3,length_footprint,4.45,36.74,14.01,13.72,5.23,13.38,14.64,12.61,14.58,
+HH3,width_footprint,4.75,45.55,14.48,13.68,5.38,13.83,15.13,13.21,14.48,
+HH3,roof_ridge_height,2.54,24.66,7.8,7.07,3.19,7.41,8.19,6.85,7.35,
+HH3,eaves_height,2.54,20.99,6.8,6.39,2.66,6.48,7.12,6.25,6.57,
+HH3,number_roof_surfaces,1,21,2.02,1.0,2.36,1.73,2.3,1.0,1.0,
+HH3,roof_slope,0.0,90.0,27.88,0.0,32.63,22.34,33.41,0.0,36.91,
+HH3,roof_type,,,,,,,,,,1000: 57.74%
+HH3,roof_type,,,,,,,,,,2100: 14.34%
+HH3,roof_type,,,,,,,,,,3100: 10.57%
+HH3,roof_type,,,,,,,,,,5000: 6.79%
+HH3,roof_type,,,,,,,,,,3400: 5.66%
+HH3,roof_type,,,,,,,,,,3200: 4.53%
+HH3,roof_type,,,,,,,,,,3300: 0.38%
+HH3,development_type_code,,,,,,,,,,A13: 69.92%
+HH3,development_type_code,,,,,,,,,,C11: 16.8%
+HH3,development_type_code,,,,,,,,,,A12: 8.2%
+HH3,development_type_code,,,,,,,,,,B12: 3.52%
+HH3,development_type_code,,,,,,,,,,A11: 1.56%
+HH4,building_footprint,90.54,90.54,90.54,90.54,nan,nan,nan,90.54,90.54,
+HH4,storeys_above_ground,1,1,1.0,1.0,nan,nan,nan,1.0,1.0,
+HH4,length_footprint,10.41,10.41,10.41,10.41,nan,nan,nan,10.41,10.41,
+HH4,width_footprint,8.7,8.7,8.7,8.7,nan,nan,nan,8.7,8.7,
+HH4,roof_ridge_height,6.53,6.53,6.53,6.53,nan,nan,nan,6.53,6.53,
+HH4,eaves_height,2.36,2.36,2.36,2.36,nan,nan,nan,2.36,2.36,
+HH4,number_roof_surfaces,5,5,5.0,5.0,nan,nan,nan,5.0,5.0,
+HH4,roof_type,,,,,,,,,,3200: 100.0%
+HH4,development_type_code,,,,,,,,,,A13: 100.0%
+LW1,building_footprint,28.4,314.62,150.3,147.97,60.49,134.8,165.79,129.62,163.32,
+LW1,storeys_above_ground,1,4,1.97,2.0,0.41,1.86,2.07,2.0,2.0,
+LW1,length_footprint,4.94,28.35,12.55,12.24,3.76,11.59,13.52,11.22,13.16,
+LW1,width_footprint,4.81,17.46,11.77,11.91,2.97,11.01,12.53,10.68,12.96,
+LW1,roof_ridge_height,2.72,15.02,8.31,8.31,1.69,7.88,8.75,7.87,8.48,
+LW1,eaves_height,2.39,11.96,5.34,5.17,1.58,4.93,5.75,5.0,5.47,
+LW1,number_roof_surfaces,1,11,3.43,3.0,2.12,2.88,3.97,2.0,3.0,
+LW1,roof_slope,0.0,90.0,39.46,39.68,38.7,21.84,57.08,0.0,64.44,
+LW1,roof_type,,,,,,,,,,3100: 75.41%
+LW1,roof_type,,,,,,,,,,3300: 14.75%
+LW1,roof_type,,,,,,,,,,3200: 4.92%
+LW1,roof_type,,,,,,,,,,1000: 3.28%
+LW1,roof_type,,,,,,,,,,3400: 1.64%
+LW1,development_type_code,,,,,,,,,,A11: 45.95%
+LW1,development_type_code,,,,,,,,,,A12: 27.03%
+LW1,development_type_code,,,,,,,,,,C11: 13.51%
+LW1,development_type_code,,,,,,,,,,A13: 13.51%
+LW2,building_footprint,12.2,1093.75,227.45,180.41,179.29,204.05,250.85,161.67,199.56,
+LW2,storeys_above_ground,1,3,1.88,2.0,0.36,1.83,1.93,2.0,2.0,
+LW2,length_footprint,3.27,35.28,14.4,13.25,5.73,13.65,15.15,12.46,14.12,
+LW2,width_footprint,3.47,35.68,14.62,13.74,6.02,13.83,15.4,13.09,14.41,
+LW2,roof_ridge_height,2.14,13.73,8.86,8.77,2.02,8.6,9.13,8.38,9.0,
+LW2,eaves_height,2.14,10.52,5.7,5.6,1.57,5.5,5.91,5.36,5.82,
+LW2,number_roof_surfaces,1,34,4.42,3.0,4.65,3.81,5.03,2.0,3.0,
+LW2,roof_slope,0.0,90.0,38.52,45.65,36.35,30.43,46.61,0.0,55.58,
+LW2,roof_type,,,,,,,,,,3100: 76.75%
+LW2,roof_type,,,,,,,,,,3300: 8.77%
+LW2,roof_type,,,,,,,,,,3200: 5.7%
+LW2,roof_type,,,,,,,,,,1000: 4.82%
+LW2,roof_type,,,,,,,,,,5000: 2.63%
+LW2,roof_type,,,,,,,,,,2100: 0.88%
+LW2,roof_type,,,,,,,,,,3400: 0.44%
+LW2,development_type_code,,,,,,,,,,A11: 52.41%
+LW2,development_type_code,,,,,,,,,,A12: 23.49%
+LW2,development_type_code,,,,,,,,,,A13: 16.87%
+LW2,development_type_code,,,,,,,,,,B12: 4.22%
+LW2,development_type_code,,,,,,,,,,B11: 2.41%
+LW2,development_type_code,,,,,,,,,,C11: 0.6%
+LW3,building_footprint,21.21,412.49,201.41,162.87,119.44,121.16,281.65,112.4,273.13,
+LW3,storeys_above_ground,1,2,1.91,2.0,0.3,1.71,2,2.0,2.0,
+LW3,length_footprint,3.43,20.14,13.06,12.98,5.15,9.6,16.52,9.13,16.91,
+LW3,width_footprint,6.17,20.48,14.09,14.23,3.9,11.47,16.71,12.1,16.52,
+LW3,roof_ridge_height,6.72,10.15,8.65,8.31,1.16,7.87,9.44,7.82,10.05,
+LW3,eaves_height,3.04,6.74,5.33,5.85,1.24,4.5,6.16,4.69,6.11,
+LW3,number_roof_surfaces,2,8,4.45,4.0,1.97,3.13,5.78,3.0,6.0,
+LW3,roof_slope,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,
+LW3,roof_type,,,,,,,,,,3100: 100.0%
+LW3,development_type_code,,,,,,,,,,A12: 75.0%
+LW3,development_type_code,,,,,,,,,,A11: 25.0%
+LW7,building_footprint,77.16,347.83,174.33,146.7,81.22,119.77,228.89,120.3,251.78,
+LW7,storeys_above_ground,1,2,1.91,2.0,0.3,1.71,2,2.0,2.0,
+LW7,length_footprint,7.8,18.42,12.54,12.1,3.51,10.17,14.9,8.84,15.22,
+LW7,width_footprint,5.87,30.06,14.41,11.72,6.68,9.92,18.89,10.73,18.88,
+LW7,roof_ridge_height,6.46,12.67,9.9,10.3,1.87,8.64,11.16,9.6,10.65,
+LW7,eaves_height,3.66,7.3,6.16,6.5,1.03,5.47,6.86,5.63,6.84,
+LW7,number_roof_surfaces,2,8,3.09,2.0,1.92,2,4.38,2.0,4.0,
+LW7,roof_slope,0.0,65.99,30.61,44.11,29.92,7.61,53.62,0.0,65.4,
+LW7,roof_type,,,,,,,,,,3100: 100.0%
+LW7,development_type_code,,,,,,,,,,A11: 90.0%
+LW7,development_type_code,,,,,,,,,,B12: 10.0%
+LWS1,building_footprint,34.4,1061.64,335.48,259.42,208.99,287.72,383.23,231.09,345.14,
+LWS1,storeys_above_ground,1,4,2.04,2.0,0.34,1.96,2.12,2.0,2.0,
+LWS1,length_footprint,6.22,41.53,17.09,15.98,6.76,15.54,18.63,14.39,17.76,
+LWS1,width_footprint,5.53,40.91,18.93,17.59,7.43,17.24,20.63,16.32,19.51,
+LWS1,roof_ridge_height,5.11,20.39,9.65,9.4,1.86,9.22,10.07,9.22,9.73,
+LWS1,eaves_height,3.29,12.71,5.86,5.72,1.32,5.56,6.16,5.48,5.86,
+LWS1,number_roof_surfaces,2,14,3.71,2.0,2.64,3.11,4.31,2.0,3.5,
+LWS1,roof_slope,0.0,90.0,35.07,40.73,35.76,23.79,46.36,0.0,56.19,
+LWS1,roof_type,,,,,,,,,,3100: 78.95%
+LWS1,roof_type,,,,,,,,,,3300: 13.16%
+LWS1,roof_type,,,,,,,,,,5000: 5.26%
+LWS1,roof_type,,,,,,,,,,1000: 1.32%
+LWS1,roof_type,,,,,,,,,,3200: 1.32%
+LWS1,development_type_code,,,,,,,,,,A11: 70.0%
+LWS1,development_type_code,,,,,,,,,,A12: 17.5%
+LWS1,development_type_code,,,,,,,,,,A13: 7.5%
+LWS1,development_type_code,,,,,,,,,,C11: 2.5%
+LWS1,development_type_code,,,,,,,,,,B12: 2.5%
+LWS2,building_footprint,21.71,1804.74,398.29,317.22,289.19,354.1,442.47,266.65,375.63,
+LWS2,storeys_above_ground,1,3,1.95,2.0,0.41,1.89,2.01,2.0,2.0,
+LWS2,length_footprint,3.36,60.04,18.63,17.85,7.22,17.53,19.73,16.67,19.27,
+LWS2,width_footprint,4.37,42.37,19.52,18.11,7.95,18.31,20.74,17.21,19.66,
+LWS2,roof_ridge_height,2.61,15.27,9.22,9.5,2.34,8.86,9.58,9.21,9.71,
+LWS2,eaves_height,2.15,10.45,5.73,5.75,1.58,5.49,5.97,5.61,5.96,
+LWS2,number_roof_surfaces,1,38,4.7,3.0,4.92,3.95,5.45,2.0,4.0,
+LWS2,roof_slope,0.0,90.0,38.56,44.33,37.01,29.39,47.73,0.0,54.57,
+LWS2,roof_type,,,,,,,,,,3100: 73.05%
+LWS2,roof_type,,,,,,,,,,3300: 8.98%
+LWS2,roof_type,,,,,,,,,,1000: 6.59%
+LWS2,roof_type,,,,,,,,,,5000: 4.79%
+LWS2,roof_type,,,,,,,,,,2100: 2.99%
+LWS2,roof_type,,,,,,,,,,3200: 2.99%
+LWS2,roof_type,,,,,,,,,,3500: 0.6%
+LWS2,development_type_code,,,,,,,,,,A11: 61.61%
+LWS2,development_type_code,,,,,,,,,,A13: 20.54%
+LWS2,development_type_code,,,,,,,,,,A12: 16.07%
+LWS2,development_type_code,,,,,,,,,,B11: 1.79%
+LWS3,building_footprint,129.3,228.48,186.68,202.25,51.39,129.3,228.48,129.3,228.48,
+LWS3,storeys_above_ground,1,2,1.67,2.0,0.58,1,2,1.0,2.0,
+LWS3,length_footprint,11.69,16.38,14.17,14.45,2.36,11.69,16.38,11.69,16.38,
+LWS3,width_footprint,7.89,17.3,13.67,15.81,5.06,7.89,17.3,7.89,17.3,
+LWS3,roof_ridge_height,6.3,11.69,9.55,10.67,2.86,6.3,11.69,6.3,11.69,
+LWS3,eaves_height,3.61,7.79,5.71,5.73,2.09,3.61,7.79,3.61,7.79,
+LWS3,number_roof_surfaces,3,7,5.0,5.0,2.0,3,7,3.0,7.0,
+LWS3,roof_slope,0.0,0.0,0.0,0.0,nan,nan,nan,0.0,0.0,
+LWS3,roof_type,,,,,,,,,,3200: 33.33%
+LWS3,roof_type,,,,,,,,,,5000: 33.33%
+LWS3,roof_type,,,,,,,,,,3100: 33.33%
+LWS3,development_type_code,,,,,,,,,,A12: 66.67%
+LWS3,development_type_code,,,,,,,,,,A13: 33.33%
+ME2,building_footprint,29.0,1809.39,320.12,248.13,282.68,251.69,388.54,207.98,294.31,
+ME2,storeys_above_ground,1,3,2.09,2.0,0.41,1.99,2.19,2.0,2.0,
+ME2,length_footprint,5.04,47.11,17.31,15.94,7.21,15.56,19.05,14.85,17.74,
+ME2,width_footprint,5.76,47.39,16.77,15.45,6.96,15.08,18.45,13.69,17.09,
+ME2,roof_ridge_height,3.25,18.15,10.29,10.5,2.65,9.65,10.94,9.74,11.07,
+ME2,eaves_height,1.76,12.6,6.87,6.95,2.17,6.35,7.4,6.48,7.46,
+ME2,number_roof_surfaces,1,32,5.87,4.0,5.36,4.57,7.17,4.0,6.0,
+ME2,roof_slope,0.0,90.0,64.87,63.71,26.74,47.87,81.86,53.42,90.0,
+ME2,roof_type,,,,,,,,,,3100: 52.94%
+ME2,roof_type,,,,,,,,,,3300: 19.12%
+ME2,roof_type,,,,,,,,,,3200: 17.65%
+ME2,roof_type,,,,,,,,,,1000: 2.94%
+ME2,roof_type,,,,,,,,,,5000: 2.94%
+ME2,roof_type,,,,,,,,,,2100: 1.47%
+ME2,roof_type,,,,,,,,,,3400: 1.47%
+ME2,roof_type,,,,,,,,,,3500: 1.47%
+ME2,development_type_code,,,,,,,,,,A11: 32.76%
+ME2,development_type_code,,,,,,,,,,A12: 29.31%
+ME2,development_type_code,,,,,,,,,,A13: 27.59%
+ME2,development_type_code,,,,,,,,,,C11: 5.17%
+ME2,development_type_code,,,,,,,,,,B11: 5.17%
+ME3,building_footprint,18.53,2755.45,349.59,320.26,166.09,343.5,355.68,314.85,326.64,
+ME3,storeys_above_ground,0,6,2.68,3.0,0.75,2.65,2.71,3.0,3.0,
+ME3,length_footprint,3.74,55.77,18.33,17.93,4.37,18.17,18.49,17.77,18.11,
+ME3,width_footprint,3.66,58.89,18.25,17.95,4.29,18.09,18.41,17.79,18.14,
+ME3,roof_ridge_height,2.15,27.47,13.84,13.7,3.24,13.73,13.96,13.59,13.84,
+ME3,eaves_height,0.86,23.91,10.25,10.18,2.96,10.14,10.36,10.1,10.29,
+ME3,number_roof_surfaces,1,81,8.16,7.0,5.06,7.98,8.35,7.0,7.0,
+ME3,roof_slope,0.0,90.0,58.96,66.36,32.76,57.09,60.83,64.07,70.22,
+ME3,roof_type,,,,,,,,,,3200: 46.55%
+ME3,roof_type,,,,,,,,,,3400: 23.71%
+ME3,roof_type,,,,,,,,,,3100: 18.5%
+ME3,roof_type,,,,,,,,,,3500: 4.34%
+ME3,roof_type,,,,,,,,,,1000: 2.38%
+ME3,roof_type,,,,,,,,,,3300: 2.13%
+ME3,roof_type,,,,,,,,,,5000: 2.06%
+ME3,roof_type,,,,,,,,,,2100: 0.28%
+ME3,roof_type,,,,,,,,,,3600: 0.03%
+ME3,development_type_code,,,,,,,,,,A13: 78.84%
+ME3,development_type_code,,,,,,,,,,A12: 12.75%
+ME3,development_type_code,,,,,,,,,,C11: 3.37%
+ME3,development_type_code,,,,,,,,,,B12: 2.82%
+ME3,development_type_code,,,,,,,,,,A11: 1.67%
+ME3,development_type_code,,,,,,,,,,B11: 0.33%
+ME3,development_type_code,,,,,,,,,,C12: 0.22%
+ME4,building_footprint,18.79,2522.02,324.49,290.73,174.9,311.92,337.06,280.44,308.13,
+ME4,storeys_above_ground,1,5,2.42,2.0,0.59,2.38,2.46,2.0,2.0,
+ME4,length_footprint,3.57,50.79,17.64,17.45,4.24,17.33,17.94,16.91,17.68,
+ME4,width_footprint,5.27,57.13,17.64,17.15,4.59,17.31,17.97,16.76,17.47,
+ME4,roof_ridge_height,1.44,24.47,13.12,13.06,2.32,12.96,13.29,12.82,13.24,
+ME4,eaves_height,1.44,22.96,8.85,8.64,2.28,8.68,9.01,8.38,8.92,
+ME4,number_roof_surfaces,1,42,6.38,6.0,3.15,6.16,6.61,6.0,6.0,
+ME4,roof_slope,0.0,90.0,48.84,53.96,34.29,43.95,53.74,49.68,60.08,
+ME4,roof_type,,,,,,,,,,3200: 78.69%
+ME4,roof_type,,,,,,,,,,3100: 11.39%
+ME4,roof_type,,,,,,,,,,3400: 2.95%
+ME4,roof_type,,,,,,,,,,3500: 2.68%
+ME4,roof_type,,,,,,,,,,3300: 1.61%
+ME4,roof_type,,,,,,,,,,5000: 1.34%
+ME4,roof_type,,,,,,,,,,1000: 1.34%
+ME4,development_type_code,,,,,,,,,,A13: 51.04%
+ME4,development_type_code,,,,,,,,,,A12: 26.07%
+ME4,development_type_code,,,,,,,,,,B12: 14.42%
+ME4,development_type_code,,,,,,,,,,C11: 4.99%
+ME4,development_type_code,,,,,,,,,,B11: 1.53%
+ME4,development_type_code,,,,,,,,,,C12: 1.11%
+ME4,development_type_code,,,,,,,,,,A11: 0.69%
+ME4,development_type_code,,,,,,,,,,B13: 0.14%
+ME5,building_footprint,84.34,1151.26,407.64,387.21,178.94,351.15,464.12,352.89,425.06,
+ME5,storeys_above_ground,1,4,2.41,2.0,0.77,2.17,2.66,2.0,3.0,
+ME5,length_footprint,8.34,29.83,20.09,20.47,4.14,18.78,21.39,19.53,21.53,
+ME5,width_footprint,10.12,46.37,19.86,19.24,6.17,17.91,21.81,18.32,20.64,
+ME5,roof_ridge_height,3.79,20.68,12.89,12.83,3.62,11.75,14.04,11.18,14.16,
+ME5,eaves_height,2.86,15.01,8.9,8.08,3.03,7.94,9.85,7.27,10.27,
+ME5,number_roof_surfaces,1,12,4.98,4.0,2.89,4.06,5.89,4.0,5.0,
+ME5,roof_slope,0.0,90.0,32.17,0.0,39.63,5.55,58.79,0.0,70.89,
+ME5,roof_type,,,,,,,,,,3200: 48.78%
+ME5,roof_type,,,,,,,,,,3100: 43.9%
+ME5,roof_type,,,,,,,,,,1000: 2.44%
+ME5,roof_type,,,,,,,,,,2100: 2.44%
+ME5,roof_type,,,,,,,,,,3400: 2.44%
+ME5,development_type_code,,,,,,,,,,A13: 48.65%
+ME5,development_type_code,,,,,,,,,,B12: 32.43%
+ME5,development_type_code,,,,,,,,,,A12: 13.51%
+ME5,development_type_code,,,,,,,,,,A11: 2.7%
+ME5,development_type_code,,,,,,,,,,C11: 2.7%
+ME6,building_footprint,81.89,5412.65,1219.65,1196.75,793.14,962.55,1476.76,1147.08,1302.45,
+ME6,storeys_above_ground,1,17,12.08,15.0,4.36,10.66,13.49,10.0,15.0,
+ME6,length_footprint,10.06,64.57,27.89,26.45,8.79,25.04,30.74,24.95,29.01,
+ME6,width_footprint,8.14,83.83,41.1,43.25,11.92,37.24,44.96,42.64,43.84,
+ME6,roof_ridge_height,3.66,52.51,39.22,46.51,12.14,35.28,43.15,33.72,46.59,
+ME6,eaves_height,3.4,52.51,29.37,30.87,17.67,23.65,35.1,27.46,43.78,
+ME6,number_roof_surfaces,1,10,3.31,3.0,1.54,2.81,3.81,3.0,3.0,
+ME6,roof_slope,0.0,90.0,48.6,56.16,36.85,27.33,69.88,14.76,81.68,
+ME6,roof_type,,,,,,,,,,1000: 84.62%
+ME6,roof_type,,,,,,,,,,3200: 7.69%
+ME6,roof_type,,,,,,,,,,3100: 2.56%
+ME6,roof_type,,,,,,,,,,3500: 2.56%
+ME6,roof_type,,,,,,,,,,5000: 2.56%
+ME6,development_type_code,,,,,,,,,,B14: 75.68%
+ME6,development_type_code,,,,,,,,,,B12: 21.62%
+ME6,development_type_code,,,,,,,,,,B13: 2.7%
+ME7,building_footprint,43.9,3048.25,428.58,378.06,257.18,413.11,444.05,362.84,390.04,
+ME7,storeys_above_ground,1,7,3.27,3.0,0.98,3.21,3.33,3.0,3.0,
+ME7,length_footprint,7.0,64.43,20.18,19.7,5.41,19.86,20.51,19.42,20.02,
+ME7,width_footprint,6.27,58.43,20.14,19.49,5.66,19.8,20.48,19.25,19.79,
+ME7,roof_ridge_height,2.94,25.86,13.49,13.28,3.14,13.3,13.68,13.06,13.58,
+ME7,eaves_height,1.31,25.83,10.1,9.78,3.1,9.92,10.29,9.57,9.97,
+ME7,number_roof_surfaces,1,47,7.02,6.0,4.61,6.75,7.3,6.0,6.0,
+ME7,roof_slope,0.0,90.0,48.66,57.45,37.32,43.95,53.36,49.21,61.54,
+ME7,roof_type,,,,,,,,,,3200: 26.97%
+ME7,roof_type,,,,,,,,,,3400: 20.68%
+ME7,roof_type,,,,,,,,,,1000: 18.14%
+ME7,roof_type,,,,,,,,,,3100: 16.17%
+ME7,roof_type,,,,,,,,,,3500: 10.24%
+ME7,roof_type,,,,,,,,,,5000: 3.38%
+ME7,roof_type,,,,,,,,,,3300: 3.01%
+ME7,roof_type,,,,,,,,,,3900: 1.13%
+ME7,roof_type,,,,,,,,,,2100: 0.28%
+ME7,development_type_code,,,,,,,,,,A13: 68.87%
+ME7,development_type_code,,,,,,,,,,A12: 16.42%
+ME7,development_type_code,,,,,,,,,,B12: 7.01%
+ME7,development_type_code,,,,,,,,,,C11: 3.4%
+ME7,development_type_code,,,,,,,,,,A11: 1.2%
+ME7,development_type_code,,,,,,,,,,B11: 1.1%
+ME7,development_type_code,,,,,,,,,,B14: 1.0%
+ME7,development_type_code,,,,,,,,,,C12: 0.8%
+ME7,development_type_code,,,,,,,,,,B13: 0.2%
+MR2,building_footprint,181.97,1062.45,566.06,509.91,451.52,181.97,1062.45,181.97,1062.45,
+MR2,storeys_above_ground,2,4,3.25,3.5,0.96,2,4,2.0,4.0,
+MR2,length_footprint,10.35,26.52,17.55,16.66,8.41,10.35,26.52,10.35,26.52,
+MR2,width_footprint,17.49,40.06,27.96,27.16,11.97,17.49,40.06,17.49,40.06,
+MR2,roof_ridge_height,7.88,16.01,12.47,12.99,4.15,7.88,16.01,7.88,16.01,
+MR2,eaves_height,6.45,13.04,9.86,9.98,3.44,6.45,13.04,6.45,13.04,
+MR2,number_roof_surfaces,3,6,4.5,4.5,1.29,3,6,3.0,6.0,
+MR2,roof_slope,39.8,90.0,57.5,50.1,22.26,39.8,90.0,39.8,90.0,
+MR2,roof_type,,,,,,,,,,5000: 50.0%
+MR2,roof_type,,,,,,,,,,3200: 25.0%
+MR2,roof_type,,,,,,,,,,3100: 25.0%
+MR3,building_footprint,84.56,3002.7,404.85,308.95,443.48,295.83,513.87,277.55,337.75,
+MR3,storeys_above_ground,1,6,3.53,4.0,0.79,3.34,3.72,3.0,4.0,
+MR3,length_footprint,8.98,56.82,18.92,17.72,7.02,17.19,20.64,16.82,18.04,
+MR3,width_footprint,8.93,53.1,18.96,17.3,7.81,17.04,20.88,16.55,18.59,
+MR3,roof_ridge_height,2.35,29.55,17.21,17.72,3.67,16.31,18.12,17.24,18.15,
+MR3,eaves_height,2.35,22.45,13.56,14.13,2.98,12.82,14.29,13.84,14.35,
+MR3,number_roof_surfaces,1,14,4.82,4.0,2.92,4.1,5.54,3.0,5.0,
+MR3,roof_slope,0.0,90.0,46.32,53.22,36.4,34.0,58.63,25.22,60.14,
+MR3,roof_type,,,,,,,,,,3400: 51.52%
+MR3,roof_type,,,,,,,,,,3200: 33.33%
+MR3,roof_type,,,,,,,,,,3100: 9.09%
+MR3,roof_type,,,,,,,,,,1000: 3.03%
+MR3,roof_type,,,,,,,,,,5000: 1.52%
+MR3,roof_type,,,,,,,,,,2100: 1.52%
+MR3,development_type_code,,,,,,,,,,C11: 47.62%
+MR3,development_type_code,,,,,,,,,,A13: 36.51%
+MR3,development_type_code,,,,,,,,,,B12: 12.7%
+MR3,development_type_code,,,,,,,,,,C12: 3.17%
+MR4,building_footprint,144.61,561.69,317.44,325.56,96.19,303.09,331.79,311.65,337.16,
+MR4,storeys_above_ground,2,5,2.99,3.0,0.63,2.9,3.09,3.0,3.0,
+MR4,length_footprint,10.76,27.13,17.38,17.82,3.4,16.87,17.88,17.54,18.19,
+MR4,width_footprint,11.2,24.08,17.97,18.41,2.83,17.55,18.39,17.8,18.73,
+MR4,roof_ridge_height,7.39,22.86,14.9,14.48,2.08,14.59,15.21,14.22,14.72,
+MR4,eaves_height,5.72,18.76,10.84,10.49,1.96,10.54,11.13,10.29,10.84,
+MR4,number_roof_surfaces,2,10,2.91,3.0,1.02,2.76,3.07,3.0,3.0,
+MR4,roof_slope,0.0,90.0,30.0,0.0,51.96,0.0,90.0,0.0,90.0,
+MR4,roof_type,,,,,,,,,,3200: 64.0%
+MR4,roof_type,,,,,,,,,,3100: 32.0%
+MR4,roof_type,,,,,,,,,,3400: 4.0%
+MR4,development_type_code,,,,,,,,,,B12: 89.71%
+MR4,development_type_code,,,,,,,,,,C11: 5.71%
+MR4,development_type_code,,,,,,,,,,B11: 4.0%
+MR4,development_type_code,,,,,,,,,,B13: 0.57%
+MR5,building_footprint,84.94,2900.49,400.59,315.27,365.65,324.01,477.18,302.55,330.08,
+MR5,storeys_above_ground,1,7,4.87,5.0,0.62,4.74,5.0,5.0,5.0,
+MR5,length_footprint,12.72,53.96,19.21,17.63,5.95,17.97,20.46,17.46,17.83,
+MR5,width_footprint,6.68,87.8,19.49,17.49,9.02,17.6,21.38,17.31,17.84,
+MR5,roof_ridge_height,5.03,32.0,17.13,16.87,2.41,16.62,17.63,16.84,16.89,
+MR5,eaves_height,0.01,19.0,16.37,16.86,2.38,15.87,16.87,16.84,16.89,
+MR5,number_roof_surfaces,1,15,1.6,1.0,2.05,1.17,2.03,1.0,1.0,
+MR5,roof_slope,0.0,90.0,45.0,45.0,63.64,0.0,90.0,0.0,90.0,
+MR5,roof_type,,,,,,,,,,1000: 85.56%
+MR5,roof_type,,,,,,,,,,3200: 6.67%
+MR5,roof_type,,,,,,,,,,3100: 5.56%
+MR5,roof_type,,,,,,,,,,3400: 1.11%
+MR5,roof_type,,,,,,,,,,5000: 1.11%
+MR5,development_type_code,,,,,,,,,,B12: 50.0%
+MR5,development_type_code,,,,,,,,,,C12: 48.81%
+MR5,development_type_code,,,,,,,,,,C11: 1.19%
+MR6,building_footprint,21.01,9868.11,385.91,307.38,484.07,351.71,420.11,300.28,310.4,
+MR6,storeys_above_ground,1,11,5.92,5.0,1.81,5.79,6.05,5.0,5.0,
+MR6,length_footprint,4.39,88.37,18.68,17.3,6.18,18.24,19.12,17.16,17.53,
+MR6,width_footprint,4.78,111.66,18.85,17.62,6.9,18.36,19.34,17.46,17.78,
+MR6,roof_ridge_height,3.63,37.78,20.1,18.36,6.08,19.67,20.53,17.56,18.54,
+MR6,eaves_height,2.59,37.78,18.42,17.0,5.96,18.0,18.84,16.97,17.06,
+MR6,number_roof_surfaces,1,13,1.45,1.0,0.98,1.38,1.52,1.0,1.0,
+MR6,roof_slope,-0.1,90.0,25.07,0.0,34.48,20.08,30.05,0.0,0.0,
+MR6,roof_type,,,,,,,,,,1000: 88.86%
+MR6,roof_type,,,,,,,,,,3100: 10.36%
+MR6,roof_type,,,,,,,,,,5000: 0.52%
+MR6,roof_type,,,,,,,,,,3400: 0.26%
+MR6,development_type_code,,,,,,,,,,C12: 71.21%
+MR6,development_type_code,,,,,,,,,,B13: 15.69%
+MR6,development_type_code,,,,,,,,,,C11: 4.67%
+MR6,development_type_code,,,,,,,,,,A13: 4.15%
+MR6,development_type_code,,,,,,,,,,B12: 3.11%
+MR6,development_type_code,,,,,,,,,,A12: 1.17%
+MR7,building_footprint,75.89,10375.64,738.7,376.24,1136.7,544.47,932.93,351.42,429.79,
+MR7,storeys_above_ground,2,7,4.49,4.0,1.43,4.24,4.73,4.0,5.0,
+MR7,length_footprint,7.68,102.01,24.32,18.78,14.68,21.81,26.83,18.34,21.8,
+MR7,width_footprint,7.93,101.71,23.69,19.42,13.3,21.42,25.96,18.53,20.92,
+MR7,roof_ridge_height,6.67,32.74,17.77,17.49,4.83,16.94,18.59,16.65,19.59,
+MR7,eaves_height,2.6,25.3,14.37,14.38,5.18,13.49,15.26,13.34,15.34,
+MR7,number_roof_surfaces,1,329,7.94,4.0,28.78,3.02,12.86,3.0,4.5,
+MR7,roof_slope,0.0,90.0,45.13,52.98,37.85,35.83,54.44,33.22,61.41,
+MR7,roof_type,,,,,,,,,,1000: 35.07%
+MR7,roof_type,,,,,,,,,,3400: 31.34%
+MR7,roof_type,,,,,,,,,,3100: 11.94%
+MR7,roof_type,,,,,,,,,,3200: 7.46%
+MR7,roof_type,,,,,,,,,,5000: 6.72%
+MR7,roof_type,,,,,,,,,,3300: 4.48%
+MR7,roof_type,,,,,,,,,,3900: 1.49%
+MR7,roof_type,,,,,,,,,,2500: 0.75%
+MR7,roof_type,,,,,,,,,,3800: 0.75%
+MR7,development_type_code,,,,,,,,,,C11: 55.45%
+MR7,development_type_code,,,,,,,,,,B12: 20.0%
+MR7,development_type_code,,,,,,,,,,A12: 14.55%
+MR7,development_type_code,,,,,,,,,,C12: 4.55%
+MR7,development_type_code,,,,,,,,,,A13: 4.55%
+MR7,development_type_code,,,,,,,,,,B11: 0.91%
+AZH,building_footprint,204.91,204.91,204.91,204.91,nan,nan,nan,204.91,204.91,
+AZH,storeys_above_ground,2,2,2.0,2.0,nan,nan,nan,2.0,2.0,
+AZH,length_footprint,15.53,15.53,15.53,15.53,nan,nan,nan,15.53,15.53,
+AZH,width_footprint,13.2,13.2,13.2,13.2,nan,nan,nan,13.2,13.2,
+AZH,roof_ridge_height,10.32,10.32,10.32,10.32,nan,nan,nan,10.32,10.32,
+AZH,eaves_height,5.73,5.73,5.73,5.73,nan,nan,nan,5.73,5.73,
+AZH,number_roof_surfaces,2,2,2.0,2.0,nan,nan,nan,2.0,2.0,
+AZH,roof_type,,,,,,,,,,3100: 100.0%
+AZH,development_type_code,,,,,,,,,,A11: 100.0%
+Bungalow,building_footprint,54.28,361.14,258.43,265.3,83.52,202.32,314.54,247.8,324.01,
+Bungalow,storeys_above_ground,1,2,1.27,1.0,0.47,1,1.59,1.0,2.0,
+Bungalow,length_footprint,8.58,20.4,16.64,17.1,3.07,14.58,18.71,15.64,17.91,
+Bungalow,width_footprint,6.32,21.12,15.08,15.61,3.72,12.58,17.57,13.01,16.99,
+Bungalow,roof_ridge_height,4.81,9.24,6.72,6.71,1.22,5.9,7.54,5.84,7.75,
+Bungalow,eaves_height,3.62,7.54,4.92,5.0,1.14,4.16,5.69,3.93,5.44,
+Bungalow,number_roof_surfaces,2,8,4.64,4.0,2.2,3.16,6.12,3.0,7.0,
+Bungalow,roof_slope,0.0,89.84,44.51,50.54,33.67,13.37,75.65,0.0,70.36,
+Bungalow,roof_type,,,,,,,,,,3100: 45.45%
+Bungalow,roof_type,,,,,,,,,,3200: 27.27%
+Bungalow,roof_type,,,,,,,,,,5000: 18.18%
+Bungalow,roof_type,,,,,,,,,,3500: 9.09%
+Bungalow,development_type_code,,,,,,,,,,A12: 100.0%
+HM,building_footprint,29.26,1885.03,475.2,430.96,245.42,435.05,515.34,394.58,477.78,
+HM,storeys_above_ground,1,5,2.26,2.0,0.62,2.16,2.36,2.0,2.0,
+HM,length_footprint,5.47,47.08,21.01,20.72,6.21,19.99,22.02,19.75,21.62,
+HM,width_footprint,5.35,43.45,21.51,21.06,5.37,20.63,22.39,20.42,21.79,
+HM,roof_ridge_height,3.15,28.99,14.69,15.2,3.91,14.05,15.33,14.34,15.5,
+HM,eaves_height,2.05,18.35,10.14,10.15,3.32,9.6,10.68,9.76,10.86,
+HM,number_roof_surfaces,1,66,13.43,12.0,9.02,11.96,14.91,11.0,12.0,
+HM,roof_slope,45.07,90.0,79.45,88.88,16.72,67.49,90.0,66.99,90.0,
+HM,roof_type,,,,,,,,,,3200: 50.68%
+HM,roof_type,,,,,,,,,,3400: 17.81%
+HM,roof_type,,,,,,,,,,3100: 13.7%
+HM,roof_type,,,,,,,,,,5000: 10.27%
+HM,roof_type,,,,,,,,,,3500: 3.42%
+HM,roof_type,,,,,,,,,,1000: 3.42%
+HM,roof_type,,,,,,,,,,3300: 0.68%
+HM,development_type_code,,,,,,,,,,A13: 74.13%
+HM,development_type_code,,,,,,,,,,A12: 18.88%
+HM,development_type_code,,,,,,,,,,B12: 4.9%
+HM,development_type_code,,,,,,,,,,C11: 2.1%
+ME4/7,building_footprint,571.99,571.99,571.99,571.99,nan,nan,nan,571.99,571.99,
+ME4/7,storeys_above_ground,3,3,3.0,3.0,nan,nan,nan,3.0,3.0,
+ME4/7,length_footprint,22.41,22.41,22.41,22.41,nan,nan,nan,22.41,22.41,
+ME4/7,width_footprint,25.52,25.52,25.52,25.52,nan,nan,nan,25.52,25.52,
+ME4/7,roof_ridge_height,14.01,14.01,14.01,14.01,nan,nan,nan,14.01,14.01,
+ME4/7,eaves_height,10.0,10.0,10.0,10.0,nan,nan,nan,10.0,10.0,
+ME4/7,number_roof_surfaces,10,10,10.0,10.0,nan,nan,nan,10.0,10.0,
+ME4/7,roof_type,,,,,,,,,,3500: 100.0%
+ME4/7,development_type_code,,,,,,,,,,A13: 100.0%
+MRG,building_footprint,153.48,4660.14,414.49,357.82,395.58,350.0,478.97,323.36,365.06,
+MRG,storeys_above_ground,2,5,4.07,4.0,0.83,3.94,4.21,4.0,4.0,
+MRG,length_footprint,10.77,63.51,19.49,18.83,5.94,18.52,20.46,18.36,19.46,
+MRG,width_footprint,10.68,73.37,19.79,19.32,6.26,18.77,20.81,17.89,19.62,
+MRG,roof_ridge_height,11.26,22.77,17.59,18.37,2.54,17.18,18.01,16.83,19.13,
+MRG,eaves_height,6.52,20.49,14.66,15.97,2.91,14.18,15.13,15.61,16.12,
+MRG,number_roof_surfaces,1,116,5.09,2.0,10.57,3.36,6.81,2.0,3.0,
+MRG,roof_slope,90.0,90.0,90.0,90.0,nan,nan,nan,90.0,90.0,
+MRG,roof_type,,,,,,,,,,3100: 44.9%
+MRG,roof_type,,,,,,,,,,3400: 24.49%
+MRG,roof_type,,,,,,,,,,1000: 14.97%
+MRG,roof_type,,,,,,,,,,3200: 14.29%
+MRG,roof_type,,,,,,,,,,5000: 1.36%
+MRG,development_type_code,,,,,,,,,,B12: 54.23%
+MRG,development_type_code,,,,,,,,,,C11: 25.35%
+MRG,development_type_code,,,,,,,,,,A13: 7.75%
+MRG,development_type_code,,,,,,,,,,C12: 5.63%
+MRG,development_type_code,,,,,,,,,,A12: 4.93%
+MRG,development_type_code,,,,,,,,,,B11: 1.41%
+MRG,development_type_code,,,,,,,,,,A11: 0.7%
+MRG2,building_footprint,20.04,2041.4,477.81,278.74,466.8,303.5,652.11,229.01,425.0,
+MRG2,storeys_above_ground,1,5,3.43,3.0,1.01,3.06,3.81,3.0,4.0,
+MRG2,length_footprint,4.96,45.87,20.23,16.68,9.99,16.5,23.96,14.54,19.63,
+MRG2,width_footprint,4.04,44.51,20.03,19.26,9.44,16.51,23.56,16.17,22.12,
+MRG2,roof_ridge_height,4.71,22.11,15.68,16.16,4.15,14.13,17.23,13.91,18.48,
+MRG2,eaves_height,4.71,18.46,12.22,12.23,3.87,10.77,13.67,10.98,14.55,
+MRG2,number_roof_surfaces,1,34,9.97,8.0,7.73,7.08,12.85,6.0,10.5,
+MRG2,roof_slope,0.0,90.0,63.43,72.56,31.71,51.59,75.27,50.69,90.0,
+MRG2,roof_type,,,,,,,,,,3100: 56.67%
+MRG2,roof_type,,,,,,,,,,5000: 16.67%
+MRG2,roof_type,,,,,,,,,,3400: 13.33%
+MRG2,roof_type,,,,,,,,,,1000: 10.0%
+MRG2,roof_type,,,,,,,,,,3200: 3.33%
+MRG2,development_type_code,,,,,,,,,,C11: 100.0%
+MRG3,building_footprint,53.4,11591.11,428.1,351.42,587.7,395.04,461.17,341.14,358.59,
+MRG3,storeys_above_ground,1,7,4.13,4.0,0.74,4.09,4.17,4.0,4.0,
+MRG3,length_footprint,7.23,144.96,19.81,18.73,7.84,19.37,20.25,18.47,18.92,
+MRG3,width_footprint,7.39,107.39,19.57,18.71,6.31,19.21,19.92,18.44,18.9,
+MRG3,roof_ridge_height,4.16,33.01,19.57,19.4,3.36,19.38,19.76,19.05,19.78,
+MRG3,eaves_height,0.0,24.01,15.95,15.7,3.26,15.77,16.14,15.51,15.96,
+MRG3,number_roof_surfaces,1,182,5.88,5.0,7.74,5.44,6.31,4.0,5.0,
+MRG3,roof_slope,0.0,90.0,45.06,51.07,35.89,42.64,47.48,48.15,52.99,
+MRG3,roof_type,,,,,,,,,,3400: 57.81%
+MRG3,roof_type,,,,,,,,,,3100: 30.18%
+MRG3,roof_type,,,,,,,,,,3200: 7.98%
+MRG3,roof_type,,,,,,,,,,5000: 2.06%
+MRG3,roof_type,,,,,,,,,,1000: 1.56%
+MRG3,roof_type,,,,,,,,,,2100: 0.33%
+MRG3,roof_type,,,,,,,,,,2500: 0.08%
+MRG3,development_type_code,,,,,,,,,,C11: 85.55%
+MRG3,development_type_code,,,,,,,,,,A13: 6.89%
+MRG3,development_type_code,,,,,,,,,,B12: 3.53%
+MRG3,development_type_code,,,,,,,,,,C12: 2.35%
+MRG3,development_type_code,,,,,,,,,,A11: 0.84%
+MRG3,development_type_code,,,,,,,,,,A12: 0.67%
+MRG3,development_type_code,,,,,,,,,,B11: 0.08%
+MRG3,development_type_code,,,,,,,,,,B14: 0.08%
+MRG4,building_footprint,127.58,2600.17,310.16,290.97,160.05,298.17,322.15,285.38,297.15,
+MRG4,storeys_above_ground,1,7,3.82,4.0,0.93,3.75,3.89,4.0,4.0,
+MRG4,length_footprint,10.1,68.67,17.21,17.03,4.4,16.88,17.54,16.69,17.46,
+MRG4,width_footprint,9.8,62.67,17.55,17.39,3.52,17.29,17.82,17.13,17.82,
+MRG4,roof_ridge_height,3.96,26.72,17.71,18.03,4.31,17.39,18.03,17.13,18.45,
+MRG4,eaves_height,0.01,22.19,13.9,13.69,3.6,13.63,14.17,13.35,14.04,
+MRG4,number_roof_surfaces,1,30,3.2,2.0,2.62,3.0,3.39,2.0,2.0,
+MRG4,roof_slope,0.0,90.0,31.78,0.01,34.81,28.64,34.91,0.0,39.82,
+MRG4,roof_type,,,,,,,,,,3100: 53.13%
+MRG4,roof_type,,,,,,,,,,3200: 21.83%
+MRG4,roof_type,,,,,,,,,,1000: 16.16%
+MRG4,roof_type,,,,,,,,,,3400: 6.99%
+MRG4,roof_type,,,,,,,,,,2100: 0.87%
+MRG4,roof_type,,,,,,,,,,5000: 0.73%
+MRG4,roof_type,,,,,,,,,,3500: 0.15%
+MRG4,roof_type,,,,,,,,,,3300: 0.15%
+MRG4,development_type_code,,,,,,,,,,C11: 72.7%
+MRG4,development_type_code,,,,,,,,,,B12: 18.83%
+MRG4,development_type_code,,,,,,,,,,A13: 3.8%
+MRG4,development_type_code,,,,,,,,,,B11: 2.77%
+MRG4,development_type_code,,,,,,,,,,C12: 1.75%
+MRG4,development_type_code,,,,,,,,,,A12: 0.15%
+MRG5,building_footprint,170.08,11911.69,550.08,354.33,1037.17,430.83,669.33,330.58,365.7,
+MRG5,storeys_above_ground,1,8,4.98,5.0,0.9,4.87,5.08,5.0,5.0,
+MRG5,length_footprint,10.63,156.26,22.29,19.53,14.15,20.66,23.91,19.22,19.99,
+MRG5,width_footprint,10.66,102.41,20.63,18.9,9.39,19.55,21.71,18.61,19.4,
+MRG5,roof_ridge_height,4.14,39.01,21.13,20.65,3.74,20.7,21.56,20.37,21.21,
+MRG5,eaves_height,3.06,29.14,16.81,16.97,4.01,16.35,17.27,16.81,17.07,
+MRG5,number_roof_surfaces,1,71,4.82,3.0,8.37,3.86,5.78,2.0,3.0,
+MRG5,roof_slope,0.0,90.0,39.47,45.46,38.47,32.23,46.71,0.0,55.21,
+MRG5,roof_type,,,,,,,,,,3100: 73.72%
+MRG5,roof_type,,,,,,,,,,3200: 15.7%
+MRG5,roof_type,,,,,,,,,,3400: 4.78%
+MRG5,roof_type,,,,,,,,,,5000: 2.73%
+MRG5,roof_type,,,,,,,,,,1000: 1.37%
+MRG5,roof_type,,,,,,,,,,2500: 1.37%
+MRG5,roof_type,,,,,,,,,,3500: 0.34%
+MRG5,development_type_code,,,,,,,,,,B12: 48.44%
+MRG5,development_type_code,,,,,,,,,,C11: 36.33%
+MRG5,development_type_code,,,,,,,,,,B14: 7.27%
+MRG5,development_type_code,,,,,,,,,,B13: 3.46%
+MRG5,development_type_code,,,,,,,,,,A13: 2.42%
+MRG5,development_type_code,,,,,,,,,,C12: 2.08%
+MRG6,building_footprint,19.16,3451.81,407.15,309.09,394.95,342.32,471.97,286.81,318.19,
+MRG6,storeys_above_ground,5,11,6.63,6.0,1.9,6.32,6.95,6.0,6.0,
+MRG6,length_footprint,4.04,41.26,18.67,17.42,5.18,17.82,19.52,16.87,17.85,
+MRG6,width_footprint,4.74,83.67,19.57,16.98,9.93,17.94,21.2,16.55,17.65,
+MRG6,roof_ridge_height,16.79,40.64,22.06,18.94,6.86,20.93,23.18,18.79,19.0,
+MRG6,eaves_height,2.56,37.95,19.39,18.79,7.16,18.22,20.57,18.55,18.94,
+MRG6,number_roof_surfaces,1,6,1.7,1.0,1.16,1.51,1.89,1.0,1.0,
+MRG6,roof_slope,0.0,90.0,23.96,0.0,34.2,9.17,38.75,0.0,52.41,
+MRG6,roof_type,,,,,,,,,,1000: 97.93%
+MRG6,roof_type,,,,,,,,,,5000: 2.07%
+MRG6,development_type_code,,,,,,,,,,C12: 58.04%
+MRG6,development_type_code,,,,,,,,,,B13: 27.97%
+MRG6,development_type_code,,,,,,,,,,C11: 6.99%
+MRG6,development_type_code,,,,,,,,,,A13: 6.99%
+MRG7,building_footprint,23.75,6203.51,816.68,440.51,1026.05,683.66,949.7,395.06,519.06,
+MRG7,storeys_above_ground,1,8,5.1,5.0,1.18,4.95,5.26,5.0,5.0,
+MRG7,length_footprint,4.78,100.77,26.27,20.82,14.74,24.36,28.18,19.76,22.89,
+MRG7,width_footprint,4.97,88.06,25.14,21.07,13.02,23.45,26.83,20.23,22.31,
+MRG7,roof_ridge_height,1.94,31.6,20.31,20.88,4.32,19.75,20.87,20.49,21.1,
+MRG7,eaves_height,1.86,27.09,16.83,17.31,4.31,16.28,17.39,16.81,17.63,
+MRG7,number_roof_surfaces,1,240,8.03,5.0,17.89,5.72,10.35,4.0,5.0,
+MRG7,roof_slope,0.0,90.0,48.18,53.6,35.04,42.02,54.33,47.38,59.92,
+MRG7,roof_type,,,,,,,,,,3400: 35.93%
+MRG7,roof_type,,,,,,,,,,3100: 31.6%
+MRG7,roof_type,,,,,,,,,,1000: 18.18%
+MRG7,roof_type,,,,,,,,,,5000: 4.76%
+MRG7,roof_type,,,,,,,,,,3200: 3.9%
+MRG7,roof_type,,,,,,,,,,3900: 2.6%
+MRG7,roof_type,,,,,,,,,,3300: 1.73%
+MRG7,roof_type,,,,,,,,,,2100: 0.43%
+MRG7,roof_type,,,,,,,,,,3700: 0.43%
+MRG7,roof_type,,,,,,,,,,2500: 0.43%
+MRG7,development_type_code,,,,,,,,,,C11: 66.01%
+MRG7,development_type_code,,,,,,,,,,C12: 13.3%
+MRG7,development_type_code,,,,,,,,,,B12: 8.87%
+MRG7,development_type_code,,,,,,,,,,A13: 7.39%
+MRG7,development_type_code,,,,,,,,,,A12: 3.94%
+MRG7,development_type_code,,,,,,,,,,B14: 0.49%
+MRO,building_footprint,35.67,6469.81,396.31,328.83,553.53,312.99,479.62,319.29,341.39,
+MRO,storeys_above_ground,1,5,3.41,3.0,0.95,3.26,3.55,3.0,3.0,
+MRO,length_footprint,5.97,67.28,18.18,18.06,7.29,17.08,19.28,17.49,18.77,
+MRO,width_footprint,5.97,96.16,19.55,19.24,7.94,18.36,20.75,18.31,19.64,
+MRO,roof_ridge_height,3.66,21.3,15.37,14.43,2.52,14.99,15.75,14.26,15.6,
+MRO,eaves_height,2.57,17.55,11.84,10.93,3.05,11.38,12.3,10.67,12.04,
+MRO,number_roof_surfaces,1,20,3.79,3.0,3.51,3.26,4.32,3.0,3.0,
+MRO,roof_slope,0.0,90.0,60.0,90.0,51.96,0.0,90.0,0.0,90.0,
+MRO,roof_type,,,,,,,,,,3200: 47.67%
+MRO,roof_type,,,,,,,,,,3100: 40.7%
+MRO,roof_type,,,,,,,,,,1000: 6.98%
+MRO,roof_type,,,,,,,,,,5000: 1.74%
+MRO,roof_type,,,,,,,,,,3400: 1.74%
+MRO,roof_type,,,,,,,,,,3300: 1.16%
+MRO,development_type_code,,,,,,,,,,B12: 57.06%
+MRO,development_type_code,,,,,,,,,,A12: 11.76%
+MRO,development_type_code,,,,,,,,,,B11: 10.59%
+MRO,development_type_code,,,,,,,,,,A13: 10.0%
+MRO,development_type_code,,,,,,,,,,C11: 4.71%
+MRO,development_type_code,,,,,,,,,,C12: 3.53%
+MRO,development_type_code,,,,,,,,,,A11: 2.35%
+MRO2,building_footprint,120.09,1674.25,663.74,403.36,603.62,120.09,1222.0,255.8,1374.3,
+MRO2,storeys_above_ground,1,2,1.86,2.0,0.38,1.51,2,2.0,2.0,
+MRO2,length_footprint,10.59,42.71,24.56,20.96,10.82,14.55,34.56,19.83,35.37,
+MRO2,width_footprint,11.34,39.2,22.9,20.34,11.54,12.23,33.58,12.83,38.85,
+MRO2,roof_ridge_height,3.67,15.24,9.94,10.05,3.37,6.83,13.05,9.89,10.63,
+MRO2,eaves_height,3.67,10.79,7.41,7.19,2.1,5.47,9.35,6.97,8.14,
+MRO2,number_roof_surfaces,1,35,14.71,8.0,13.62,2.12,27.31,3.0,27.0,
+MRO2,roof_slope,56.26,90.0,73.13,73.13,23.86,56.26,90.0,56.26,90.0,
+MRO2,roof_type,,,,,,,,,,3100: 42.86%
+MRO2,roof_type,,,,,,,,,,3200: 28.57%
+MRO2,roof_type,,,,,,,,,,1000: 14.29%
+MRO2,roof_type,,,,,,,,,,5000: 14.29%
+MRO2,development_type_code,,,,,,,,,,A11: 40.0%
+MRO2,development_type_code,,,,,,,,,,A13: 40.0%
+MRO2,development_type_code,,,,,,,,,,A12: 20.0%
+MRO3,building_footprint,31.06,2651.75,328.96,302.4,197.48,314.4,343.52,291.5,316.21,
+MRO3,storeys_above_ground,1,6,3.2,3.0,0.7,3.15,3.25,3.0,3.0,
+MRO3,length_footprint,5.23,60.98,17.81,17.35,4.66,17.46,18.15,17.01,17.69,
+MRO3,width_footprint,5.88,71.17,17.68,17.26,4.58,17.35,18.02,16.83,17.57,
+MRO3,roof_ridge_height,3.49,25.53,15.88,16.56,3.09,15.66,16.11,16.26,16.8,
+MRO3,eaves_height,0.0,25.5,12.13,12.69,3.0,11.91,12.36,12.39,12.91,
+MRO3,number_roof_surfaces,1,28,6.05,5.0,3.99,5.75,6.34,5.0,5.0,
+MRO3,roof_slope,0.0,90.0,51.11,57.68,35.43,48.11,54.11,53.13,62.01,
+MRO3,roof_type,,,,,,,,,,3200: 64.46%
+MRO3,roof_type,,,,,,,,,,3400: 17.77%
+MRO3,roof_type,,,,,,,,,,3100: 12.27%
+MRO3,roof_type,,,,,,,,,,5000: 1.97%
+MRO3,roof_type,,,,,,,,,,1000: 1.83%
+MRO3,roof_type,,,,,,,,,,3300: 1.41%
+MRO3,roof_type,,,,,,,,,,2500: 0.28%
+MRO3,development_type_code,,,,,,,,,,A13: 62.3%
+MRO3,development_type_code,,,,,,,,,,C11: 16.45%
+MRO3,development_type_code,,,,,,,,,,B12: 15.87%
+MRO3,development_type_code,,,,,,,,,,A12: 4.08%
+MRO3,development_type_code,,,,,,,,,,A11: 1.02%
+MRO3,development_type_code,,,,,,,,,,B11: 0.29%
+MRO4,building_footprint,38.2,2535.7,310.04,300.12,130.37,303.21,316.88,293.56,304.62,
+MRO4,storeys_above_ground,1,5,2.92,3.0,0.54,2.89,2.95,3.0,3.0,
+MRO4,length_footprint,6.38,65.98,17.16,17.03,3.66,16.97,17.35,16.88,17.16,
+MRO4,width_footprint,5.99,42.01,17.71,17.88,3.28,17.54,17.88,17.69,18.08,
+MRO4,roof_ridge_height,4.1,23.54,14.68,14.71,1.92,14.58,14.78,14.65,14.78,
+MRO4,eaves_height,2.92,19.29,10.31,10.41,1.99,10.21,10.42,10.36,10.49,
+MRO4,number_roof_surfaces,1,32,4.41,3.0,3.38,4.24,4.59,3.0,3.0,
+MRO4,roof_slope,0.0,90.0,44.33,50.58,35.31,41.22,47.45,48.96,52.94,
+MRO4,roof_type,,,,,,,,,,3200: 64.6%
+MRO4,roof_type,,,,,,,,,,3100: 31.41%
+MRO4,roof_type,,,,,,,,,,3400: 2.0%
+MRO4,roof_type,,,,,,,,,,1000: 1.0%
+MRO4,roof_type,,,,,,,,,,5000: 0.64%
+MRO4,roof_type,,,,,,,,,,3300: 0.29%
+MRO4,roof_type,,,,,,,,,,2100: 0.07%
+MRO4,development_type_code,,,,,,,,,,B12: 53.94%
+MRO4,development_type_code,,,,,,,,,,C11: 25.14%
+MRO4,development_type_code,,,,,,,,,,A13: 15.19%
+MRO4,development_type_code,,,,,,,,,,A12: 2.51%
+MRO4,development_type_code,,,,,,,,,,C12: 1.36%
+MRO4,development_type_code,,,,,,,,,,B11: 1.29%
+MRO4,development_type_code,,,,,,,,,,A11: 0.57%
+MRO5,building_footprint,98.32,3942.38,337.4,326.59,193.09,325.79,349.01,324.32,328.89,
+MRO5,storeys_above_ground,1,8,4.45,5.0,0.74,4.41,4.49,5.0,5.0,
+MRO5,length_footprint,9.95,91.53,18.15,18.35,4.24,17.9,18.41,18.19,18.5,
+MRO5,width_footprint,9.88,52.01,18.23,18.56,4.24,17.97,18.48,18.47,18.67,
+MRO5,roof_ridge_height,8.82,30.42,18.1,19.17,2.14,17.97,18.23,19.11,19.2,
+MRO5,eaves_height,3.28,26.46,14.65,15.79,2.31,14.51,14.79,15.7,15.83,
+MRO5,number_roof_surfaces,1,40,2.56,2.0,2.47,2.41,2.71,2.0,2.0,
+MRO5,roof_slope,0.0,90.0,32.82,25.84,35.26,29.57,36.06,0.0,41.26,
+MRO5,roof_type,,,,,,,,,,3100: 88.54%
+MRO5,roof_type,,,,,,,,,,3200: 10.52%
+MRO5,roof_type,,,,,,,,,,5000: 0.85%
+MRO5,roof_type,,,,,,,,,,2500: 0.09%
+MRO5,development_type_code,,,,,,,,,,B12: 80.64%
+MRO5,development_type_code,,,,,,,,,,A13: 6.48%
+MRO5,development_type_code,,,,,,,,,,C11: 4.23%
+MRO5,development_type_code,,,,,,,,,,A12: 3.95%
+MRO5,development_type_code,,,,,,,,,,B14: 2.91%
+MRO5,development_type_code,,,,,,,,,,C12: 1.5%
+MRO5,development_type_code,,,,,,,,,,B13: 0.28%
+MRO6,building_footprint,171.73,1000.92,310.89,316.13,123.32,296.01,325.78,307.9,322.84,
+MRO6,storeys_above_ground,3,10,5.78,6.0,1.18,5.64,5.92,6.0,6.0,
+MRO6,length_footprint,10.18,27.4,17.31,18.13,3.18,16.93,17.69,17.98,18.33,
+MRO6,width_footprint,11.73,44.96,17.6,17.34,4.25,17.09,18.11,17.16,17.76,
+MRO6,roof_ridge_height,10.8,35.0,19.6,18.82,3.81,19.14,20.06,18.78,18.86,
+MRO6,eaves_height,2.58,34.96,18.53,18.75,3.63,18.1,18.97,18.68,18.79,
+MRO6,number_roof_surfaces,1,6,1.5,1.0,0.76,1.4,1.59,1.0,1.0,
+MRO6,roof_slope,0.0,90.0,33.44,0.0,39.85,17.34,49.54,0.0,64.79,
+MRO6,roof_type,,,,,,,,,,1000: 66.54%
+MRO6,roof_type,,,,,,,,,,3100: 33.46%
+MRO6,development_type_code,,,,,,,,,,C12: 55.26%
+MRO6,development_type_code,,,,,,,,,,A13: 16.54%
+MRO6,development_type_code,,,,,,,,,,B13: 15.41%
+MRO6,development_type_code,,,,,,,,,,B12: 6.39%
+MRO6,development_type_code,,,,,,,,,,B14: 4.51%
+MRO6,development_type_code,,,,,,,,,,C11: 1.88%
+MRO7,building_footprint,102.9,7695.52,643.03,435.89,806.65,551.07,734.99,407.72,453.73,
+MRO7,storeys_above_ground,2,7,3.84,4.0,0.87,3.74,3.94,4.0,4.0,
+MRO7,length_footprint,8.99,100.31,23.79,20.37,11.24,22.51,25.07,20.08,21.03,
+MRO7,width_footprint,11.36,83.71,23.29,20.96,10.58,22.08,24.5,20.07,22.09,
+MRO7,roof_ridge_height,6.24,27.49,14.9,14.74,3.02,14.56,15.25,14.48,14.92,
+MRO7,eaves_height,3.45,25.98,11.23,11.26,3.08,10.88,11.58,10.84,11.53,
+MRO7,number_roof_surfaces,1,55,7.24,6.0,6.0,6.56,7.93,5.0,6.5,
+MRO7,roof_slope,0.0,90.0,50.78,59.77,35.59,43.56,57.99,52.67,66.64,
+MRO7,roof_type,,,,,,,,,,3200: 23.15%
+MRO7,roof_type,,,,,,,,,,1000: 21.48%
+MRO7,roof_type,,,,,,,,,,3100: 18.79%
+MRO7,roof_type,,,,,,,,,,3400: 17.11%
+MRO7,roof_type,,,,,,,,,,5000: 9.73%
+MRO7,roof_type,,,,,,,,,,3300: 6.04%
+MRO7,roof_type,,,,,,,,,,3900: 2.68%
+MRO7,roof_type,,,,,,,,,,3500: 1.01%
+MRO7,development_type_code,,,,,,,,,,B12: 42.05%
+MRO7,development_type_code,,,,,,,,,,A13: 34.98%
+MRO7,development_type_code,,,,,,,,,,A12: 13.78%
+MRO7,development_type_code,,,,,,,,,,C11: 4.24%
+MRO7,development_type_code,,,,,,,,,,A11: 3.18%
+MRO7,development_type_code,,,,,,,,,,C12: 0.71%
+MRO7,development_type_code,,,,,,,,,,B13: 0.71%
+MRO7,development_type_code,,,,,,,,,,B11: 0.35%

@@ -1,0 +1,644 @@
+Attribute: sst, Category: EE1
+Count: 1
+Building_footprint - Min: 140.88, Max: 140.88, Mean: 140.88, Median: 140.88, Std Dev: nan, CI Mean Low: nan, CI Mean High: nan, CI Median Low: 140.88, CI Median High: 140.88
+Storeys_above_ground - Min: 2, Max: 2, Mean: 2.0, Median: 2.0, Std Dev: nan, CI Mean Low: nan, CI Mean High: nan, CI Median Low: 2.0, CI Median High: 2.0
+Length_footprint - Min: 11.41, Max: 11.41, Mean: 11.41, Median: 11.41, Std Dev: nan, CI Mean Low: nan, CI Mean High: nan, CI Median Low: 11.41, CI Median High: 11.41
+Width_footprint - Min: 12.35, Max: 12.35, Mean: 12.35, Median: 12.35, Std Dev: nan, CI Mean Low: nan, CI Mean High: nan, CI Median Low: 12.35, CI Median High: 12.35
+Roof_ridge_height - Min: 10.16, Max: 10.16, Mean: 10.16, Median: 10.16, Std Dev: nan, CI Mean Low: nan, CI Mean High: nan, CI Median Low: 10.16, CI Median High: 10.16
+Eaves_height - Min: 3.76, Max: 3.76, Mean: 3.76, Median: 3.76, Std Dev: nan, CI Mean Low: nan, CI Mean High: nan, CI Median Low: 3.76, CI Median High: 3.76
+Number_roof_surfaces - Min: 3, Max: 3, Mean: 3.0, Median: 3.0, Std Dev: nan, CI Mean Low: nan, CI Mean High: nan, CI Median Low: 3.0, CI Median High: 3.0
+Roof Type: [('3100', 100.0)]
+Development Type Code: [('A12', 100.0)]
+
+Attribute: sst, Category: EE2
+Count: 12
+Building_footprint - Min: 66.66, Max: 314.58, Mean: 150.74, Median: 140.63, Std Dev: 65.04, CI Mean Low: 109.42, CI Mean High: 192.07, CI Median Low: 108.96, CI Median High: 177.9
+Storeys_above_ground - Min: 1, Max: 2, Mean: 1.83, Median: 2.0, Std Dev: 0.39, CI Mean Low: 1.59, CI Mean High: 2, CI Median Low: 2.0, CI Median High: 2.0
+Length_footprint - Min: 10.15, Max: 17.82, Mean: 12.45, Median: 11.9, Std Dev: 2.04, CI Mean Low: 11.16, CI Mean High: 13.75, CI Median Low: 11.29, CI Median High: 13.18
+Width_footprint - Min: 5.6, Max: 17.65, Mean: 11.8, Median: 11.53, Std Dev: 3.33, CI Mean Low: 9.68, CI Mean High: 13.91, CI Median Low: 9.72, CI Median High: 14.06
+Roof_ridge_height - Min: 3.0, Max: 10.11, Mean: 7.29, Median: 7.87, Std Dev: 2.12, CI Mean Low: 5.94, CI Mean High: 8.63, CI Median Low: 6.56, CI Median High: 8.56
+Eaves_height - Min: 2.6, Max: 7.05, Mean: 4.69, Median: 4.72, Std Dev: 1.26, CI Mean Low: 3.89, CI Mean High: 5.49, CI Median Low: 4.0, CI Median High: 5.17
+Number_roof_surfaces - Min: 1, Max: 26, Mean: 7.25, Median: 3.5, Std Dev: 8.07, CI Mean Low: 2.12, CI Mean High: 12.38, CI Median Low: 2.0, CI Median High: 10.0
+Roof_slope - Min: 0.0, Max: 90.0, Mean: 45.0, Median: 45.0, Std Dev: 63.64, CI Mean Low: 0.0, CI Mean High: 90.0, CI Median Low: 0.0, CI Median High: 90.0
+Roof Type: [('3100', 83.33), ('3200', 8.33), ('1000', 8.33)]
+Development Type Code: [('A12', 50.0), ('A11', 50.0)]
+
+Attribute: sst, Category: EE3
+Count: 501
+Building_footprint - Min: 14.64, Max: 802.18, Mean: 200.73, Median: 189.24, Std Dev: 96.68, CI Mean Low: 192.25, CI Mean High: 209.22, CI Median Low: 178.77, CI Median High: 195.4
+Storeys_above_ground - Min: 1, Max: 3, Mean: 1.87, Median: 2.0, Std Dev: 0.4, CI Mean Low: 1.83, CI Mean High: 1.9, CI Median Low: 2.0, CI Median High: 2.0
+Length_footprint - Min: 3.96, Max: 29.53, Mean: 13.76, Median: 13.73, Std Dev: 3.53, CI Mean Low: 13.45, CI Mean High: 14.07, CI Median Low: 13.31, CI Median High: 14.07
+Width_footprint - Min: 2.84, Max: 28.49, Mean: 13.92, Median: 13.83, Std Dev: 3.58, CI Mean Low: 13.6, CI Mean High: 14.23, CI Median Low: 13.5, CI Median High: 14.09
+Roof_ridge_height - Min: 1.68, Max: 16.15, Mean: 8.92, Median: 8.71, Std Dev: 2.37, CI Mean Low: 8.71, CI Mean High: 9.13, CI Median Low: 8.47, CI Median High: 9.11
+Eaves_height - Min: 1.68, Max: 12.45, Mean: 5.94, Median: 5.67, Std Dev: 1.82, CI Mean Low: 5.78, CI Mean High: 6.1, CI Median Low: 5.53, CI Median High: 5.9
+Number_roof_surfaces - Min: 1, Max: 88, Mean: 6.16, Median: 6.0, Std Dev: 5.08, CI Mean Low: 5.71, CI Mean High: 6.6, CI Median Low: 5.0, CI Median High: 6.0
+Roof_slope - Min: 0.0, Max: 90.0, Mean: 43.09, Median: 51.01, Std Dev: 35.41, CI Mean Low: 36.66, CI Mean High: 49.52, CI Median Low: 45.39, CI Median High: 55.16
+Roof Type: [('3100', 59.68), ('3200', 18.56), ('3400', 5.79), ('1000', 4.99), ('3300', 4.59), ('5000', 3.59), ('2100', 1.4), ('3500', 1.4)]
+Development Type Code: [('A12', 48.79), ('A13', 43.3), ('A11', 4.18), ('B12', 2.2), ('C11', 0.88), ('B11', 0.44), ('B13', 0.22)]
+
+Attribute: sst, Category: EE4
+Count: 967
+Building_footprint - Min: 14.61, Max: 505.26, Mean: 161.68, Median: 153.54, Std Dev: 68.0, CI Mean Low: 157.39, CI Mean High: 165.97, CI Median Low: 149.21, CI Median High: 158.4
+Storeys_above_ground - Min: 1, Max: 3, Mean: 1.79, Median: 2.0, Std Dev: 0.43, CI Mean Low: 1.76, CI Mean High: 1.82, CI Median Low: 2.0, CI Median High: 2.0
+Length_footprint - Min: 3.75, Max: 26.27, Mean: 12.52, Median: 12.46, Std Dev: 2.89, CI Mean Low: 12.33, CI Mean High: 12.7, CI Median Low: 12.26, CI Median High: 12.67
+Width_footprint - Min: 3.25, Max: 26.03, Mean: 12.42, Median: 12.36, Std Dev: 2.89, CI Mean Low: 12.23, CI Mean High: 12.6, CI Median Low: 12.16, CI Median High: 12.56
+Roof_ridge_height - Min: 2.12, Max: 14.91, Mean: 9.05, Median: 9.12, Std Dev: 2.19, CI Mean Low: 8.91, CI Mean High: 9.18, CI Median Low: 8.96, CI Median High: 9.29
+Eaves_height - Min: 1.34, Max: 10.86, Mean: 5.42, Median: 5.34, Std Dev: 1.79, CI Mean Low: 5.31, CI Mean High: 5.54, CI Median Low: 5.05, CI Median High: 5.54
+Number_roof_surfaces - Min: 1, Max: 23, Mean: 4.7, Median: 4.0, Std Dev: 2.62, CI Mean Low: 4.53, CI Mean High: 4.86, CI Median Low: 4.0, CI Median High: 5.0
+Roof_slope - Min: 0.0, Max: 90.0, Mean: 42.47, Median: 46.95, Std Dev: 34.43, CI Mean Low: 37.69, CI Mean High: 47.25, CI Median Low: 42.54, CI Median High: 51.45
+Roof Type: [('3100', 53.98), ('3200', 30.4), ('1000', 5.17), ('3500', 3.31), ('5000', 2.79), ('2100', 1.65), ('3300', 1.45), ('3400', 1.24)]
+Development Type Code: [('A12', 79.34), ('A13', 16.83), ('B12', 2.13), ('A11', 0.96), ('B11', 0.43), ('C11', 0.32)]
+
+Attribute: sst, Category: EE5
+Count: 555
+Building_footprint - Min: 22.62, Max: 937.35, Mean: 163.87, Median: 154.05, Std Dev: 78.51, CI Mean Low: 157.32, CI Mean High: 170.42, CI Median Low: 149.08, CI Median High: 157.99
+Storeys_above_ground - Min: 1, Max: 5, Mean: 1.57, Median: 2.0, Std Dev: 0.53, CI Mean Low: 1.53, CI Mean High: 1.62, CI Median Low: 2.0, CI Median High: 2.0
+Length_footprint - Min: 4.57, Max: 31.82, Mean: 12.71, Median: 12.44, Std Dev: 3.1, CI Mean Low: 12.45, CI Mean High: 12.97, CI Median Low: 12.27, CI Median High: 12.68
+Width_footprint - Min: 4.41, Max: 29.46, Mean: 12.34, Median: 12.28, Std Dev: 2.98, CI Mean Low: 12.1, CI Mean High: 12.59, CI Median Low: 12.09, CI Median High: 12.43
+Roof_ridge_height - Min: 2.08, Max: 12.75, Mean: 7.67, Median: 8.38, Std Dev: 2.34, CI Mean Low: 7.48, CI Mean High: 7.87, CI Median Low: 8.2, CI Median High: 8.6
+Eaves_height - Min: 1.5, Max: 12.09, Mean: 4.35, Median: 4.25, Std Dev: 1.3, CI Mean Low: 4.24, CI Mean High: 4.46, CI Median Low: 4.13, CI Median High: 4.37
+Number_roof_surfaces - Min: 1, Max: 13, Mean: 3.04, Median: 2.0, Std Dev: 1.85, CI Mean Low: 2.89, CI Mean High: 3.2, CI Median Low: 2.0, CI Median High: 3.0
+Roof_slope - Min: 0.0, Max: 90.0, Mean: 37.77, Median: 41.47, Std Dev: 36.67, CI Mean Low: 31.33, CI Mean High: 44.21, CI Median Low: 0.0, CI Median High: 51.94
+Roof Type: [('3100', 78.74), ('1000', 10.27), ('3200', 5.05), ('5000', 2.88), ('2100', 1.8), ('3400', 0.72), ('3500', 0.54)]
+Development Type Code: [('A12', 78.49), ('A13', 16.79), ('A11', 3.4), ('B12', 0.75), ('B11', 0.38), ('C11', 0.19)]
+
+Attribute: sst, Category: EE7
+Count: 1103
+Building_footprint - Min: 15.1, Max: 809.39, Mean: 181.7, Median: 169.29, Std Dev: 75.16, CI Mean Low: 177.26, CI Mean High: 186.14, CI Median Low: 166.26, CI Median High: 171.78
+Storeys_above_ground - Min: 1, Max: 4, Mean: 1.83, Median: 2.0, Std Dev: 0.45, CI Mean Low: 1.8, CI Mean High: 1.85, CI Median Low: 2.0, CI Median High: 2.0
+Length_footprint - Min: 3.0, Max: 31.69, Mean: 13.36, Median: 13.07, Std Dev: 2.81, CI Mean Low: 13.19, CI Mean High: 13.53, CI Median Low: 12.98, CI Median High: 13.25
+Width_footprint - Min: 4.88, Max: 26.67, Mean: 13.18, Median: 12.95, Std Dev: 2.7, CI Mean Low: 13.02, CI Mean High: 13.33, CI Median Low: 12.78, CI Median High: 13.16
+Roof_ridge_height - Min: 1.82, Max: 17.79, Mean: 8.48, Median: 8.54, Std Dev: 1.63, CI Mean Low: 8.38, CI Mean High: 8.57, CI Median Low: 8.44, CI Median High: 8.69
+Eaves_height - Min: 1.82, Max: 14.03, Mean: 5.54, Median: 5.58, Std Dev: 1.52, CI Mean Low: 5.45, CI Mean High: 5.63, CI Median Low: 5.42, CI Median High: 5.73
+Number_roof_surfaces - Min: 1, Max: 20, Mean: 3.48, Median: 3.0, Std Dev: 2.19, CI Mean Low: 3.35, CI Mean High: 3.61, CI Median Low: 3.0, CI Median High: 3.0
+Roof_slope - Min: 0.0, Max: 90.0, Mean: 37.35, Median: 44.66, Std Dev: 35.16, CI Mean Low: 33.1, CI Mean High: 41.59, CI Median Low: 30.48, CI Median High: 51.29
+Roof Type: [('3100', 51.41), ('3200', 18.04), ('1000', 14.78), ('3500', 8.61), ('3300', 3.35), ('5000', 2.54), ('3400', 0.63), ('2100', 0.45), ('3900', 0.18)]
+Development Type Code: [('A12', 73.98), ('A13', 19.96), ('A11', 2.27), ('B12', 1.51), ('C11', 1.23), ('B11', 0.76), ('B13', 0.28)]
+
+Attribute: sst, Category: ER2
+Count: 3
+Building_footprint - Min: 134.82, Max: 788.48, Mean: 504.98, Median: 591.62, Std Dev: 335.34, CI Mean Low: 134.82, CI Mean High: 788.48, CI Median Low: 134.82, CI Median High: 788.48
+Storeys_above_ground - Min: 2, Max: 3, Mean: 2.33, Median: 2.0, Std Dev: 0.58, CI Mean Low: 2, CI Mean High: 3, CI Median Low: 2.0, CI Median High: 3.0
+Length_footprint - Min: 11.25, Max: 35.88, Mean: 25.24, Median: 28.59, Std Dev: 12.65, CI Mean Low: 11.25, CI Mean High: 35.88, CI Median Low: 11.25, CI Median High: 35.88
+Width_footprint - Min: 11.98, Max: 21.98, Mean: 18.22, Median: 20.69, Std Dev: 5.44, CI Mean Low: 11.98, CI Mean High: 21.98, CI Median Low: 11.98, CI Median High: 21.98
+Roof_ridge_height - Min: 8.2, Max: 11.49, Mean: 9.44, Median: 8.62, Std Dev: 1.79, CI Mean Low: 8.2, CI Mean High: 11.49, CI Median Low: 8.2, CI Median High: 11.49
+Eaves_height - Min: 4.58, Max: 7.06, Mean: 5.52, Median: 4.93, Std Dev: 1.34, CI Mean Low: 4.58, CI Mean High: 7.06, CI Median Low: 4.58, CI Median High: 7.06
+Number_roof_surfaces - Min: 3, Max: 18, Mean: 8.67, Median: 5.0, Std Dev: 8.14, CI Mean Low: 3, CI Mean High: 18, CI Median Low: 3.0, CI Median High: 18.0
+Roof Type: [('3100', 100.0)]
+Development Type Code: [('A12', 100.0)]
+
+Attribute: sst, Category: ER3
+Count: 175
+Building_footprint - Min: 21.0, Max: 478.76, Mean: 124.31, Median: 120.39, Std Dev: 54.17, CI Mean Low: 116.22, CI Mean High: 132.39, CI Median Low: 105.77, CI Median High: 130.05
+Storeys_above_ground - Min: 1, Max: 3, Mean: 1.97, Median: 2.0, Std Dev: 0.2, CI Mean Low: 1.94, CI Mean High: 2.0, CI Median Low: 2.0, CI Median High: 2.0
+Length_footprint - Min: 4.55, Max: 18.62, Mean: 11.0, Median: 11.15, Std Dev: 2.6, CI Mean Low: 10.61, CI Mean High: 11.38, CI Median Low: 10.37, CI Median High: 11.62
+Width_footprint - Min: 4.61, Max: 28.74, Mean: 10.96, Median: 10.85, Std Dev: 2.49, CI Mean Low: 10.59, CI Mean High: 11.33, CI Median Low: 10.46, CI Median High: 11.33
+Roof_ridge_height - Min: 4.33, Max: 15.36, Mean: 10.58, Median: 10.73, Std Dev: 1.74, CI Mean Low: 10.32, CI Mean High: 10.84, CI Median Low: 10.52, CI Median High: 10.94
+Eaves_height - Min: 2.29, Max: 13.65, Mean: 6.54, Median: 6.73, Std Dev: 1.65, CI Mean Low: 6.3, CI Mean High: 6.79, CI Median Low: 6.48, CI Median High: 6.88
+Number_roof_surfaces - Min: 1, Max: 22, Mean: 4.35, Median: 4.0, Std Dev: 2.61, CI Mean Low: 3.96, CI Mean High: 4.74, CI Median Low: 3.0, CI Median High: 4.0
+Roof_slope - Min: 0.0, Max: 90.0, Mean: 40.07, Median: 49.14, Std Dev: 37.1, CI Mean Low: 32.35, CI Mean High: 47.8, CI Median Low: 0.0, CI Median High: 58.33
+Roof Type: [('3100', 51.43), ('3200', 34.29), ('3300', 9.14), ('3400', 4.57), ('1000', 0.57)]
+Development Type Code: [('A12', 59.41), ('A13', 18.82), ('B11', 15.29), ('C11', 3.53), ('B12', 2.94)]
+
+Attribute: sst, Category: ER4
+Count: 1596
+Building_footprint - Min: 11.51, Max: 665.38, Mean: 122.88, Median: 109.12, Std Dev: 62.07, CI Mean Low: 119.83, CI Mean High: 125.92, CI Median Low: 105.65, CI Median High: 111.94
+Storeys_above_ground - Min: 1, Max: 3, Mean: 1.82, Median: 2.0, Std Dev: 0.42, CI Mean Low: 1.8, CI Mean High: 1.84, CI Median Low: 2.0, CI Median High: 2.0
+Length_footprint - Min: 1.92, Max: 25.41, Mean: 11.0, Median: 10.6, Std Dev: 2.53, CI Mean Low: 10.88, CI Mean High: 11.13, CI Median Low: 10.49, CI Median High: 10.7
+Width_footprint - Min: 3.65, Max: 26.27, Mean: 10.69, Median: 10.31, Std Dev: 2.82, CI Mean Low: 10.55, CI Mean High: 10.83, CI Median Low: 10.21, CI Median High: 10.4
+Roof_ridge_height - Min: 1.23, Max: 16.27, Mean: 9.41, Median: 9.76, Std Dev: 2.25, CI Mean Low: 9.3, CI Mean High: 9.52, CI Median Low: 9.59, CI Median High: 9.96
+Eaves_height - Min: 0.94, Max: 11.45, Mean: 5.47, Median: 5.86, Std Dev: 1.81, CI Mean Low: 5.38, CI Mean High: 5.56, CI Median Low: 5.76, CI Median High: 5.97
+Number_roof_surfaces - Min: 1, Max: 17, Mean: 3.57, Median: 3.0, Std Dev: 1.73, CI Mean Low: 3.49, CI Mean High: 3.66, CI Median Low: 3.0, CI Median High: 3.0
+Roof_slope - Min: 0.0, Max: 90.0, Mean: 40.12, Median: 46.7, Std Dev: 35.76, CI Mean Low: 37.74, CI Mean High: 42.49, CI Median Low: 42.75, CI Median High: 48.99
+Roof Type: [('3100', 67.11), ('3200', 23.06), ('1000', 4.39), ('3300', 2.07), ('2100', 1.38), ('5000', 1.38), ('3400', 0.56), ('2500', 0.06)]
+Development Type Code: [('A12', 50.06), ('B11', 42.6), ('B12', 3.45), ('A13', 2.89), ('C11', 0.88), ('A11', 0.13)]
+
+Attribute: sst, Category: ER5
+Count: 178
+Building_footprint - Min: 26.84, Max: 496.04, Mean: 173.14, Median: 173.98, Std Dev: 65.2, CI Mean Low: 163.5, CI Mean High: 182.78, CI Median Low: 168.37, CI Median High: 176.36
+Storeys_above_ground - Min: 1, Max: 3, Mean: 1.43, Median: 1.0, Std Dev: 0.51, CI Mean Low: 1.35, CI Mean High: 1.5, CI Median Low: 1.0, CI Median High: 1.0
+Length_footprint - Min: 5.78, Max: 26.58, Mean: 13.67, Median: 13.75, Std Dev: 2.8, CI Mean Low: 13.26, CI Mean High: 14.08, CI Median Low: 13.53, CI Median High: 14.43
+Width_footprint - Min: 4.64, Max: 22.81, Mean: 12.38, Median: 11.6, Std Dev: 3.02, CI Mean Low: 11.93, CI Mean High: 12.82, CI Median Low: 11.0, CI Median High: 12.33
+Roof_ridge_height - Min: 2.88, Max: 15.16, Mean: 6.59, Median: 6.82, Std Dev: 2.9, CI Mean Low: 6.16, CI Mean High: 7.02, CI Median Low: 4.6, CI Median High: 7.72
+Eaves_height - Min: 1.61, Max: 10.29, Mean: 4.37, Median: 3.97, Std Dev: 1.36, CI Mean Low: 4.17, CI Mean High: 4.57, CI Median Low: 3.84, CI Median High: 4.2
+Number_roof_surfaces - Min: 1, Max: 10, Mean: 2.53, Median: 2.0, Std Dev: 1.7, CI Mean Low: 2.28, CI Mean High: 2.78, CI Median Low: 2.0, CI Median High: 3.0
+Roof_slope - Min: 0.0, Max: 90.0, Mean: 42.13, Median: 47.07, Std Dev: 31.18, CI Mean Low: 31.25, CI Mean High: 53.01, CI Median Low: 42.05, CI Median High: 53.92
+Roof Type: [('3100', 55.06), ('1000', 38.76), ('5000', 3.37), ('2100', 1.69), ('3200', 1.12)]
+Development Type Code: [('A12', 47.75), ('B11', 42.13), ('A13', 7.87), ('B12', 1.69), ('A11', 0.56)]
+
+Attribute: sst, Category: ER7
+Count: 800
+Building_footprint - Min: 23.8, Max: 1005.13, Mean: 138.06, Median: 128.17, Std Dev: 61.6, CI Mean Low: 133.78, CI Mean High: 142.33, CI Median Low: 125.51, CI Median High: 130.32
+Storeys_above_ground - Min: 1, Max: 4, Mean: 2.08, Median: 2.0, Std Dev: 0.42, CI Mean Low: 2.06, CI Mean High: 2.11, CI Median Low: 2.0, CI Median High: 2.0
+Length_footprint - Min: 4.89, Max: 36.41, Mean: 11.61, Median: 11.48, Std Dev: 2.48, CI Mean Low: 11.44, CI Mean High: 11.78, CI Median Low: 11.31, CI Median High: 11.59
+Width_footprint - Min: 4.87, Max: 29.98, Mean: 11.71, Median: 11.69, Std Dev: 2.32, CI Mean Low: 11.55, CI Mean High: 11.87, CI Median Low: 11.62, CI Median High: 11.81
+Roof_ridge_height - Min: 1.49, Max: 13.44, Mean: 9.8, Median: 9.82, Std Dev: 1.37, CI Mean Low: 9.71, CI Mean High: 9.9, CI Median Low: 9.77, CI Median High: 9.86
+Eaves_height - Min: 1.49, Max: 12.41, Mean: 6.33, Median: 6.11, Std Dev: 1.46, CI Mean Low: 6.23, CI Mean High: 6.43, CI Median Low: 6.04, CI Median High: 6.2
+Number_roof_surfaces - Min: 1, Max: 14, Mean: 2.64, Median: 2.0, Std Dev: 1.53, CI Mean Low: 2.53, CI Mean High: 2.74, CI Median Low: 2.0, CI Median High: 2.0
+Roof_slope - Min: 0.0, Max: 90.0, Mean: 34.2, Median: 37.63, Std Dev: 35.8, CI Mean Low: 29.31, CI Mean High: 39.1, CI Median Low: 0.0, CI Median High: 43.73
+Roof Type: [('3100', 71.25), ('1000', 16.75), ('3200', 6.75), ('3300', 1.25), ('3500', 1.25), ('5000', 1.12), ('3400', 1.0), ('2100', 0.62)]
+Development Type Code: [('A12', 37.14), ('B11', 33.42), ('A13', 17.51), ('B12', 5.84), ('A11', 2.65), ('C12', 1.33), ('C11', 1.19), ('B13', 0.93)]
+
+Attribute: sst, Category: HH3
+Count: 265
+Building_footprint - Min: 21.87, Max: 1145.02, Mean: 217.06, Median: 184.14, Std Dev: 153.8, CI Mean Low: 198.46, CI Mean High: 235.66, CI Median Low: 164.76, CI Median High: 204.74
+Storeys_above_ground - Min: 1, Max: 5, Mean: 2.03, Median: 2.0, Std Dev: 0.59, CI Mean Low: 1.96, CI Mean High: 2.1, CI Median Low: 2.0, CI Median High: 2.0
+Length_footprint - Min: 4.45, Max: 36.74, Mean: 14.01, Median: 13.72, Std Dev: 5.23, CI Mean Low: 13.38, CI Mean High: 14.64, CI Median Low: 12.61, CI Median High: 14.58
+Width_footprint - Min: 4.75, Max: 45.55, Mean: 14.48, Median: 13.68, Std Dev: 5.38, CI Mean Low: 13.83, CI Mean High: 15.13, CI Median Low: 13.21, CI Median High: 14.48
+Roof_ridge_height - Min: 2.54, Max: 24.66, Mean: 7.8, Median: 7.07, Std Dev: 3.19, CI Mean Low: 7.41, CI Mean High: 8.19, CI Median Low: 6.85, CI Median High: 7.35
+Eaves_height - Min: 2.54, Max: 20.99, Mean: 6.8, Median: 6.39, Std Dev: 2.66, CI Mean Low: 6.48, CI Mean High: 7.12, CI Median Low: 6.25, CI Median High: 6.57
+Number_roof_surfaces - Min: 1, Max: 21, Mean: 2.02, Median: 1.0, Std Dev: 2.36, CI Mean Low: 1.73, CI Mean High: 2.3, CI Median Low: 1.0, CI Median High: 1.0
+Roof_slope - Min: 0.0, Max: 90.0, Mean: 27.88, Median: 0.0, Std Dev: 32.63, CI Mean Low: 22.34, CI Mean High: 33.41, CI Median Low: 0.0, CI Median High: 36.91
+Roof Type: [('1000', 57.74), ('2100', 14.34), ('3100', 10.57), ('5000', 6.79), ('3400', 5.66), ('3200', 4.53), ('3300', 0.38)]
+Development Type Code: [('A13', 69.92), ('C11', 16.8), ('A12', 8.2), ('B12', 3.52), ('A11', 1.56)]
+
+Attribute: sst, Category: HH4
+Count: 1
+Building_footprint - Min: 90.54, Max: 90.54, Mean: 90.54, Median: 90.54, Std Dev: nan, CI Mean Low: nan, CI Mean High: nan, CI Median Low: 90.54, CI Median High: 90.54
+Storeys_above_ground - Min: 1, Max: 1, Mean: 1.0, Median: 1.0, Std Dev: nan, CI Mean Low: nan, CI Mean High: nan, CI Median Low: 1.0, CI Median High: 1.0
+Length_footprint - Min: 10.41, Max: 10.41, Mean: 10.41, Median: 10.41, Std Dev: nan, CI Mean Low: nan, CI Mean High: nan, CI Median Low: 10.41, CI Median High: 10.41
+Width_footprint - Min: 8.7, Max: 8.7, Mean: 8.7, Median: 8.7, Std Dev: nan, CI Mean Low: nan, CI Mean High: nan, CI Median Low: 8.7, CI Median High: 8.7
+Roof_ridge_height - Min: 6.53, Max: 6.53, Mean: 6.53, Median: 6.53, Std Dev: nan, CI Mean Low: nan, CI Mean High: nan, CI Median Low: 6.53, CI Median High: 6.53
+Eaves_height - Min: 2.36, Max: 2.36, Mean: 2.36, Median: 2.36, Std Dev: nan, CI Mean Low: nan, CI Mean High: nan, CI Median Low: 2.36, CI Median High: 2.36
+Number_roof_surfaces - Min: 5, Max: 5, Mean: 5.0, Median: 5.0, Std Dev: nan, CI Mean Low: nan, CI Mean High: nan, CI Median Low: 5.0, CI Median High: 5.0
+Roof Type: [('3200', 100.0)]
+Development Type Code: [('A13', 100.0)]
+
+Attribute: sst, Category: LW1
+Count: 61
+Building_footprint - Min: 28.4, Max: 314.62, Mean: 150.3, Median: 147.97, Std Dev: 60.49, CI Mean Low: 134.8, CI Mean High: 165.79, CI Median Low: 129.62, CI Median High: 163.32
+Storeys_above_ground - Min: 1, Max: 4, Mean: 1.97, Median: 2.0, Std Dev: 0.41, CI Mean Low: 1.86, CI Mean High: 2.07, CI Median Low: 2.0, CI Median High: 2.0
+Length_footprint - Min: 4.94, Max: 28.35, Mean: 12.55, Median: 12.24, Std Dev: 3.76, CI Mean Low: 11.59, CI Mean High: 13.52, CI Median Low: 11.22, CI Median High: 13.16
+Width_footprint - Min: 4.81, Max: 17.46, Mean: 11.77, Median: 11.91, Std Dev: 2.97, CI Mean Low: 11.01, CI Mean High: 12.53, CI Median Low: 10.68, CI Median High: 12.96
+Roof_ridge_height - Min: 2.72, Max: 15.02, Mean: 8.31, Median: 8.31, Std Dev: 1.69, CI Mean Low: 7.88, CI Mean High: 8.75, CI Median Low: 7.87, CI Median High: 8.48
+Eaves_height - Min: 2.39, Max: 11.96, Mean: 5.34, Median: 5.17, Std Dev: 1.58, CI Mean Low: 4.93, CI Mean High: 5.75, CI Median Low: 5.0, CI Median High: 5.47
+Number_roof_surfaces - Min: 1, Max: 11, Mean: 3.43, Median: 3.0, Std Dev: 2.12, CI Mean Low: 2.88, CI Mean High: 3.97, CI Median Low: 2.0, CI Median High: 3.0
+Roof_slope - Min: 0.0, Max: 90.0, Mean: 39.46, Median: 39.68, Std Dev: 38.7, CI Mean Low: 21.84, CI Mean High: 57.08, CI Median Low: 0.0, CI Median High: 64.44
+Roof Type: [('3100', 75.41), ('3300', 14.75), ('3200', 4.92), ('1000', 3.28), ('3400', 1.64)]
+Development Type Code: [('A11', 45.95), ('A12', 27.03), ('C11', 13.51), ('A13', 13.51)]
+
+Attribute: sst, Category: LW2
+Count: 228
+Building_footprint - Min: 12.2, Max: 1093.75, Mean: 227.45, Median: 180.41, Std Dev: 179.29, CI Mean Low: 204.05, CI Mean High: 250.85, CI Median Low: 161.67, CI Median High: 199.56
+Storeys_above_ground - Min: 1, Max: 3, Mean: 1.88, Median: 2.0, Std Dev: 0.36, CI Mean Low: 1.83, CI Mean High: 1.93, CI Median Low: 2.0, CI Median High: 2.0
+Length_footprint - Min: 3.27, Max: 35.28, Mean: 14.4, Median: 13.25, Std Dev: 5.73, CI Mean Low: 13.65, CI Mean High: 15.15, CI Median Low: 12.46, CI Median High: 14.12
+Width_footprint - Min: 3.47, Max: 35.68, Mean: 14.62, Median: 13.74, Std Dev: 6.02, CI Mean Low: 13.83, CI Mean High: 15.4, CI Median Low: 13.09, CI Median High: 14.41
+Roof_ridge_height - Min: 2.14, Max: 13.73, Mean: 8.86, Median: 8.77, Std Dev: 2.02, CI Mean Low: 8.6, CI Mean High: 9.13, CI Median Low: 8.38, CI Median High: 9.0
+Eaves_height - Min: 2.14, Max: 10.52, Mean: 5.7, Median: 5.6, Std Dev: 1.57, CI Mean Low: 5.5, CI Mean High: 5.91, CI Median Low: 5.36, CI Median High: 5.82
+Number_roof_surfaces - Min: 1, Max: 34, Mean: 4.42, Median: 3.0, Std Dev: 4.65, CI Mean Low: 3.81, CI Mean High: 5.03, CI Median Low: 2.0, CI Median High: 3.0
+Roof_slope - Min: 0.0, Max: 90.0, Mean: 38.52, Median: 45.65, Std Dev: 36.35, CI Mean Low: 30.43, CI Mean High: 46.61, CI Median Low: 0.0, CI Median High: 55.58
+Roof Type: [('3100', 76.75), ('3300', 8.77), ('3200', 5.7), ('1000', 4.82), ('5000', 2.63), ('2100', 0.88), ('3400', 0.44)]
+Development Type Code: [('A11', 52.41), ('A12', 23.49), ('A13', 16.87), ('B12', 4.22), ('B11', 2.41), ('C11', 0.6)]
+
+Attribute: sst, Category: LW3
+Count: 11
+Building_footprint - Min: 21.21, Max: 412.49, Mean: 201.41, Median: 162.87, Std Dev: 119.44, CI Mean Low: 121.16, CI Mean High: 281.65, CI Median Low: 112.4, CI Median High: 273.13
+Storeys_above_ground - Min: 1, Max: 2, Mean: 1.91, Median: 2.0, Std Dev: 0.3, CI Mean Low: 1.71, CI Mean High: 2, CI Median Low: 2.0, CI Median High: 2.0
+Length_footprint - Min: 3.43, Max: 20.14, Mean: 13.06, Median: 12.98, Std Dev: 5.15, CI Mean Low: 9.6, CI Mean High: 16.52, CI Median Low: 9.13, CI Median High: 16.91
+Width_footprint - Min: 6.17, Max: 20.48, Mean: 14.09, Median: 14.23, Std Dev: 3.9, CI Mean Low: 11.47, CI Mean High: 16.71, CI Median Low: 12.1, CI Median High: 16.52
+Roof_ridge_height - Min: 6.72, Max: 10.15, Mean: 8.65, Median: 8.31, Std Dev: 1.16, CI Mean Low: 7.87, CI Mean High: 9.44, CI Median Low: 7.82, CI Median High: 10.05
+Eaves_height - Min: 3.04, Max: 6.74, Mean: 5.33, Median: 5.85, Std Dev: 1.24, CI Mean Low: 4.5, CI Mean High: 6.16, CI Median Low: 4.69, CI Median High: 6.11
+Number_roof_surfaces - Min: 2, Max: 8, Mean: 4.45, Median: 4.0, Std Dev: 1.97, CI Mean Low: 3.13, CI Mean High: 5.78, CI Median Low: 3.0, CI Median High: 6.0
+Roof_slope - Min: 0.0, Max: 0.0, Mean: 0.0, Median: 0.0, Std Dev: 0.0, CI Mean Low: 0.0, CI Mean High: 0.0, CI Median Low: 0.0, CI Median High: 0.0
+Roof Type: [('3100', 100.0)]
+Development Type Code: [('A12', 75.0), ('A11', 25.0)]
+
+Attribute: sst, Category: LW7
+Count: 11
+Building_footprint - Min: 77.16, Max: 347.83, Mean: 174.33, Median: 146.7, Std Dev: 81.22, CI Mean Low: 119.77, CI Mean High: 228.89, CI Median Low: 120.3, CI Median High: 251.78
+Storeys_above_ground - Min: 1, Max: 2, Mean: 1.91, Median: 2.0, Std Dev: 0.3, CI Mean Low: 1.71, CI Mean High: 2, CI Median Low: 2.0, CI Median High: 2.0
+Length_footprint - Min: 7.8, Max: 18.42, Mean: 12.54, Median: 12.1, Std Dev: 3.51, CI Mean Low: 10.17, CI Mean High: 14.9, CI Median Low: 8.84, CI Median High: 15.22
+Width_footprint - Min: 5.87, Max: 30.06, Mean: 14.41, Median: 11.72, Std Dev: 6.68, CI Mean Low: 9.92, CI Mean High: 18.89, CI Median Low: 10.73, CI Median High: 18.88
+Roof_ridge_height - Min: 6.46, Max: 12.67, Mean: 9.9, Median: 10.3, Std Dev: 1.87, CI Mean Low: 8.64, CI Mean High: 11.16, CI Median Low: 9.6, CI Median High: 10.65
+Eaves_height - Min: 3.66, Max: 7.3, Mean: 6.16, Median: 6.5, Std Dev: 1.03, CI Mean Low: 5.47, CI Mean High: 6.86, CI Median Low: 5.63, CI Median High: 6.84
+Number_roof_surfaces - Min: 2, Max: 8, Mean: 3.09, Median: 2.0, Std Dev: 1.92, CI Mean Low: 2, CI Mean High: 4.38, CI Median Low: 2.0, CI Median High: 4.0
+Roof_slope - Min: 0.0, Max: 65.99, Mean: 30.61, Median: 44.11, Std Dev: 29.92, CI Mean Low: 7.61, CI Mean High: 53.62, CI Median Low: 0.0, CI Median High: 65.4
+Roof Type: [('3100', 100.0)]
+Development Type Code: [('A11', 90.0), ('B12', 10.0)]
+
+Attribute: sst, Category: LWS1
+Count: 76
+Building_footprint - Min: 34.4, Max: 1061.64, Mean: 335.48, Median: 259.42, Std Dev: 208.99, CI Mean Low: 287.72, CI Mean High: 383.23, CI Median Low: 231.09, CI Median High: 345.14
+Storeys_above_ground - Min: 1, Max: 4, Mean: 2.04, Median: 2.0, Std Dev: 0.34, CI Mean Low: 1.96, CI Mean High: 2.12, CI Median Low: 2.0, CI Median High: 2.0
+Length_footprint - Min: 6.22, Max: 41.53, Mean: 17.09, Median: 15.98, Std Dev: 6.76, CI Mean Low: 15.54, CI Mean High: 18.63, CI Median Low: 14.39, CI Median High: 17.76
+Width_footprint - Min: 5.53, Max: 40.91, Mean: 18.93, Median: 17.59, Std Dev: 7.43, CI Mean Low: 17.24, CI Mean High: 20.63, CI Median Low: 16.32, CI Median High: 19.51
+Roof_ridge_height - Min: 5.11, Max: 20.39, Mean: 9.65, Median: 9.4, Std Dev: 1.86, CI Mean Low: 9.22, CI Mean High: 10.07, CI Median Low: 9.22, CI Median High: 9.73
+Eaves_height - Min: 3.29, Max: 12.71, Mean: 5.86, Median: 5.72, Std Dev: 1.32, CI Mean Low: 5.56, CI Mean High: 6.16, CI Median Low: 5.48, CI Median High: 5.86
+Number_roof_surfaces - Min: 2, Max: 14, Mean: 3.71, Median: 2.0, Std Dev: 2.64, CI Mean Low: 3.11, CI Mean High: 4.31, CI Median Low: 2.0, CI Median High: 3.5
+Roof_slope - Min: 0.0, Max: 90.0, Mean: 35.07, Median: 40.73, Std Dev: 35.76, CI Mean Low: 23.79, CI Mean High: 46.36, CI Median Low: 0.0, CI Median High: 56.19
+Roof Type: [('3100', 78.95), ('3300', 13.16), ('5000', 5.26), ('1000', 1.32), ('3200', 1.32)]
+Development Type Code: [('A11', 70.0), ('A12', 17.5), ('A13', 7.5), ('C11', 2.5), ('B12', 2.5)]
+
+Attribute: sst, Category: LWS2
+Count: 167
+Building_footprint - Min: 21.71, Max: 1804.74, Mean: 398.29, Median: 317.22, Std Dev: 289.19, CI Mean Low: 354.1, CI Mean High: 442.47, CI Median Low: 266.65, CI Median High: 375.63
+Storeys_above_ground - Min: 1, Max: 3, Mean: 1.95, Median: 2.0, Std Dev: 0.41, CI Mean Low: 1.89, CI Mean High: 2.01, CI Median Low: 2.0, CI Median High: 2.0
+Length_footprint - Min: 3.36, Max: 60.04, Mean: 18.63, Median: 17.85, Std Dev: 7.22, CI Mean Low: 17.53, CI Mean High: 19.73, CI Median Low: 16.67, CI Median High: 19.27
+Width_footprint - Min: 4.37, Max: 42.37, Mean: 19.52, Median: 18.11, Std Dev: 7.95, CI Mean Low: 18.31, CI Mean High: 20.74, CI Median Low: 17.21, CI Median High: 19.66
+Roof_ridge_height - Min: 2.61, Max: 15.27, Mean: 9.22, Median: 9.5, Std Dev: 2.34, CI Mean Low: 8.86, CI Mean High: 9.58, CI Median Low: 9.21, CI Median High: 9.71
+Eaves_height - Min: 2.15, Max: 10.45, Mean: 5.73, Median: 5.75, Std Dev: 1.58, CI Mean Low: 5.49, CI Mean High: 5.97, CI Median Low: 5.61, CI Median High: 5.96
+Number_roof_surfaces - Min: 1, Max: 38, Mean: 4.7, Median: 3.0, Std Dev: 4.92, CI Mean Low: 3.95, CI Mean High: 5.45, CI Median Low: 2.0, CI Median High: 4.0
+Roof_slope - Min: 0.0, Max: 90.0, Mean: 38.56, Median: 44.33, Std Dev: 37.01, CI Mean Low: 29.39, CI Mean High: 47.73, CI Median Low: 0.0, CI Median High: 54.57
+Roof Type: [('3100', 73.05), ('3300', 8.98), ('1000', 6.59), ('5000', 4.79), ('2100', 2.99), ('3200', 2.99), ('3500', 0.6)]
+Development Type Code: [('A11', 61.61), ('A13', 20.54), ('A12', 16.07), ('B11', 1.79)]
+
+Attribute: sst, Category: LWS3
+Count: 3
+Building_footprint - Min: 129.3, Max: 228.48, Mean: 186.68, Median: 202.25, Std Dev: 51.39, CI Mean Low: 129.3, CI Mean High: 228.48, CI Median Low: 129.3, CI Median High: 228.48
+Storeys_above_ground - Min: 1, Max: 2, Mean: 1.67, Median: 2.0, Std Dev: 0.58, CI Mean Low: 1, CI Mean High: 2, CI Median Low: 1.0, CI Median High: 2.0
+Length_footprint - Min: 11.69, Max: 16.38, Mean: 14.17, Median: 14.45, Std Dev: 2.36, CI Mean Low: 11.69, CI Mean High: 16.38, CI Median Low: 11.69, CI Median High: 16.38
+Width_footprint - Min: 7.89, Max: 17.3, Mean: 13.67, Median: 15.81, Std Dev: 5.06, CI Mean Low: 7.89, CI Mean High: 17.3, CI Median Low: 7.89, CI Median High: 17.3
+Roof_ridge_height - Min: 6.3, Max: 11.69, Mean: 9.55, Median: 10.67, Std Dev: 2.86, CI Mean Low: 6.3, CI Mean High: 11.69, CI Median Low: 6.3, CI Median High: 11.69
+Eaves_height - Min: 3.61, Max: 7.79, Mean: 5.71, Median: 5.73, Std Dev: 2.09, CI Mean Low: 3.61, CI Mean High: 7.79, CI Median Low: 3.61, CI Median High: 7.79
+Number_roof_surfaces - Min: 3, Max: 7, Mean: 5.0, Median: 5.0, Std Dev: 2.0, CI Mean Low: 3, CI Mean High: 7, CI Median Low: 3.0, CI Median High: 7.0
+Roof_slope - Min: 0.0, Max: 0.0, Mean: 0.0, Median: 0.0, Std Dev: nan, CI Mean Low: nan, CI Mean High: nan, CI Median Low: 0.0, CI Median High: 0.0
+Roof Type: [('3200', 33.33), ('5000', 33.33), ('3100', 33.33)]
+Development Type Code: [('A12', 66.67), ('A13', 33.33)]
+
+Attribute: sst, Category: ME2
+Count: 68
+Building_footprint - Min: 29.0, Max: 1809.39, Mean: 320.12, Median: 248.13, Std Dev: 282.68, CI Mean Low: 251.69, CI Mean High: 388.54, CI Median Low: 207.98, CI Median High: 294.31
+Storeys_above_ground - Min: 1, Max: 3, Mean: 2.09, Median: 2.0, Std Dev: 0.41, CI Mean Low: 1.99, CI Mean High: 2.19, CI Median Low: 2.0, CI Median High: 2.0
+Length_footprint - Min: 5.04, Max: 47.11, Mean: 17.31, Median: 15.94, Std Dev: 7.21, CI Mean Low: 15.56, CI Mean High: 19.05, CI Median Low: 14.85, CI Median High: 17.74
+Width_footprint - Min: 5.76, Max: 47.39, Mean: 16.77, Median: 15.45, Std Dev: 6.96, CI Mean Low: 15.08, CI Mean High: 18.45, CI Median Low: 13.69, CI Median High: 17.09
+Roof_ridge_height - Min: 3.25, Max: 18.15, Mean: 10.29, Median: 10.5, Std Dev: 2.65, CI Mean Low: 9.65, CI Mean High: 10.94, CI Median Low: 9.74, CI Median High: 11.07
+Eaves_height - Min: 1.76, Max: 12.6, Mean: 6.87, Median: 6.95, Std Dev: 2.17, CI Mean Low: 6.35, CI Mean High: 7.4, CI Median Low: 6.48, CI Median High: 7.46
+Number_roof_surfaces - Min: 1, Max: 32, Mean: 5.87, Median: 4.0, Std Dev: 5.36, CI Mean Low: 4.57, CI Mean High: 7.17, CI Median Low: 4.0, CI Median High: 6.0
+Roof_slope - Min: 0.0, Max: 90.0, Mean: 64.87, Median: 63.71, Std Dev: 26.74, CI Mean Low: 47.87, CI Mean High: 81.86, CI Median Low: 53.42, CI Median High: 90.0
+Roof Type: [('3100', 52.94), ('3300', 19.12), ('3200', 17.65), ('1000', 2.94), ('5000', 2.94), ('2100', 1.47), ('3400', 1.47), ('3500', 1.47)]
+Development Type Code: [('A11', 32.76), ('A12', 29.31), ('A13', 27.59), ('C11', 5.17), ('B11', 5.17)]
+
+Attribute: sst, Category: ME3
+Count: 2859
+Building_footprint - Min: 18.53, Max: 2755.45, Mean: 349.59, Median: 320.26, Std Dev: 166.09, CI Mean Low: 343.5, CI Mean High: 355.68, CI Median Low: 314.85, CI Median High: 326.64
+Storeys_above_ground - Min: 0, Max: 6, Mean: 2.68, Median: 3.0, Std Dev: 0.75, CI Mean Low: 2.65, CI Mean High: 2.71, CI Median Low: 3.0, CI Median High: 3.0
+Length_footprint - Min: 3.74, Max: 55.77, Mean: 18.33, Median: 17.93, Std Dev: 4.37, CI Mean Low: 18.17, CI Mean High: 18.49, CI Median Low: 17.77, CI Median High: 18.11
+Width_footprint - Min: 3.66, Max: 58.89, Mean: 18.25, Median: 17.95, Std Dev: 4.29, CI Mean Low: 18.09, CI Mean High: 18.41, CI Median Low: 17.79, CI Median High: 18.14
+Roof_ridge_height - Min: 2.15, Max: 27.47, Mean: 13.84, Median: 13.7, Std Dev: 3.24, CI Mean Low: 13.73, CI Mean High: 13.96, CI Median Low: 13.59, CI Median High: 13.84
+Eaves_height - Min: 0.86, Max: 23.91, Mean: 10.25, Median: 10.18, Std Dev: 2.96, CI Mean Low: 10.14, CI Mean High: 10.36, CI Median Low: 10.1, CI Median High: 10.29
+Number_roof_surfaces - Min: 1, Max: 81, Mean: 8.16, Median: 7.0, Std Dev: 5.06, CI Mean Low: 7.98, CI Mean High: 8.35, CI Median Low: 7.0, CI Median High: 7.0
+Roof_slope - Min: 0.0, Max: 90.0, Mean: 58.96, Median: 66.36, Std Dev: 32.76, CI Mean Low: 57.09, CI Mean High: 60.83, CI Median Low: 64.07, CI Median High: 70.22
+Roof Type: [('3200', 46.55), ('3400', 23.71), ('3100', 18.5), ('3500', 4.34), ('1000', 2.38), ('3300', 2.13), ('5000', 2.06), ('2100', 0.28), ('3600', 0.03)]
+Development Type Code: [('A13', 78.84), ('A12', 12.75), ('C11', 3.37), ('B12', 2.82), ('A11', 1.67), ('B11', 0.33), ('C12', 0.22)]
+
+Attribute: sst, Category: ME4
+Count: 746
+Building_footprint - Min: 18.79, Max: 2522.02, Mean: 324.49, Median: 290.73, Std Dev: 174.9, CI Mean Low: 311.92, CI Mean High: 337.06, CI Median Low: 280.44, CI Median High: 308.13
+Storeys_above_ground - Min: 1, Max: 5, Mean: 2.42, Median: 2.0, Std Dev: 0.59, CI Mean Low: 2.38, CI Mean High: 2.46, CI Median Low: 2.0, CI Median High: 2.0
+Length_footprint - Min: 3.57, Max: 50.79, Mean: 17.64, Median: 17.45, Std Dev: 4.24, CI Mean Low: 17.33, CI Mean High: 17.94, CI Median Low: 16.91, CI Median High: 17.68
+Width_footprint - Min: 5.27, Max: 57.13, Mean: 17.64, Median: 17.15, Std Dev: 4.59, CI Mean Low: 17.31, CI Mean High: 17.97, CI Median Low: 16.76, CI Median High: 17.47
+Roof_ridge_height - Min: 1.44, Max: 24.47, Mean: 13.12, Median: 13.06, Std Dev: 2.32, CI Mean Low: 12.96, CI Mean High: 13.29, CI Median Low: 12.82, CI Median High: 13.24
+Eaves_height - Min: 1.44, Max: 22.96, Mean: 8.85, Median: 8.64, Std Dev: 2.28, CI Mean Low: 8.68, CI Mean High: 9.01, CI Median Low: 8.38, CI Median High: 8.92
+Number_roof_surfaces - Min: 1, Max: 42, Mean: 6.38, Median: 6.0, Std Dev: 3.15, CI Mean Low: 6.16, CI Mean High: 6.61, CI Median Low: 6.0, CI Median High: 6.0
+Roof_slope - Min: 0.0, Max: 90.0, Mean: 48.84, Median: 53.96, Std Dev: 34.29, CI Mean Low: 43.95, CI Mean High: 53.74, CI Median Low: 49.68, CI Median High: 60.08
+Roof Type: [('3200', 78.69), ('3100', 11.39), ('3400', 2.95), ('3500', 2.68), ('3300', 1.61), ('5000', 1.34), ('1000', 1.34)]
+Development Type Code: [('A13', 51.04), ('A12', 26.07), ('B12', 14.42), ('C11', 4.99), ('B11', 1.53), ('C12', 1.11), ('A11', 0.69), ('B13', 0.14)]
+
+Attribute: sst, Category: ME5
+Count: 41
+Building_footprint - Min: 84.34, Max: 1151.26, Mean: 407.64, Median: 387.21, Std Dev: 178.94, CI Mean Low: 351.15, CI Mean High: 464.12, CI Median Low: 352.89, CI Median High: 425.06
+Storeys_above_ground - Min: 1, Max: 4, Mean: 2.41, Median: 2.0, Std Dev: 0.77, CI Mean Low: 2.17, CI Mean High: 2.66, CI Median Low: 2.0, CI Median High: 3.0
+Length_footprint - Min: 8.34, Max: 29.83, Mean: 20.09, Median: 20.47, Std Dev: 4.14, CI Mean Low: 18.78, CI Mean High: 21.39, CI Median Low: 19.53, CI Median High: 21.53
+Width_footprint - Min: 10.12, Max: 46.37, Mean: 19.86, Median: 19.24, Std Dev: 6.17, CI Mean Low: 17.91, CI Mean High: 21.81, CI Median Low: 18.32, CI Median High: 20.64
+Roof_ridge_height - Min: 3.79, Max: 20.68, Mean: 12.89, Median: 12.83, Std Dev: 3.62, CI Mean Low: 11.75, CI Mean High: 14.04, CI Median Low: 11.18, CI Median High: 14.16
+Eaves_height - Min: 2.86, Max: 15.01, Mean: 8.9, Median: 8.08, Std Dev: 3.03, CI Mean Low: 7.94, CI Mean High: 9.85, CI Median Low: 7.27, CI Median High: 10.27
+Number_roof_surfaces - Min: 1, Max: 12, Mean: 4.98, Median: 4.0, Std Dev: 2.89, CI Mean Low: 4.06, CI Mean High: 5.89, CI Median Low: 4.0, CI Median High: 5.0
+Roof_slope - Min: 0.0, Max: 90.0, Mean: 32.17, Median: 0.0, Std Dev: 39.63, CI Mean Low: 5.55, CI Mean High: 58.79, CI Median Low: 0.0, CI Median High: 70.89
+Roof Type: [('3200', 48.78), ('3100', 43.9), ('1000', 2.44), ('2100', 2.44), ('3400', 2.44)]
+Development Type Code: [('A13', 48.65), ('B12', 32.43), ('A12', 13.51), ('A11', 2.7), ('C11', 2.7)]
+
+Attribute: sst, Category: ME6
+Count: 39
+Building_footprint - Min: 81.89, Max: 5412.65, Mean: 1219.65, Median: 1196.75, Std Dev: 793.14, CI Mean Low: 962.55, CI Mean High: 1476.76, CI Median Low: 1147.08, CI Median High: 1302.45
+Storeys_above_ground - Min: 1, Max: 17, Mean: 12.08, Median: 15.0, Std Dev: 4.36, CI Mean Low: 10.66, CI Mean High: 13.49, CI Median Low: 10.0, CI Median High: 15.0
+Length_footprint - Min: 10.06, Max: 64.57, Mean: 27.89, Median: 26.45, Std Dev: 8.79, CI Mean Low: 25.04, CI Mean High: 30.74, CI Median Low: 24.95, CI Median High: 29.01
+Width_footprint - Min: 8.14, Max: 83.83, Mean: 41.1, Median: 43.25, Std Dev: 11.92, CI Mean Low: 37.24, CI Mean High: 44.96, CI Median Low: 42.64, CI Median High: 43.84
+Roof_ridge_height - Min: 3.66, Max: 52.51, Mean: 39.22, Median: 46.51, Std Dev: 12.14, CI Mean Low: 35.28, CI Mean High: 43.15, CI Median Low: 33.72, CI Median High: 46.59
+Eaves_height - Min: 3.4, Max: 52.51, Mean: 29.37, Median: 30.87, Std Dev: 17.67, CI Mean Low: 23.65, CI Mean High: 35.1, CI Median Low: 27.46, CI Median High: 43.78
+Number_roof_surfaces - Min: 1, Max: 10, Mean: 3.31, Median: 3.0, Std Dev: 1.54, CI Mean Low: 2.81, CI Mean High: 3.81, CI Median Low: 3.0, CI Median High: 3.0
+Roof_slope - Min: 0.0, Max: 90.0, Mean: 48.6, Median: 56.16, Std Dev: 36.85, CI Mean Low: 27.33, CI Mean High: 69.88, CI Median Low: 14.76, CI Median High: 81.68
+Roof Type: [('1000', 84.62), ('3200', 7.69), ('3100', 2.56), ('3500', 2.56), ('5000', 2.56)]
+Development Type Code: [('B14', 75.68), ('B12', 21.62), ('B13', 2.7)]
+
+Attribute: sst, Category: ME7
+Count: 1064
+Building_footprint - Min: 43.9, Max: 3048.25, Mean: 428.58, Median: 378.06, Std Dev: 257.18, CI Mean Low: 413.11, CI Mean High: 444.05, CI Median Low: 362.84, CI Median High: 390.04
+Storeys_above_ground - Min: 1, Max: 7, Mean: 3.27, Median: 3.0, Std Dev: 0.98, CI Mean Low: 3.21, CI Mean High: 3.33, CI Median Low: 3.0, CI Median High: 3.0
+Length_footprint - Min: 7.0, Max: 64.43, Mean: 20.18, Median: 19.7, Std Dev: 5.41, CI Mean Low: 19.86, CI Mean High: 20.51, CI Median Low: 19.42, CI Median High: 20.02
+Width_footprint - Min: 6.27, Max: 58.43, Mean: 20.14, Median: 19.49, Std Dev: 5.66, CI Mean Low: 19.8, CI Mean High: 20.48, CI Median Low: 19.25, CI Median High: 19.79
+Roof_ridge_height - Min: 2.94, Max: 25.86, Mean: 13.49, Median: 13.28, Std Dev: 3.14, CI Mean Low: 13.3, CI Mean High: 13.68, CI Median Low: 13.06, CI Median High: 13.58
+Eaves_height - Min: 1.31, Max: 25.83, Mean: 10.1, Median: 9.78, Std Dev: 3.1, CI Mean Low: 9.92, CI Mean High: 10.29, CI Median Low: 9.57, CI Median High: 9.97
+Number_roof_surfaces - Min: 1, Max: 47, Mean: 7.02, Median: 6.0, Std Dev: 4.61, CI Mean Low: 6.75, CI Mean High: 7.3, CI Median Low: 6.0, CI Median High: 6.0
+Roof_slope - Min: 0.0, Max: 90.0, Mean: 48.66, Median: 57.45, Std Dev: 37.32, CI Mean Low: 43.95, CI Mean High: 53.36, CI Median Low: 49.21, CI Median High: 61.54
+Roof Type: [('3200', 26.97), ('3400', 20.68), ('1000', 18.14), ('3100', 16.17), ('3500', 10.24), ('5000', 3.38), ('3300', 3.01), ('3900', 1.13), ('2100', 0.28)]
+Development Type Code: [('A13', 68.87), ('A12', 16.42), ('B12', 7.01), ('C11', 3.4), ('A11', 1.2), ('B11', 1.1), ('B14', 1.0), ('C12', 0.8), ('B13', 0.2)]
+
+Attribute: sst, Category: MR2
+Count: 4
+Building_footprint - Min: 181.97, Max: 1062.45, Mean: 566.06, Median: 509.91, Std Dev: 451.52, CI Mean Low: 181.97, CI Mean High: 1062.45, CI Median Low: 181.97, CI Median High: 1062.45
+Storeys_above_ground - Min: 2, Max: 4, Mean: 3.25, Median: 3.5, Std Dev: 0.96, CI Mean Low: 2, CI Mean High: 4, CI Median Low: 2.0, CI Median High: 4.0
+Length_footprint - Min: 10.35, Max: 26.52, Mean: 17.55, Median: 16.66, Std Dev: 8.41, CI Mean Low: 10.35, CI Mean High: 26.52, CI Median Low: 10.35, CI Median High: 26.52
+Width_footprint - Min: 17.49, Max: 40.06, Mean: 27.96, Median: 27.16, Std Dev: 11.97, CI Mean Low: 17.49, CI Mean High: 40.06, CI Median Low: 17.49, CI Median High: 40.06
+Roof_ridge_height - Min: 7.88, Max: 16.01, Mean: 12.47, Median: 12.99, Std Dev: 4.15, CI Mean Low: 7.88, CI Mean High: 16.01, CI Median Low: 7.88, CI Median High: 16.01
+Eaves_height - Min: 6.45, Max: 13.04, Mean: 9.86, Median: 9.98, Std Dev: 3.44, CI Mean Low: 6.45, CI Mean High: 13.04, CI Median Low: 6.45, CI Median High: 13.04
+Number_roof_surfaces - Min: 3, Max: 6, Mean: 4.5, Median: 4.5, Std Dev: 1.29, CI Mean Low: 3, CI Mean High: 6, CI Median Low: 3.0, CI Median High: 6.0
+Roof_slope - Min: 39.8, Max: 90.0, Mean: 57.5, Median: 50.1, Std Dev: 22.26, CI Mean Low: 39.8, CI Mean High: 90.0, CI Median Low: 39.8, CI Median High: 90.0
+Roof Type: [('5000', 50.0), ('3200', 25.0), ('3100', 25.0)]
+
+Attribute: sst, Category: MR3
+Count: 66
+Building_footprint - Min: 84.56, Max: 3002.7, Mean: 404.85, Median: 308.95, Std Dev: 443.48, CI Mean Low: 295.83, CI Mean High: 513.87, CI Median Low: 277.55, CI Median High: 337.75
+Storeys_above_ground - Min: 1, Max: 6, Mean: 3.53, Median: 4.0, Std Dev: 0.79, CI Mean Low: 3.34, CI Mean High: 3.72, CI Median Low: 3.0, CI Median High: 4.0
+Length_footprint - Min: 8.98, Max: 56.82, Mean: 18.92, Median: 17.72, Std Dev: 7.02, CI Mean Low: 17.19, CI Mean High: 20.64, CI Median Low: 16.82, CI Median High: 18.04
+Width_footprint - Min: 8.93, Max: 53.1, Mean: 18.96, Median: 17.3, Std Dev: 7.81, CI Mean Low: 17.04, CI Mean High: 20.88, CI Median Low: 16.55, CI Median High: 18.59
+Roof_ridge_height - Min: 2.35, Max: 29.55, Mean: 17.21, Median: 17.72, Std Dev: 3.67, CI Mean Low: 16.31, CI Mean High: 18.12, CI Median Low: 17.24, CI Median High: 18.15
+Eaves_height - Min: 2.35, Max: 22.45, Mean: 13.56, Median: 14.13, Std Dev: 2.98, CI Mean Low: 12.82, CI Mean High: 14.29, CI Median Low: 13.84, CI Median High: 14.35
+Number_roof_surfaces - Min: 1, Max: 14, Mean: 4.82, Median: 4.0, Std Dev: 2.92, CI Mean Low: 4.1, CI Mean High: 5.54, CI Median Low: 3.0, CI Median High: 5.0
+Roof_slope - Min: 0.0, Max: 90.0, Mean: 46.32, Median: 53.22, Std Dev: 36.4, CI Mean Low: 34.0, CI Mean High: 58.63, CI Median Low: 25.22, CI Median High: 60.14
+Roof Type: [('3400', 51.52), ('3200', 33.33), ('3100', 9.09), ('1000', 3.03), ('5000', 1.52), ('2100', 1.52)]
+Development Type Code: [('C11', 47.62), ('A13', 36.51), ('B12', 12.7), ('C12', 3.17)]
+
+Attribute: sst, Category: MR4
+Count: 175
+Building_footprint - Min: 144.61, Max: 561.69, Mean: 317.44, Median: 325.56, Std Dev: 96.19, CI Mean Low: 303.09, CI Mean High: 331.79, CI Median Low: 311.65, CI Median High: 337.16
+Storeys_above_ground - Min: 2, Max: 5, Mean: 2.99, Median: 3.0, Std Dev: 0.63, CI Mean Low: 2.9, CI Mean High: 3.09, CI Median Low: 3.0, CI Median High: 3.0
+Length_footprint - Min: 10.76, Max: 27.13, Mean: 17.38, Median: 17.82, Std Dev: 3.4, CI Mean Low: 16.87, CI Mean High: 17.88, CI Median Low: 17.54, CI Median High: 18.19
+Width_footprint - Min: 11.2, Max: 24.08, Mean: 17.97, Median: 18.41, Std Dev: 2.83, CI Mean Low: 17.55, CI Mean High: 18.39, CI Median Low: 17.8, CI Median High: 18.73
+Roof_ridge_height - Min: 7.39, Max: 22.86, Mean: 14.9, Median: 14.48, Std Dev: 2.08, CI Mean Low: 14.59, CI Mean High: 15.21, CI Median Low: 14.22, CI Median High: 14.72
+Eaves_height - Min: 5.72, Max: 18.76, Mean: 10.84, Median: 10.49, Std Dev: 1.96, CI Mean Low: 10.54, CI Mean High: 11.13, CI Median Low: 10.29, CI Median High: 10.84
+Number_roof_surfaces - Min: 2, Max: 10, Mean: 2.91, Median: 3.0, Std Dev: 1.02, CI Mean Low: 2.76, CI Mean High: 3.07, CI Median Low: 3.0, CI Median High: 3.0
+Roof_slope - Min: 0.0, Max: 90.0, Mean: 30.0, Median: 0.0, Std Dev: 51.96, CI Mean Low: 0.0, CI Mean High: 90.0, CI Median Low: 0.0, CI Median High: 90.0
+Roof Type: [('3200', 64.0), ('3100', 32.0), ('3400', 4.0)]
+Development Type Code: [('B12', 89.71), ('C11', 5.71), ('B11', 4.0), ('B13', 0.57)]
+
+Attribute: sst, Category: MR5
+Count: 90
+Building_footprint - Min: 84.94, Max: 2900.49, Mean: 400.59, Median: 315.27, Std Dev: 365.65, CI Mean Low: 324.01, CI Mean High: 477.18, CI Median Low: 302.55, CI Median High: 330.08
+Storeys_above_ground - Min: 1, Max: 7, Mean: 4.87, Median: 5.0, Std Dev: 0.62, CI Mean Low: 4.74, CI Mean High: 5.0, CI Median Low: 5.0, CI Median High: 5.0
+Length_footprint - Min: 12.72, Max: 53.96, Mean: 19.21, Median: 17.63, Std Dev: 5.95, CI Mean Low: 17.97, CI Mean High: 20.46, CI Median Low: 17.46, CI Median High: 17.83
+Width_footprint - Min: 6.68, Max: 87.8, Mean: 19.49, Median: 17.49, Std Dev: 9.02, CI Mean Low: 17.6, CI Mean High: 21.38, CI Median Low: 17.31, CI Median High: 17.84
+Roof_ridge_height - Min: 5.03, Max: 32.0, Mean: 17.13, Median: 16.87, Std Dev: 2.41, CI Mean Low: 16.62, CI Mean High: 17.63, CI Median Low: 16.84, CI Median High: 16.89
+Eaves_height - Min: 0.01, Max: 19.0, Mean: 16.37, Median: 16.86, Std Dev: 2.38, CI Mean Low: 15.87, CI Mean High: 16.87, CI Median Low: 16.84, CI Median High: 16.89
+Number_roof_surfaces - Min: 1, Max: 15, Mean: 1.6, Median: 1.0, Std Dev: 2.05, CI Mean Low: 1.17, CI Mean High: 2.03, CI Median Low: 1.0, CI Median High: 1.0
+Roof_slope - Min: 0.0, Max: 90.0, Mean: 45.0, Median: 45.0, Std Dev: 63.64, CI Mean Low: 0.0, CI Mean High: 90.0, CI Median Low: 0.0, CI Median High: 90.0
+Roof Type: [('1000', 85.56), ('3200', 6.67), ('3100', 5.56), ('3400', 1.11), ('5000', 1.11)]
+Development Type Code: [('B12', 50.0), ('C12', 48.81), ('C11', 1.19)]
+
+Attribute: sst, Category: MR6
+Count: 772
+Building_footprint - Min: 21.01, Max: 9868.11, Mean: 385.91, Median: 307.38, Std Dev: 484.07, CI Mean Low: 351.71, CI Mean High: 420.11, CI Median Low: 300.28, CI Median High: 310.4
+Storeys_above_ground - Min: 1, Max: 11, Mean: 5.92, Median: 5.0, Std Dev: 1.81, CI Mean Low: 5.79, CI Mean High: 6.05, CI Median Low: 5.0, CI Median High: 5.0
+Length_footprint - Min: 4.39, Max: 88.37, Mean: 18.68, Median: 17.3, Std Dev: 6.18, CI Mean Low: 18.24, CI Mean High: 19.12, CI Median Low: 17.16, CI Median High: 17.53
+Width_footprint - Min: 4.78, Max: 111.66, Mean: 18.85, Median: 17.62, Std Dev: 6.9, CI Mean Low: 18.36, CI Mean High: 19.34, CI Median Low: 17.46, CI Median High: 17.78
+Roof_ridge_height - Min: 3.63, Max: 37.78, Mean: 20.1, Median: 18.36, Std Dev: 6.08, CI Mean Low: 19.67, CI Mean High: 20.53, CI Median Low: 17.56, CI Median High: 18.54
+Eaves_height - Min: 2.59, Max: 37.78, Mean: 18.42, Median: 17.0, Std Dev: 5.96, CI Mean Low: 18.0, CI Mean High: 18.84, CI Median Low: 16.97, CI Median High: 17.06
+Number_roof_surfaces - Min: 1, Max: 13, Mean: 1.45, Median: 1.0, Std Dev: 0.98, CI Mean Low: 1.38, CI Mean High: 1.52, CI Median Low: 1.0, CI Median High: 1.0
+Roof_slope - Min: -0.1, Max: 90.0, Mean: 25.07, Median: 0.0, Std Dev: 34.48, CI Mean Low: 20.08, CI Mean High: 30.05, CI Median Low: 0.0, CI Median High: 0.0
+Roof Type: [('1000', 88.86), ('3100', 10.36), ('5000', 0.52), ('3400', 0.26)]
+Development Type Code: [('C12', 71.21), ('B13', 15.69), ('C11', 4.67), ('A13', 4.15), ('B12', 3.11), ('A12', 1.17)]
+
+Attribute: sst, Category: MR7
+Count: 134
+Building_footprint - Min: 75.89, Max: 10375.64, Mean: 738.7, Median: 376.24, Std Dev: 1136.7, CI Mean Low: 544.47, CI Mean High: 932.93, CI Median Low: 351.42, CI Median High: 429.79
+Storeys_above_ground - Min: 2, Max: 7, Mean: 4.49, Median: 4.0, Std Dev: 1.43, CI Mean Low: 4.24, CI Mean High: 4.73, CI Median Low: 4.0, CI Median High: 5.0
+Length_footprint - Min: 7.68, Max: 102.01, Mean: 24.32, Median: 18.78, Std Dev: 14.68, CI Mean Low: 21.81, CI Mean High: 26.83, CI Median Low: 18.34, CI Median High: 21.8
+Width_footprint - Min: 7.93, Max: 101.71, Mean: 23.69, Median: 19.42, Std Dev: 13.3, CI Mean Low: 21.42, CI Mean High: 25.96, CI Median Low: 18.53, CI Median High: 20.92
+Roof_ridge_height - Min: 6.67, Max: 32.74, Mean: 17.77, Median: 17.49, Std Dev: 4.83, CI Mean Low: 16.94, CI Mean High: 18.59, CI Median Low: 16.65, CI Median High: 19.59
+Eaves_height - Min: 2.6, Max: 25.3, Mean: 14.37, Median: 14.38, Std Dev: 5.18, CI Mean Low: 13.49, CI Mean High: 15.26, CI Median Low: 13.34, CI Median High: 15.34
+Number_roof_surfaces - Min: 1, Max: 329, Mean: 7.94, Median: 4.0, Std Dev: 28.78, CI Mean Low: 3.02, CI Mean High: 12.86, CI Median Low: 3.0, CI Median High: 4.5
+Roof_slope - Min: 0.0, Max: 90.0, Mean: 45.13, Median: 52.98, Std Dev: 37.85, CI Mean Low: 35.83, CI Mean High: 54.44, CI Median Low: 33.22, CI Median High: 61.41
+Roof Type: [('1000', 35.07), ('3400', 31.34), ('3100', 11.94), ('3200', 7.46), ('5000', 6.72), ('3300', 4.48), ('3900', 1.49), ('2500', 0.75), ('3800', 0.75)]
+Development Type Code: [('C11', 55.45), ('B12', 20.0), ('A12', 14.55), ('C12', 4.55), ('A13', 4.55), ('B11', 0.91)]
+
+Attribute: sst_sub, Category: AZH
+Count: 1
+Building_footprint - Min: 204.91, Max: 204.91, Mean: 204.91, Median: 204.91, Std Dev: nan, CI Mean Low: nan, CI Mean High: nan, CI Median Low: 204.91, CI Median High: 204.91
+Storeys_above_ground - Min: 2, Max: 2, Mean: 2.0, Median: 2.0, Std Dev: nan, CI Mean Low: nan, CI Mean High: nan, CI Median Low: 2.0, CI Median High: 2.0
+Length_footprint - Min: 15.53, Max: 15.53, Mean: 15.53, Median: 15.53, Std Dev: nan, CI Mean Low: nan, CI Mean High: nan, CI Median Low: 15.53, CI Median High: 15.53
+Width_footprint - Min: 13.2, Max: 13.2, Mean: 13.2, Median: 13.2, Std Dev: nan, CI Mean Low: nan, CI Mean High: nan, CI Median Low: 13.2, CI Median High: 13.2
+Roof_ridge_height - Min: 10.32, Max: 10.32, Mean: 10.32, Median: 10.32, Std Dev: nan, CI Mean Low: nan, CI Mean High: nan, CI Median Low: 10.32, CI Median High: 10.32
+Eaves_height - Min: 5.73, Max: 5.73, Mean: 5.73, Median: 5.73, Std Dev: nan, CI Mean Low: nan, CI Mean High: nan, CI Median Low: 5.73, CI Median High: 5.73
+Number_roof_surfaces - Min: 2, Max: 2, Mean: 2.0, Median: 2.0, Std Dev: nan, CI Mean Low: nan, CI Mean High: nan, CI Median Low: 2.0, CI Median High: 2.0
+Roof Type: [('3100', 100.0)]
+Development Type Code: [('A11', 100.0)]
+
+Attribute: sst_sub, Category: Bungalow
+Count: 11
+Building_footprint - Min: 54.28, Max: 361.14, Mean: 258.43, Median: 265.3, Std Dev: 83.52, CI Mean Low: 202.32, CI Mean High: 314.54, CI Median Low: 247.8, CI Median High: 324.01
+Storeys_above_ground - Min: 1, Max: 2, Mean: 1.27, Median: 1.0, Std Dev: 0.47, CI Mean Low: 1, CI Mean High: 1.59, CI Median Low: 1.0, CI Median High: 2.0
+Length_footprint - Min: 8.58, Max: 20.4, Mean: 16.64, Median: 17.1, Std Dev: 3.07, CI Mean Low: 14.58, CI Mean High: 18.71, CI Median Low: 15.64, CI Median High: 17.91
+Width_footprint - Min: 6.32, Max: 21.12, Mean: 15.08, Median: 15.61, Std Dev: 3.72, CI Mean Low: 12.58, CI Mean High: 17.57, CI Median Low: 13.01, CI Median High: 16.99
+Roof_ridge_height - Min: 4.81, Max: 9.24, Mean: 6.72, Median: 6.71, Std Dev: 1.22, CI Mean Low: 5.9, CI Mean High: 7.54, CI Median Low: 5.84, CI Median High: 7.75
+Eaves_height - Min: 3.62, Max: 7.54, Mean: 4.92, Median: 5.0, Std Dev: 1.14, CI Mean Low: 4.16, CI Mean High: 5.69, CI Median Low: 3.93, CI Median High: 5.44
+Number_roof_surfaces - Min: 2, Max: 8, Mean: 4.64, Median: 4.0, Std Dev: 2.2, CI Mean Low: 3.16, CI Mean High: 6.12, CI Median Low: 3.0, CI Median High: 7.0
+Roof_slope - Min: 0.0, Max: 89.84, Mean: 44.51, Median: 50.54, Std Dev: 33.67, CI Mean Low: 13.37, CI Mean High: 75.65, CI Median Low: 0.0, CI Median High: 70.36
+Roof Type: [('3100', 45.45), ('3200', 27.27), ('5000', 18.18), ('3500', 9.09)]
+Development Type Code: [('A12', 100.0)]
+
+Attribute: sst_sub, Category: HM
+Count: 146
+Building_footprint - Min: 29.26, Max: 1885.03, Mean: 475.2, Median: 430.96, Std Dev: 245.42, CI Mean Low: 435.05, CI Mean High: 515.34, CI Median Low: 394.58, CI Median High: 477.78
+Storeys_above_ground - Min: 1, Max: 5, Mean: 2.26, Median: 2.0, Std Dev: 0.62, CI Mean Low: 2.16, CI Mean High: 2.36, CI Median Low: 2.0, CI Median High: 2.0
+Length_footprint - Min: 5.47, Max: 47.08, Mean: 21.01, Median: 20.72, Std Dev: 6.21, CI Mean Low: 19.99, CI Mean High: 22.02, CI Median Low: 19.75, CI Median High: 21.62
+Width_footprint - Min: 5.35, Max: 43.45, Mean: 21.51, Median: 21.06, Std Dev: 5.37, CI Mean Low: 20.63, CI Mean High: 22.39, CI Median Low: 20.42, CI Median High: 21.79
+Roof_ridge_height - Min: 3.15, Max: 28.99, Mean: 14.69, Median: 15.2, Std Dev: 3.91, CI Mean Low: 14.05, CI Mean High: 15.33, CI Median Low: 14.34, CI Median High: 15.5
+Eaves_height - Min: 2.05, Max: 18.35, Mean: 10.14, Median: 10.15, Std Dev: 3.32, CI Mean Low: 9.6, CI Mean High: 10.68, CI Median Low: 9.76, CI Median High: 10.86
+Number_roof_surfaces - Min: 1, Max: 66, Mean: 13.43, Median: 12.0, Std Dev: 9.02, CI Mean Low: 11.96, CI Mean High: 14.91, CI Median Low: 11.0, CI Median High: 12.0
+Roof_slope - Min: 45.07, Max: 90.0, Mean: 79.45, Median: 88.88, Std Dev: 16.72, CI Mean Low: 67.49, CI Mean High: 90.0, CI Median Low: 66.99, CI Median High: 90.0
+Roof Type: [('3200', 50.68), ('3400', 17.81), ('3100', 13.7), ('5000', 10.27), ('3500', 3.42), ('1000', 3.42), ('3300', 0.68)]
+Development Type Code: [('A13', 74.13), ('A12', 18.88), ('B12', 4.9), ('C11', 2.1)]
+
+Attribute: sst_sub, Category: ME4/7
+Count: 1
+Building_footprint - Min: 571.99, Max: 571.99, Mean: 571.99, Median: 571.99, Std Dev: nan, CI Mean Low: nan, CI Mean High: nan, CI Median Low: 571.99, CI Median High: 571.99
+Storeys_above_ground - Min: 3, Max: 3, Mean: 3.0, Median: 3.0, Std Dev: nan, CI Mean Low: nan, CI Mean High: nan, CI Median Low: 3.0, CI Median High: 3.0
+Length_footprint - Min: 22.41, Max: 22.41, Mean: 22.41, Median: 22.41, Std Dev: nan, CI Mean Low: nan, CI Mean High: nan, CI Median Low: 22.41, CI Median High: 22.41
+Width_footprint - Min: 25.52, Max: 25.52, Mean: 25.52, Median: 25.52, Std Dev: nan, CI Mean Low: nan, CI Mean High: nan, CI Median Low: 25.52, CI Median High: 25.52
+Roof_ridge_height - Min: 14.01, Max: 14.01, Mean: 14.01, Median: 14.01, Std Dev: nan, CI Mean Low: nan, CI Mean High: nan, CI Median Low: 14.01, CI Median High: 14.01
+Eaves_height - Min: 10.0, Max: 10.0, Mean: 10.0, Median: 10.0, Std Dev: nan, CI Mean Low: nan, CI Mean High: nan, CI Median Low: 10.0, CI Median High: 10.0
+Number_roof_surfaces - Min: 10, Max: 10, Mean: 10.0, Median: 10.0, Std Dev: nan, CI Mean Low: nan, CI Mean High: nan, CI Median Low: 10.0, CI Median High: 10.0
+Roof Type: [('3500', 100.0)]
+Development Type Code: [('A13', 100.0)]
+
+Attribute: sst_sub, Category: MRG
+Count: 147
+Building_footprint - Min: 153.48, Max: 4660.14, Mean: 414.49, Median: 357.82, Std Dev: 395.58, CI Mean Low: 350.0, CI Mean High: 478.97, CI Median Low: 323.36, CI Median High: 365.06
+Storeys_above_ground - Min: 2, Max: 5, Mean: 4.07, Median: 4.0, Std Dev: 0.83, CI Mean Low: 3.94, CI Mean High: 4.21, CI Median Low: 4.0, CI Median High: 4.0
+Length_footprint - Min: 10.77, Max: 63.51, Mean: 19.49, Median: 18.83, Std Dev: 5.94, CI Mean Low: 18.52, CI Mean High: 20.46, CI Median Low: 18.36, CI Median High: 19.46
+Width_footprint - Min: 10.68, Max: 73.37, Mean: 19.79, Median: 19.32, Std Dev: 6.26, CI Mean Low: 18.77, CI Mean High: 20.81, CI Median Low: 17.89, CI Median High: 19.62
+Roof_ridge_height - Min: 11.26, Max: 22.77, Mean: 17.59, Median: 18.37, Std Dev: 2.54, CI Mean Low: 17.18, CI Mean High: 18.01, CI Median Low: 16.83, CI Median High: 19.13
+Eaves_height - Min: 6.52, Max: 20.49, Mean: 14.66, Median: 15.97, Std Dev: 2.91, CI Mean Low: 14.18, CI Mean High: 15.13, CI Median Low: 15.61, CI Median High: 16.12
+Number_roof_surfaces - Min: 1, Max: 116, Mean: 5.09, Median: 2.0, Std Dev: 10.57, CI Mean Low: 3.36, CI Mean High: 6.81, CI Median Low: 2.0, CI Median High: 3.0
+Roof_slope - Min: 90.0, Max: 90.0, Mean: 90.0, Median: 90.0, Std Dev: nan, CI Mean Low: nan, CI Mean High: nan, CI Median Low: 90.0, CI Median High: 90.0
+Roof Type: [('3100', 44.9), ('3400', 24.49), ('1000', 14.97), ('3200', 14.29), ('5000', 1.36)]
+Development Type Code: [('B12', 54.23), ('C11', 25.35), ('A13', 7.75), ('C12', 5.63), ('A12', 4.93), ('B11', 1.41), ('A11', 0.7)]
+
+Attribute: sst_sub, Category: MRG2
+Count: 30
+Building_footprint - Min: 20.04, Max: 2041.4, Mean: 477.81, Median: 278.74, Std Dev: 466.8, CI Mean Low: 303.5, CI Mean High: 652.11, CI Median Low: 229.01, CI Median High: 425.0
+Storeys_above_ground - Min: 1, Max: 5, Mean: 3.43, Median: 3.0, Std Dev: 1.01, CI Mean Low: 3.06, CI Mean High: 3.81, CI Median Low: 3.0, CI Median High: 4.0
+Length_footprint - Min: 4.96, Max: 45.87, Mean: 20.23, Median: 16.68, Std Dev: 9.99, CI Mean Low: 16.5, CI Mean High: 23.96, CI Median Low: 14.54, CI Median High: 19.63
+Width_footprint - Min: 4.04, Max: 44.51, Mean: 20.03, Median: 19.26, Std Dev: 9.44, CI Mean Low: 16.51, CI Mean High: 23.56, CI Median Low: 16.17, CI Median High: 22.12
+Roof_ridge_height - Min: 4.71, Max: 22.11, Mean: 15.68, Median: 16.16, Std Dev: 4.15, CI Mean Low: 14.13, CI Mean High: 17.23, CI Median Low: 13.91, CI Median High: 18.48
+Eaves_height - Min: 4.71, Max: 18.46, Mean: 12.22, Median: 12.23, Std Dev: 3.87, CI Mean Low: 10.77, CI Mean High: 13.67, CI Median Low: 10.98, CI Median High: 14.55
+Number_roof_surfaces - Min: 1, Max: 34, Mean: 9.97, Median: 8.0, Std Dev: 7.73, CI Mean Low: 7.08, CI Mean High: 12.85, CI Median Low: 6.0, CI Median High: 10.5
+Roof_slope - Min: 0.0, Max: 90.0, Mean: 63.43, Median: 72.56, Std Dev: 31.71, CI Mean Low: 51.59, CI Mean High: 75.27, CI Median Low: 50.69, CI Median High: 90.0
+Roof Type: [('3100', 56.67), ('5000', 16.67), ('3400', 13.33), ('1000', 10.0), ('3200', 3.33)]
+Development Type Code: [('C11', 100.0)]
+
+Attribute: sst_sub, Category: MRG3
+Count: 1216
+Building_footprint - Min: 53.4, Max: 11591.11, Mean: 428.1, Median: 351.42, Std Dev: 587.7, CI Mean Low: 395.04, CI Mean High: 461.17, CI Median Low: 341.14, CI Median High: 358.59
+Storeys_above_ground - Min: 1, Max: 7, Mean: 4.13, Median: 4.0, Std Dev: 0.74, CI Mean Low: 4.09, CI Mean High: 4.17, CI Median Low: 4.0, CI Median High: 4.0
+Length_footprint - Min: 7.23, Max: 144.96, Mean: 19.81, Median: 18.73, Std Dev: 7.84, CI Mean Low: 19.37, CI Mean High: 20.25, CI Median Low: 18.47, CI Median High: 18.92
+Width_footprint - Min: 7.39, Max: 107.39, Mean: 19.57, Median: 18.71, Std Dev: 6.31, CI Mean Low: 19.21, CI Mean High: 19.92, CI Median Low: 18.44, CI Median High: 18.9
+Roof_ridge_height - Min: 4.16, Max: 33.01, Mean: 19.57, Median: 19.4, Std Dev: 3.36, CI Mean Low: 19.38, CI Mean High: 19.76, CI Median Low: 19.05, CI Median High: 19.78
+Eaves_height - Min: 0.0, Max: 24.01, Mean: 15.95, Median: 15.7, Std Dev: 3.26, CI Mean Low: 15.77, CI Mean High: 16.14, CI Median Low: 15.51, CI Median High: 15.96
+Number_roof_surfaces - Min: 1, Max: 182, Mean: 5.88, Median: 5.0, Std Dev: 7.74, CI Mean Low: 5.44, CI Mean High: 6.31, CI Median Low: 4.0, CI Median High: 5.0
+Roof_slope - Min: 0.0, Max: 90.0, Mean: 45.06, Median: 51.07, Std Dev: 35.89, CI Mean Low: 42.64, CI Mean High: 47.48, CI Median Low: 48.15, CI Median High: 52.99
+Roof Type: [('3400', 57.81), ('3100', 30.18), ('3200', 7.98), ('5000', 2.06), ('1000', 1.56), ('2100', 0.33), ('2500', 0.08)]
+Development Type Code: [('C11', 85.55), ('A13', 6.89), ('B12', 3.53), ('C12', 2.35), ('A11', 0.84), ('A12', 0.67), ('B11', 0.08), ('B14', 0.08)]
+
+Attribute: sst_sub, Category: MRG4
+Count: 687
+Building_footprint - Min: 127.58, Max: 2600.17, Mean: 310.16, Median: 290.97, Std Dev: 160.05, CI Mean Low: 298.17, CI Mean High: 322.15, CI Median Low: 285.38, CI Median High: 297.15
+Storeys_above_ground - Min: 1, Max: 7, Mean: 3.82, Median: 4.0, Std Dev: 0.93, CI Mean Low: 3.75, CI Mean High: 3.89, CI Median Low: 4.0, CI Median High: 4.0
+Length_footprint - Min: 10.1, Max: 68.67, Mean: 17.21, Median: 17.03, Std Dev: 4.4, CI Mean Low: 16.88, CI Mean High: 17.54, CI Median Low: 16.69, CI Median High: 17.46
+Width_footprint - Min: 9.8, Max: 62.67, Mean: 17.55, Median: 17.39, Std Dev: 3.52, CI Mean Low: 17.29, CI Mean High: 17.82, CI Median Low: 17.13, CI Median High: 17.82
+Roof_ridge_height - Min: 3.96, Max: 26.72, Mean: 17.71, Median: 18.03, Std Dev: 4.31, CI Mean Low: 17.39, CI Mean High: 18.03, CI Median Low: 17.13, CI Median High: 18.45
+Eaves_height - Min: 0.01, Max: 22.19, Mean: 13.9, Median: 13.69, Std Dev: 3.6, CI Mean Low: 13.63, CI Mean High: 14.17, CI Median Low: 13.35, CI Median High: 14.04
+Number_roof_surfaces - Min: 1, Max: 30, Mean: 3.2, Median: 2.0, Std Dev: 2.62, CI Mean Low: 3.0, CI Mean High: 3.39, CI Median Low: 2.0, CI Median High: 2.0
+Roof_slope - Min: 0.0, Max: 90.0, Mean: 31.78, Median: 0.01, Std Dev: 34.81, CI Mean Low: 28.64, CI Mean High: 34.91, CI Median Low: 0.0, CI Median High: 39.82
+Roof Type: [('3100', 53.13), ('3200', 21.83), ('1000', 16.16), ('3400', 6.99), ('2100', 0.87), ('5000', 0.73), ('3500', 0.15), ('3300', 0.15)]
+Development Type Code: [('C11', 72.7), ('B12', 18.83), ('A13', 3.8), ('B11', 2.77), ('C12', 1.75), ('A12', 0.15)]
+
+Attribute: sst_sub, Category: MRG5
+Count: 293
+Building_footprint - Min: 170.08, Max: 11911.69, Mean: 550.08, Median: 354.33, Std Dev: 1037.17, CI Mean Low: 430.83, CI Mean High: 669.33, CI Median Low: 330.58, CI Median High: 365.7
+Storeys_above_ground - Min: 1, Max: 8, Mean: 4.98, Median: 5.0, Std Dev: 0.9, CI Mean Low: 4.87, CI Mean High: 5.08, CI Median Low: 5.0, CI Median High: 5.0
+Length_footprint - Min: 10.63, Max: 156.26, Mean: 22.29, Median: 19.53, Std Dev: 14.15, CI Mean Low: 20.66, CI Mean High: 23.91, CI Median Low: 19.22, CI Median High: 19.99
+Width_footprint - Min: 10.66, Max: 102.41, Mean: 20.63, Median: 18.9, Std Dev: 9.39, CI Mean Low: 19.55, CI Mean High: 21.71, CI Median Low: 18.61, CI Median High: 19.4
+Roof_ridge_height - Min: 4.14, Max: 39.01, Mean: 21.13, Median: 20.65, Std Dev: 3.74, CI Mean Low: 20.7, CI Mean High: 21.56, CI Median Low: 20.37, CI Median High: 21.21
+Eaves_height - Min: 3.06, Max: 29.14, Mean: 16.81, Median: 16.97, Std Dev: 4.01, CI Mean Low: 16.35, CI Mean High: 17.27, CI Median Low: 16.81, CI Median High: 17.07
+Number_roof_surfaces - Min: 1, Max: 71, Mean: 4.82, Median: 3.0, Std Dev: 8.37, CI Mean Low: 3.86, CI Mean High: 5.78, CI Median Low: 2.0, CI Median High: 3.0
+Roof_slope - Min: 0.0, Max: 90.0, Mean: 39.47, Median: 45.46, Std Dev: 38.47, CI Mean Low: 32.23, CI Mean High: 46.71, CI Median Low: 0.0, CI Median High: 55.21
+Roof Type: [('3100', 73.72), ('3200', 15.7), ('3400', 4.78), ('5000', 2.73), ('1000', 1.37), ('2500', 1.37), ('3500', 0.34)]
+Development Type Code: [('B12', 48.44), ('C11', 36.33), ('B14', 7.27), ('B13', 3.46), ('A13', 2.42), ('C12', 2.08)]
+
+Attribute: sst_sub, Category: MRG6
+Count: 145
+Building_footprint - Min: 19.16, Max: 3451.81, Mean: 407.15, Median: 309.09, Std Dev: 394.95, CI Mean Low: 342.32, CI Mean High: 471.97, CI Median Low: 286.81, CI Median High: 318.19
+Storeys_above_ground - Min: 5, Max: 11, Mean: 6.63, Median: 6.0, Std Dev: 1.9, CI Mean Low: 6.32, CI Mean High: 6.95, CI Median Low: 6.0, CI Median High: 6.0
+Length_footprint - Min: 4.04, Max: 41.26, Mean: 18.67, Median: 17.42, Std Dev: 5.18, CI Mean Low: 17.82, CI Mean High: 19.52, CI Median Low: 16.87, CI Median High: 17.85
+Width_footprint - Min: 4.74, Max: 83.67, Mean: 19.57, Median: 16.98, Std Dev: 9.93, CI Mean Low: 17.94, CI Mean High: 21.2, CI Median Low: 16.55, CI Median High: 17.65
+Roof_ridge_height - Min: 16.79, Max: 40.64, Mean: 22.06, Median: 18.94, Std Dev: 6.86, CI Mean Low: 20.93, CI Mean High: 23.18, CI Median Low: 18.79, CI Median High: 19.0
+Eaves_height - Min: 2.56, Max: 37.95, Mean: 19.39, Median: 18.79, Std Dev: 7.16, CI Mean Low: 18.22, CI Mean High: 20.57, CI Median Low: 18.55, CI Median High: 18.94
+Number_roof_surfaces - Min: 1, Max: 6, Mean: 1.7, Median: 1.0, Std Dev: 1.16, CI Mean Low: 1.51, CI Mean High: 1.89, CI Median Low: 1.0, CI Median High: 1.0
+Roof_slope - Min: 0.0, Max: 90.0, Mean: 23.96, Median: 0.0, Std Dev: 34.2, CI Mean Low: 9.17, CI Mean High: 38.75, CI Median Low: 0.0, CI Median High: 52.41
+Roof Type: [('1000', 97.93), ('5000', 2.07)]
+Development Type Code: [('C12', 58.04), ('B13', 27.97), ('C11', 6.99), ('A13', 6.99)]
+
+Attribute: sst_sub, Category: MRG7
+Count: 231
+Building_footprint - Min: 23.75, Max: 6203.51, Mean: 816.68, Median: 440.51, Std Dev: 1026.05, CI Mean Low: 683.66, CI Mean High: 949.7, CI Median Low: 395.06, CI Median High: 519.06
+Storeys_above_ground - Min: 1, Max: 8, Mean: 5.1, Median: 5.0, Std Dev: 1.18, CI Mean Low: 4.95, CI Mean High: 5.26, CI Median Low: 5.0, CI Median High: 5.0
+Length_footprint - Min: 4.78, Max: 100.77, Mean: 26.27, Median: 20.82, Std Dev: 14.74, CI Mean Low: 24.36, CI Mean High: 28.18, CI Median Low: 19.76, CI Median High: 22.89
+Width_footprint - Min: 4.97, Max: 88.06, Mean: 25.14, Median: 21.07, Std Dev: 13.02, CI Mean Low: 23.45, CI Mean High: 26.83, CI Median Low: 20.23, CI Median High: 22.31
+Roof_ridge_height - Min: 1.94, Max: 31.6, Mean: 20.31, Median: 20.88, Std Dev: 4.32, CI Mean Low: 19.75, CI Mean High: 20.87, CI Median Low: 20.49, CI Median High: 21.1
+Eaves_height - Min: 1.86, Max: 27.09, Mean: 16.83, Median: 17.31, Std Dev: 4.31, CI Mean Low: 16.28, CI Mean High: 17.39, CI Median Low: 16.81, CI Median High: 17.63
+Number_roof_surfaces - Min: 1, Max: 240, Mean: 8.03, Median: 5.0, Std Dev: 17.89, CI Mean Low: 5.72, CI Mean High: 10.35, CI Median Low: 4.0, CI Median High: 5.0
+Roof_slope - Min: 0.0, Max: 90.0, Mean: 48.18, Median: 53.6, Std Dev: 35.04, CI Mean Low: 42.02, CI Mean High: 54.33, CI Median Low: 47.38, CI Median High: 59.92
+Roof Type: [('3400', 35.93), ('3100', 31.6), ('1000', 18.18), ('5000', 4.76), ('3200', 3.9), ('3900', 2.6), ('3300', 1.73), ('2100', 0.43), ('3700', 0.43), ('2500', 0.43)]
+Development Type Code: [('C11', 66.01), ('C12', 13.3), ('B12', 8.87), ('A13', 7.39), ('A12', 3.94), ('B14', 0.49)]
+
+Attribute: sst_sub, Category: MRO
+Count: 172
+Building_footprint - Min: 35.67, Max: 6469.81, Mean: 396.31, Median: 328.83, Std Dev: 553.53, CI Mean Low: 312.99, CI Mean High: 479.62, CI Median Low: 319.29, CI Median High: 341.39
+Storeys_above_ground - Min: 1, Max: 5, Mean: 3.41, Median: 3.0, Std Dev: 0.95, CI Mean Low: 3.26, CI Mean High: 3.55, CI Median Low: 3.0, CI Median High: 3.0
+Length_footprint - Min: 5.97, Max: 67.28, Mean: 18.18, Median: 18.06, Std Dev: 7.29, CI Mean Low: 17.08, CI Mean High: 19.28, CI Median Low: 17.49, CI Median High: 18.77
+Width_footprint - Min: 5.97, Max: 96.16, Mean: 19.55, Median: 19.24, Std Dev: 7.94, CI Mean Low: 18.36, CI Mean High: 20.75, CI Median Low: 18.31, CI Median High: 19.64
+Roof_ridge_height - Min: 3.66, Max: 21.3, Mean: 15.37, Median: 14.43, Std Dev: 2.52, CI Mean Low: 14.99, CI Mean High: 15.75, CI Median Low: 14.26, CI Median High: 15.6
+Eaves_height - Min: 2.57, Max: 17.55, Mean: 11.84, Median: 10.93, Std Dev: 3.05, CI Mean Low: 11.38, CI Mean High: 12.3, CI Median Low: 10.67, CI Median High: 12.04
+Number_roof_surfaces - Min: 1, Max: 20, Mean: 3.79, Median: 3.0, Std Dev: 3.51, CI Mean Low: 3.26, CI Mean High: 4.32, CI Median Low: 3.0, CI Median High: 3.0
+Roof_slope - Min: 0.0, Max: 90.0, Mean: 60.0, Median: 90.0, Std Dev: 51.96, CI Mean Low: 0.0, CI Mean High: 90.0, CI Median Low: 0.0, CI Median High: 90.0
+Roof Type: [('3200', 47.67), ('3100', 40.7), ('1000', 6.98), ('5000', 1.74), ('3400', 1.74), ('3300', 1.16)]
+Development Type Code: [('B12', 57.06), ('A12', 11.76), ('B11', 10.59), ('A13', 10.0), ('C11', 4.71), ('C12', 3.53), ('A11', 2.35)]
+
+Attribute: sst_sub, Category: MRO2
+Count: 7
+Building_footprint - Min: 120.09, Max: 1674.25, Mean: 663.74, Median: 403.36, Std Dev: 603.62, CI Mean Low: 120.09, CI Mean High: 1222.0, CI Median Low: 255.8, CI Median High: 1374.3
+Storeys_above_ground - Min: 1, Max: 2, Mean: 1.86, Median: 2.0, Std Dev: 0.38, CI Mean Low: 1.51, CI Mean High: 2, CI Median Low: 2.0, CI Median High: 2.0
+Length_footprint - Min: 10.59, Max: 42.71, Mean: 24.56, Median: 20.96, Std Dev: 10.82, CI Mean Low: 14.55, CI Mean High: 34.56, CI Median Low: 19.83, CI Median High: 35.37
+Width_footprint - Min: 11.34, Max: 39.2, Mean: 22.9, Median: 20.34, Std Dev: 11.54, CI Mean Low: 12.23, CI Mean High: 33.58, CI Median Low: 12.83, CI Median High: 38.85
+Roof_ridge_height - Min: 3.67, Max: 15.24, Mean: 9.94, Median: 10.05, Std Dev: 3.37, CI Mean Low: 6.83, CI Mean High: 13.05, CI Median Low: 9.89, CI Median High: 10.63
+Eaves_height - Min: 3.67, Max: 10.79, Mean: 7.41, Median: 7.19, Std Dev: 2.1, CI Mean Low: 5.47, CI Mean High: 9.35, CI Median Low: 6.97, CI Median High: 8.14
+Number_roof_surfaces - Min: 1, Max: 35, Mean: 14.71, Median: 8.0, Std Dev: 13.62, CI Mean Low: 2.12, CI Mean High: 27.31, CI Median Low: 3.0, CI Median High: 27.0
+Roof_slope - Min: 56.26, Max: 90.0, Mean: 73.13, Median: 73.13, Std Dev: 23.86, CI Mean Low: 56.26, CI Mean High: 90.0, CI Median Low: 56.26, CI Median High: 90.0
+Roof Type: [('3100', 42.86), ('3200', 28.57), ('1000', 14.29), ('5000', 14.29)]
+Development Type Code: [('A11', 40.0), ('A13', 40.0), ('A12', 20.0)]
+
+Attribute: sst_sub, Category: MRO3
+Count: 709
+Building_footprint - Min: 31.06, Max: 2651.75, Mean: 328.96, Median: 302.4, Std Dev: 197.48, CI Mean Low: 314.4, CI Mean High: 343.52, CI Median Low: 291.5, CI Median High: 316.21
+Storeys_above_ground - Min: 1, Max: 6, Mean: 3.2, Median: 3.0, Std Dev: 0.7, CI Mean Low: 3.15, CI Mean High: 3.25, CI Median Low: 3.0, CI Median High: 3.0
+Length_footprint - Min: 5.23, Max: 60.98, Mean: 17.81, Median: 17.35, Std Dev: 4.66, CI Mean Low: 17.46, CI Mean High: 18.15, CI Median Low: 17.01, CI Median High: 17.69
+Width_footprint - Min: 5.88, Max: 71.17, Mean: 17.68, Median: 17.26, Std Dev: 4.58, CI Mean Low: 17.35, CI Mean High: 18.02, CI Median Low: 16.83, CI Median High: 17.57
+Roof_ridge_height - Min: 3.49, Max: 25.53, Mean: 15.88, Median: 16.56, Std Dev: 3.09, CI Mean Low: 15.66, CI Mean High: 16.11, CI Median Low: 16.26, CI Median High: 16.8
+Eaves_height - Min: 0.0, Max: 25.5, Mean: 12.13, Median: 12.69, Std Dev: 3.0, CI Mean Low: 11.91, CI Mean High: 12.36, CI Median Low: 12.39, CI Median High: 12.91
+Number_roof_surfaces - Min: 1, Max: 28, Mean: 6.05, Median: 5.0, Std Dev: 3.99, CI Mean Low: 5.75, CI Mean High: 6.34, CI Median Low: 5.0, CI Median High: 5.0
+Roof_slope - Min: 0.0, Max: 90.0, Mean: 51.11, Median: 57.68, Std Dev: 35.43, CI Mean Low: 48.11, CI Mean High: 54.11, CI Median Low: 53.13, CI Median High: 62.01
+Roof Type: [('3200', 64.46), ('3400', 17.77), ('3100', 12.27), ('5000', 1.97), ('1000', 1.83), ('3300', 1.41), ('2500', 0.28)]
+Development Type Code: [('A13', 62.3), ('C11', 16.45), ('B12', 15.87), ('A12', 4.08), ('A11', 1.02), ('B11', 0.29)]
+
+Attribute: sst_sub, Category: MRO4
+Count: 1401
+Building_footprint - Min: 38.2, Max: 2535.7, Mean: 310.04, Median: 300.12, Std Dev: 130.37, CI Mean Low: 303.21, CI Mean High: 316.88, CI Median Low: 293.56, CI Median High: 304.62
+Storeys_above_ground - Min: 1, Max: 5, Mean: 2.92, Median: 3.0, Std Dev: 0.54, CI Mean Low: 2.89, CI Mean High: 2.95, CI Median Low: 3.0, CI Median High: 3.0
+Length_footprint - Min: 6.38, Max: 65.98, Mean: 17.16, Median: 17.03, Std Dev: 3.66, CI Mean Low: 16.97, CI Mean High: 17.35, CI Median Low: 16.88, CI Median High: 17.16
+Width_footprint - Min: 5.99, Max: 42.01, Mean: 17.71, Median: 17.88, Std Dev: 3.28, CI Mean Low: 17.54, CI Mean High: 17.88, CI Median Low: 17.69, CI Median High: 18.08
+Roof_ridge_height - Min: 4.1, Max: 23.54, Mean: 14.68, Median: 14.71, Std Dev: 1.92, CI Mean Low: 14.58, CI Mean High: 14.78, CI Median Low: 14.65, CI Median High: 14.78
+Eaves_height - Min: 2.92, Max: 19.29, Mean: 10.31, Median: 10.41, Std Dev: 1.99, CI Mean Low: 10.21, CI Mean High: 10.42, CI Median Low: 10.36, CI Median High: 10.49
+Number_roof_surfaces - Min: 1, Max: 32, Mean: 4.41, Median: 3.0, Std Dev: 3.38, CI Mean Low: 4.24, CI Mean High: 4.59, CI Median Low: 3.0, CI Median High: 3.0
+Roof_slope - Min: 0.0, Max: 90.0, Mean: 44.33, Median: 50.58, Std Dev: 35.31, CI Mean Low: 41.22, CI Mean High: 47.45, CI Median Low: 48.96, CI Median High: 52.94
+Roof Type: [('3200', 64.6), ('3100', 31.41), ('3400', 2.0), ('1000', 1.0), ('5000', 0.64), ('3300', 0.29), ('2100', 0.07)]
+Development Type Code: [('B12', 53.94), ('C11', 25.14), ('A13', 15.19), ('A12', 2.51), ('C12', 1.36), ('B11', 1.29), ('A11', 0.57)]
+
+Attribute: sst_sub, Category: MRO5
+Count: 1065
+Building_footprint - Min: 98.32, Max: 3942.38, Mean: 337.4, Median: 326.59, Std Dev: 193.09, CI Mean Low: 325.79, CI Mean High: 349.01, CI Median Low: 324.32, CI Median High: 328.89
+Storeys_above_ground - Min: 1, Max: 8, Mean: 4.45, Median: 5.0, Std Dev: 0.74, CI Mean Low: 4.41, CI Mean High: 4.49, CI Median Low: 5.0, CI Median High: 5.0
+Length_footprint - Min: 9.95, Max: 91.53, Mean: 18.15, Median: 18.35, Std Dev: 4.24, CI Mean Low: 17.9, CI Mean High: 18.41, CI Median Low: 18.19, CI Median High: 18.5
+Width_footprint - Min: 9.88, Max: 52.01, Mean: 18.23, Median: 18.56, Std Dev: 4.24, CI Mean Low: 17.97, CI Mean High: 18.48, CI Median Low: 18.47, CI Median High: 18.67
+Roof_ridge_height - Min: 8.82, Max: 30.42, Mean: 18.1, Median: 19.17, Std Dev: 2.14, CI Mean Low: 17.97, CI Mean High: 18.23, CI Median Low: 19.11, CI Median High: 19.2
+Eaves_height - Min: 3.28, Max: 26.46, Mean: 14.65, Median: 15.79, Std Dev: 2.31, CI Mean Low: 14.51, CI Mean High: 14.79, CI Median Low: 15.7, CI Median High: 15.83
+Number_roof_surfaces - Min: 1, Max: 40, Mean: 2.56, Median: 2.0, Std Dev: 2.47, CI Mean Low: 2.41, CI Mean High: 2.71, CI Median Low: 2.0, CI Median High: 2.0
+Roof_slope - Min: 0.0, Max: 90.0, Mean: 32.82, Median: 25.84, Std Dev: 35.26, CI Mean Low: 29.57, CI Mean High: 36.06, CI Median Low: 0.0, CI Median High: 41.26
+Roof Type: [('3100', 88.54), ('3200', 10.52), ('5000', 0.85), ('2500', 0.09)]
+Development Type Code: [('B12', 80.64), ('A13', 6.48), ('C11', 4.23), ('A12', 3.95), ('B14', 2.91), ('C12', 1.5), ('B13', 0.28)]
+
+Attribute: sst_sub, Category: MRO6
+Count: 266
+Building_footprint - Min: 171.73, Max: 1000.92, Mean: 310.89, Median: 316.13, Std Dev: 123.32, CI Mean Low: 296.01, CI Mean High: 325.78, CI Median Low: 307.9, CI Median High: 322.84
+Storeys_above_ground - Min: 3, Max: 10, Mean: 5.78, Median: 6.0, Std Dev: 1.18, CI Mean Low: 5.64, CI Mean High: 5.92, CI Median Low: 6.0, CI Median High: 6.0
+Length_footprint - Min: 10.18, Max: 27.4, Mean: 17.31, Median: 18.13, Std Dev: 3.18, CI Mean Low: 16.93, CI Mean High: 17.69, CI Median Low: 17.98, CI Median High: 18.33
+Width_footprint - Min: 11.73, Max: 44.96, Mean: 17.6, Median: 17.34, Std Dev: 4.25, CI Mean Low: 17.09, CI Mean High: 18.11, CI Median Low: 17.16, CI Median High: 17.76
+Roof_ridge_height - Min: 10.8, Max: 35.0, Mean: 19.6, Median: 18.82, Std Dev: 3.81, CI Mean Low: 19.14, CI Mean High: 20.06, CI Median Low: 18.78, CI Median High: 18.86
+Eaves_height - Min: 2.58, Max: 34.96, Mean: 18.53, Median: 18.75, Std Dev: 3.63, CI Mean Low: 18.1, CI Mean High: 18.97, CI Median Low: 18.68, CI Median High: 18.79
+Number_roof_surfaces - Min: 1, Max: 6, Mean: 1.5, Median: 1.0, Std Dev: 0.76, CI Mean Low: 1.4, CI Mean High: 1.59, CI Median Low: 1.0, CI Median High: 1.0
+Roof_slope - Min: 0.0, Max: 90.0, Mean: 33.44, Median: 0.0, Std Dev: 39.85, CI Mean Low: 17.34, CI Mean High: 49.54, CI Median Low: 0.0, CI Median High: 64.79
+Roof Type: [('1000', 66.54), ('3100', 33.46)]
+Development Type Code: [('C12', 55.26), ('A13', 16.54), ('B13', 15.41), ('B12', 6.39), ('B14', 4.51), ('C11', 1.88)]
+
+Attribute: sst_sub, Category: MRO7
+Count: 298
+Building_footprint - Min: 102.9, Max: 7695.52, Mean: 643.03, Median: 435.89, Std Dev: 806.65, CI Mean Low: 551.07, CI Mean High: 734.99, CI Median Low: 407.72, CI Median High: 453.73
+Storeys_above_ground - Min: 2, Max: 7, Mean: 3.84, Median: 4.0, Std Dev: 0.87, CI Mean Low: 3.74, CI Mean High: 3.94, CI Median Low: 4.0, CI Median High: 4.0
+Length_footprint - Min: 8.99, Max: 100.31, Mean: 23.79, Median: 20.37, Std Dev: 11.24, CI Mean Low: 22.51, CI Mean High: 25.07, CI Median Low: 20.08, CI Median High: 21.03
+Width_footprint - Min: 11.36, Max: 83.71, Mean: 23.29, Median: 20.96, Std Dev: 10.58, CI Mean Low: 22.08, CI Mean High: 24.5, CI Median Low: 20.07, CI Median High: 22.09
+Roof_ridge_height - Min: 6.24, Max: 27.49, Mean: 14.9, Median: 14.74, Std Dev: 3.02, CI Mean Low: 14.56, CI Mean High: 15.25, CI Median Low: 14.48, CI Median High: 14.92
+Eaves_height - Min: 3.45, Max: 25.98, Mean: 11.23, Median: 11.26, Std Dev: 3.08, CI Mean Low: 10.88, CI Mean High: 11.58, CI Median Low: 10.84, CI Median High: 11.53
+Number_roof_surfaces - Min: 1, Max: 55, Mean: 7.24, Median: 6.0, Std Dev: 6.0, CI Mean Low: 6.56, CI Mean High: 7.93, CI Median Low: 5.0, CI Median High: 6.5
+Roof_slope - Min: 0.0, Max: 90.0, Mean: 50.78, Median: 59.77, Std Dev: 35.59, CI Mean Low: 43.56, CI Mean High: 57.99, CI Median Low: 52.67, CI Median High: 66.64
+Roof Type: [('3200', 23.15), ('1000', 21.48), ('3100', 18.79), ('3400', 17.11), ('5000', 9.73), ('3300', 6.04), ('3900', 2.68), ('3500', 1.01)]
+Development Type Code: [('B12', 42.05), ('A13', 34.98), ('A12', 13.78), ('C11', 4.24), ('A11', 3.18), ('C12', 0.71), ('B13', 0.71), ('B11', 0.35)]
+

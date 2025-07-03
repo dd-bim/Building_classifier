@@ -1,0 +1,60 @@
+============================================================
+Model Training Summary for 122
+============================================================
+
+🔹 Best Hyperparameters:
+{'criterion': 'gini', 'max_depth': 15, 'min_samples_leaf': 2, 'min_samples_split': 5, 'n_estimators': 150}
+
+🔹 Important Features:
+ - building_footprint
+ - roof_ridge_height
+ - eaves_height
+ - storey_height
+ - number_roof_surfaces
+ - roof_slope
+ - development_type_code
+ - building_age
+ - compactness
+ - convexity
+ - vertex_count
+ - neighbor_density
+ - neighbor_avg_size
+ - neighbor_min_distance
+ - neighbor_majority_class
+ - height_to_area_ratio
+ - footprint_ratio
+ - roof_height_ratio
+
+🔹 Removed Features:
+ - storeys_above_ground
+ - roof_type
+
+🔹 Feature Importances:
+                Feature  Importance
+              roof_type    0.009291
+   storeys_above_ground    0.004448
+     building_footprint    0.050307
+      roof_ridge_height    0.064882
+           eaves_height    0.063385
+          storey_height    0.091207
+   number_roof_surfaces    0.028973
+             roof_slope    0.052627
+  development_type_code    0.062748
+           building_age    0.038842
+            compactness    0.049529
+              convexity    0.040719
+           vertex_count    0.038940
+       neighbor_density    0.080192
+      neighbor_avg_size    0.054113
+  neighbor_min_distance    0.049101
+neighbor_majority_class    0.066347
+   height_to_area_ratio    0.058514
+        footprint_ratio    0.050119
+      roof_height_ratio    0.045714
+
+🔹 Predictions in Training Data:
+LW2    451
+LW1    136
+LW3     22
+LW7     11
+Name: count, dtype: int64

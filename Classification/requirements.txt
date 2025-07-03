@@ -1,0 +1,13 @@
+dash==2.18.2
+dash_bootstrap_components==2.0.3
+joblib==1.4.2
+lxml==5.2.2
+numpy==2.3.0
+pandas==2.3.0
+plotly==6.0.0
+processing==0.52
+psycopg2==2.9.9
+PyQt5==5.15.11
+PyQt5_sip==12.13.0
+scikit_learn==1.7.0
+scipy==1.15.3

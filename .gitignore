@@ -1,0 +1,8 @@
+Classification/build/
+Classification/dist/
+Classification/__pycache__/
+Classification/dashboard.spec
+Classification/import_data
+Geometry/__pycache__
+Geometry/geometry/__pycache__
+Geometry/processing/__pycache__

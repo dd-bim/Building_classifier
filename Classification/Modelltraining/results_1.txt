@@ -1,0 +1,58 @@
+============================================================
+Model Training Summary for 1
+============================================================
+
+🔹 Best Hyperparameters:
+{'criterion': 'gini', 'max_depth': 15, 'min_samples_leaf': 2, 'min_samples_split': 5, 'n_estimators': 150}
+
+🔹 Important Features:
+ - roof_type
+ - storeys_above_ground
+ - building_footprint
+ - storey_height
+ - number_roof_surfaces
+ - roof_slope
+ - development_type_code
+ - building_age
+ - compactness
+ - convexity
+ - vertex_count
+ - neighbor_density
+ - neighbor_avg_size
+ - neighbor_min_distance
+ - neighbor_majority_class
+ - ground_area_per_storey
+ - height_to_area_ratio
+ - footprint_ratio
+ - roof_height_ratio
+
+🔹 Removed Features:
+None
+
+🔹 Feature Importances:
+                Feature  Importance
+              roof_type    0.029128
+   storeys_above_ground    0.139163
+     building_footprint    0.142046
+          storey_height    0.058849
+   number_roof_surfaces    0.034285
+             roof_slope    0.017573
+  development_type_code    0.096196
+           building_age    0.047821
+            compactness    0.063912
+              convexity    0.022964
+           vertex_count    0.018169
+       neighbor_density    0.030427
+      neighbor_avg_size    0.074948
+  neighbor_min_distance    0.026927
+neighbor_majority_class    0.025920
+ ground_area_per_storey    0.039179
+   height_to_area_ratio    0.050735
+        footprint_ratio    0.033074
+      roof_height_ratio    0.048684
+
+🔹 Predictions in Training Data:
+M        9973
+E        5521
+Other    1230
+Name: count, dtype: int64

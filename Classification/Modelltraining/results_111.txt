@@ -1,0 +1,60 @@
+============================================================
+Model Training Summary for 111
+============================================================
+
+🔹 Best Hyperparameters:
+{'criterion': 'gini', 'max_depth': 15, 'min_samples_leaf': 2, 'min_samples_split': 5, 'n_estimators': 150}
+
+🔹 Important Features:
+ - roof_type
+ - storeys_above_ground
+ - building_footprint
+ - eaves_height
+ - storey_height
+ - number_roof_surfaces
+ - roof_slope
+ - development_type_code
+ - building_age
+ - compactness
+ - vertex_count
+ - neighbor_density
+ - neighbor_avg_size
+ - neighbor_majority_class
+ - ground_area_per_storey
+ - height_to_area_ratio
+ - footprint_ratio
+ - roof_height_ratio
+
+🔹 Removed Features:
+ - neighbor_min_distance
+
+🔹 Feature Importances:
+                Feature  Importance
+              roof_type    0.071414
+   storeys_above_ground    0.049480
+     building_footprint    0.067756
+           eaves_height    0.067606
+          storey_height    0.084649
+   number_roof_surfaces    0.048994
+             roof_slope    0.050038
+  development_type_code    0.046675
+           building_age    0.161669
+            compactness    0.037958
+           vertex_count    0.026327
+       neighbor_density    0.035679
+      neighbor_avg_size    0.027893
+  neighbor_min_distance    0.004368
+neighbor_majority_class    0.021483
+ ground_area_per_storey    0.048312
+   height_to_area_ratio    0.037936
+        footprint_ratio    0.029799
+      roof_height_ratio    0.081964
+
+🔹 Predictions in Training Data:
+MR4    1843
+MR3    1562
+MR5    1156
+MR6     932
+MR7     428
+MR2      20
+Name: count, dtype: int64
