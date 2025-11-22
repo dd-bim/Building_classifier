@@ -1,60 +1,30 @@
 ============================================================
-Model Training Summary for 111
+RandomForest Model Training Summary for 111
 ============================================================
 
-🔹 Best Hyperparameters:
-{'criterion': 'gini', 'max_depth': 15, 'min_samples_leaf': 2, 'min_samples_split': 5, 'n_estimators': 150}
+🔹 Best Score: 0.9121
+🔹 Best Parameters:
+{'class_weight': 'balanced', 'max_depth': 15, 'min_samples_leaf': 1, 'min_samples_split': 10, 'n_estimators': 300}
 
-🔹 Important Features:
- - roof_type
- - storeys_above_ground
- - building_footprint
- - eaves_height
- - storey_height
- - number_roof_surfaces
- - roof_slope
- - development_type_code
- - building_age
- - compactness
- - vertex_count
- - neighbor_density
- - neighbor_avg_size
- - neighbor_majority_class
- - ground_area_per_storey
- - height_to_area_ratio
- - footprint_ratio
- - roof_height_ratio
+🔹 Training Samples: 2464
+🔹 CV Folds: 5
+🔹 Features Used: 24
 
-🔹 Removed Features:
- - neighbor_min_distance
+🔹 Top 10 Feature Importances:
+               Feature  Importance
+          building_age    0.113277
+             roof_type    0.083563
+     roof_height_ratio    0.075150
+  storeys_above_ground    0.068306
+            roof_slope    0.066309
+          eaves_height    0.058122
+     roof_ridge_height    0.057531
+ground_area_per_storey    0.054082
+         storey_height    0.052784
+    neighbour_avg_size    0.038167
 
-🔹 Feature Importances:
-                Feature  Importance
-              roof_type    0.071414
-   storeys_above_ground    0.049480
-     building_footprint    0.067756
-           eaves_height    0.067606
-          storey_height    0.084649
-   number_roof_surfaces    0.048994
-             roof_slope    0.050038
-  development_type_code    0.046675
-           building_age    0.161669
-            compactness    0.037958
-           vertex_count    0.026327
-       neighbor_density    0.035679
-      neighbor_avg_size    0.027893
-  neighbor_min_distance    0.004368
-neighbor_majority_class    0.021483
- ground_area_per_storey    0.048312
-   height_to_area_ratio    0.037936
-        footprint_ratio    0.029799
-      roof_height_ratio    0.081964
-
-🔹 Predictions in Training Data:
-MR4    1843
-MR3    1562
-MR5    1156
-MR6     932
-MR7     428
-MR2      20
-Name: count, dtype: int64
+🔹 Training Configuration:
+ - RandomForest with adaptive class weights
+ - Grid search for optimal hyperparameters
+ - Balanced accuracy scoring
+ - NaN values filled with median/mode

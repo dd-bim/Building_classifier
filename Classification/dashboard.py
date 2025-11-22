@@ -37,6 +37,22 @@ except Exception as e:
     print(f"Error loading results data: {e}")
     results_data = {"levels": [], "overall_results": {}}
 
+# NEW: Lade zusammengefasste Dashboard-Kennzahlen
+summary_path = os.path.join(vis_path, 'dashboard_summary.json')
+try:
+    with open(summary_path, 'r') as f:
+        summary_data = json.load(f)
+except Exception:
+    summary_data = {
+        "funnel": {},
+        "stage_errors": {},
+        "source_accuracy": {},
+        "per_level_accuracy": {},
+        "wrong_stage_counts": {},
+        "wrong_stage_by_path": {},
+        "wrong_turns_top": []
+    }
+
 # Erklärungen für die verschiedenen Metriken
 metric_explanations = {
     "F1 Score": "Der harmonische Mittelwert von Präzision und Recall. Diese Metrik ist besonders nützlich, wenn ein Gleichgewicht zwischen Präzision und Recall wichtig ist.",
@@ -93,6 +109,68 @@ summary_metrics_tooltips = [
         dbc.Tooltip(overall_metric_explanations["Direkte Zuweisungen (Baualter)"], target="direct-assignment-tooltip"),
         dbc.Tooltip(overall_metric_explanations["Korrekt Klassifiziert (Gesamt)"], target="correct-total-tooltip")
     ]
+
+def build_funnel_figure(funnel: dict):
+    if not funnel:
+        return px.bar(title="Funnel: Keine Daten")
+    order = ["total", "after_level_1", "after_branch_11_12", "final_correct"]
+    data = [{"stufe": lbl, "count": funnel.get(lbl, 0)} for lbl in order]
+    fig = px.funnel(pd.DataFrame(data), x="count", y="stufe", title="Prozess-Funnel (End-to-End)")
+    fig.update_layout(yaxis_title="", xaxis_title="Anzahl")
+    return fig
+
+def build_wrong_stage_counts_figure(wrong_counts: dict):
+    if not wrong_counts:
+        return px.bar(title="Erste Fehlstufe: Keine Daten")
+    df = pd.DataFrame([
+        {"stage": k, "count": v} for k, v in wrong_counts.items()
+    ])
+    fig = px.bar(df, x="stage", y="count", title="Erste Fehlstufe (First Wrong Stage)", text="count",
+                 color="stage", color_discrete_sequence=px.colors.sequential.Blues)
+    fig.update_traces(textposition="outside")
+    fig.update_layout(xaxis_title="", yaxis_title="Anzahl", uniformtext_minsize=10, uniformtext_mode="hide")
+    return fig
+
+def build_wrong_stage_by_path_figure(by_path: dict):
+    if not by_path:
+        return px.bar(title="Fehlstufen nach Pfad: Keine Daten")
+    rows = []
+    for path, stats in by_path.items():
+        total = stats.get("total", 1) or 1
+        for stage in ["level_1","branch","endlevel","correct"]:
+            rows.append({
+                "Pfad": path,
+                "Stufe": stage,
+                "Anteil (%)": 100 * stats.get(stage, 0) / total
+            })
+    df = pd.DataFrame(rows)
+    fig = px.bar(df, x="Pfad", y="Anteil (%)", color="Stufe", barmode="stack",
+                 title="Verteilung erste Fehlstufe je Ground-Truth-Pfad")
+    fig.update_layout(yaxis_tickformat=".1f")
+    return fig
+
+def build_wrong_turns_table(turns: list):
+    if not turns:
+        return html.Div("Keine Fehlabbieger-Daten verfügbar.", className="text-muted")
+    header = [html.Th(h) for h in ["Stage", "Expected", "Predicted", "Count"]]
+    rows = []
+    for rec in turns:
+        rows.append(html.Tr([
+            html.Td(rec.get("stage")),
+            html.Td(rec.get("expected")),
+            html.Td(rec.get("predicted")),
+            html.Td(rec.get("count"))
+        ]))
+    return dbc.Table([
+        html.Thead(html.Tr(header)),
+        html.Tbody(rows)
+    ], bordered=True, responsive=True, striped=True, hover=True, size="sm", className="mb-0")
+
+# NEW: Vorab Figuren erzeugen (statisch)
+funnel_fig = build_funnel_figure(summary_data.get("funnel", {}))
+wrong_stage_counts_fig = build_wrong_stage_counts_figure(summary_data.get("wrong_stage_counts", {}))
+wrong_stage_by_path_fig = build_wrong_stage_by_path_figure(summary_data.get("wrong_stage_by_path", {}))
+wrong_turns_table = build_wrong_turns_table(summary_data.get("wrong_turns_top", []))
 
 # Layout des Dashboards mit Bootstrap
 app.layout = dbc.Container(fluid=True, children=[
@@ -213,7 +291,29 @@ app.layout = dbc.Container(fluid=True, children=[
                 ])
             ], className="shadow-sm"), width=12),
         ], className="mb-4"),
-    
+
+    # NEW: Transparenz-Block – Funnel & Fehlabbieger
+    dbc.Row([
+        dbc.Col(dbc.Card([
+            dbc.CardHeader("🔀 Prozess-Funnel"),
+            dbc.CardBody(dcc.Graph(id="funnel-graph", figure=funnel_fig, style={"height": "420px"}))
+        ]), width=4),
+        dbc.Col(dbc.Card([
+            dbc.CardHeader("⚠️ Erste Fehlstufe"),
+            dbc.CardBody(dcc.Graph(id="wrong-stage-counts", figure=wrong_stage_counts_fig, style={"height": "420px"}))
+        ]), width=4),
+        dbc.Col(dbc.Card([
+            dbc.CardHeader("🧭 Fehlpfad nach Ground-Truth-Pfad"),
+            dbc.CardBody(dcc.Graph(id="wrong-stage-by-path", figure=wrong_stage_by_path_fig, style={"height": "420px"}))
+        ]), width=4),
+    ], className="mb-4"),
+    dbc.Row([
+        dbc.Col(dbc.Card([
+            dbc.CardHeader("🔎 Top Fehlabbieger (erste falsche Entscheidung)"),
+            dbc.CardBody(wrong_turns_table)
+        ]), width=12)
+    ], className="mb-5"),
+
     html.Div(summary_metrics_tooltips)
 ])
 
@@ -455,4 +555,5 @@ def create_feature_importance_figure(feature_importance_data):
     
 # Starte den Server
 if __name__ == '__main__':
-    app.run_server(debug=True, port=8050)
+    # Debug=False verhindert den Flask/Werkzeug Reloader (keine Zusatzprozesse)
+    app.run_server(debug=False, port=8050)

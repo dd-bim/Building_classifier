@@ -1,54 +1,30 @@
 ============================================================
-Model Training Summary for 121
+RandomForest Model Training Summary for 121
 ============================================================
 
-🔹 Best Hyperparameters:
-{'criterion': 'gini', 'max_depth': 15, 'min_samples_leaf': 2, 'min_samples_split': 5, 'n_estimators': 150}
+🔹 Best Score: 1.0000
+🔹 Best Parameters:
+{'class_weight': 'balanced', 'max_depth': 10, 'min_samples_leaf': 1, 'min_samples_split': 2, 'n_estimators': 100}
 
-🔹 Important Features:
- - roof_type
- - storeys_above_ground
- - building_footprint
- - storey_height
- - number_roof_surfaces
- - roof_slope
- - compactness
- - convexity
- - vertex_count
- - neighbor_density
- - height_to_area_ratio
- - footprint_ratio
- - roof_height_ratio
+🔹 Training Samples: 42
+🔹 CV Folds: 3
+🔹 Features Used: 24
 
-🔹 Removed Features:
- - neighbor_avg_size
- - development_type_code
- - neighbor_majority_class
- - neighbor_min_distance
- - building_age
+🔹 Top 10 Feature Importances:
+                 Feature  Importance
+               roof_type         0.0
+    storeys_above_ground         0.0
+         footprint_ratio         0.0
+    height_to_area_ratio         0.0
+  ground_area_per_storey         0.0
+neighbour_majority_class         0.0
+  neighbour_min_distance         0.0
+      neighbour_avg_size         0.0
+       neighbour_density         0.0
+          rectangularity         0.0
 
-🔹 Feature Importances:
-                Feature  Importance
-              roof_type    0.092327
-   storeys_above_ground    0.095965
-     building_footprint    0.060313
-          storey_height    0.033151
-   number_roof_surfaces    0.061132
-             roof_slope    0.047849
-  development_type_code    0.000333
-           building_age    0.000134
-            compactness    0.068008
-              convexity    0.037162
-           vertex_count    0.032880
-       neighbor_density    0.051880
-      neighbor_avg_size    0.003191
-  neighbor_min_distance    0.001375
-neighbor_majority_class    0.003101
-   height_to_area_ratio    0.027765
-        footprint_ratio    0.106355
-      roof_height_ratio    0.277079
-
-🔹 Predictions in Training Data:
-HH3    387
-HH4      2
-Name: count, dtype: int64
+🔹 Training Configuration:
+ - RandomForest with adaptive class weights
+ - Grid search for optimal hyperparameters
+ - Balanced accuracy scoring
+ - NaN values filled with median/mode
