@@ -435,14 +435,20 @@ class ModelTrainer:
                         prev_model = joblib.load(model_path)
                         if isinstance(prev_model, RandomForestClassifier) and hasattr(prev_model, 'classes_'):
                             prev_classes = set(prev_model.classes_.tolist())
-                            new_classes = set(y_train.unique()) - prev_classes
-                            if new_classes:
+                            y_classes = set(y_train.unique().tolist())
+                            # Prüfe Konsistenz aller Trees
+                            mixed_trees = any(
+                                getattr(est, "n_classes_", len(y_classes)) != len(y_classes)
+                                for est in getattr(prev_model, "estimators_", [])
+                            )
+                            if prev_classes != y_classes or prev_model.n_classes_ != len(y_classes) or mixed_trees:
                                 QgsMessageLog.logMessage(
-                                    f"Neue Zielklassen für {level_name}: {new_classes}. Fallback auf Full-Retrain.",
+                                    f"Klassenänderung oder inkonsistente Bäume für {level_name}: "
+                                    f"alt={sorted(prev_classes)}, neu={sorted(y_classes)}, "
+                                    f"mixed_trees={mixed_trees}. Fallback auf Full-Retrain.",
                                     level=Qgis.Warning
                                 )
                             else:
-                                # Anzahl Bäume erhöhen (mind. +50, sonst +20%)
                                 old_n = prev_model.n_estimators
                                 add_trees = max(50, int(old_n * 0.2))
                                 new_n = old_n + add_trees
@@ -455,7 +461,6 @@ class ModelTrainer:
                                     'Feature': X_train.columns.tolist(),
                                     'Importance': prev_model.feature_importances_
                                 }).sort_values('Importance', ascending=False)
-                                # Modell speichern
                                 joblib.dump(prev_model, model_path)
                                 return prev_model, importance_df
                     except Exception as e:

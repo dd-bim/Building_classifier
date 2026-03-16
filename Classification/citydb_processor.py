@@ -58,6 +58,7 @@ class CityDBProcessor:
                 cityobject_id INTEGER,
                 gml_id VARCHAR(255) UNIQUE,
                 cluster_id INTEGER,
+                address VARCHAR(255),
                 function VARCHAR(255),
                 roof_type VARCHAR(255),
                 storeys_above_ground INTEGER,
@@ -70,10 +71,11 @@ class CityDBProcessor:
                 number_roof_surfaces INTEGER,
                 roof_slope DOUBLE PRECISION,
                 proximity CHAR(1),
-                neighbor_density INTEGER,
-                neighbor_avg_size DOUBLE PRECISION,
-                neighbor_min_distance DOUBLE PRECISION,
-                neighbor_majority_class VARCHAR(255),
+                neighbouring_buildings INTEGER,
+                neighbour_density INTEGER,
+                neighbour_avg_size DOUBLE PRECISION,
+                neighbour_min_distance DOUBLE PRECISION,
+                neighbour_majority_class VARCHAR(255),
                 mapping_id DOUBLE PRECISION,
                 SST VARCHAR(255),
                 SST_SUB VARCHAR(255),
@@ -89,9 +91,8 @@ class CityDBProcessor:
                 building_volume DOUBLE PRECISION,
                 compactness DOUBLE PRECISION,
                 convexity DOUBLE PRECISION,
-                vertex_count INTEGER,
                 rectangularity DOUBLE PRECISION,
-                geom GEOMETRY(MULTIPOLYGONZ, 25833)
+                geom GEOMETRY(MULTIPOLYGON, 25833)
             );
             """)
             # Sinnvolle Indizes für schnelle Abfragen
@@ -120,16 +121,17 @@ class CityDBProcessor:
     def fill_table(self):
         """
         Füllt die Tabelle citydb_filter mit Grunddaten (ohne Geometrie) aus der CityDB.
+        Zuerst werden alle Gebäude eingefügt, dann wird separat gefiltert.
         """
         try:
-            # Insertiere Grundobjekte
+            # Insertiere erstmal alle Gebäude (objectclass_id = 901)
             self.cur.execute("""            
             INSERT INTO "MPSCDresden".citydb_filter(
                 cityobject_id
             )
-            SELECT f.id AS cityobject_id
+            SELECT DISTINCT f.id AS cityobject_id
             FROM citydb.feature f
-            WHERE objectclass_id = 901;
+            WHERE f.objectclass_id = 901;
             """)
             
             # Hinzufügen der gml_id
@@ -152,8 +154,78 @@ class CityDBProcessor:
             AND p.name = 'function';
             """)
             
+            # Robuste Adresszuordnung mit Subquery-Ansatz
+            # Dieser Ansatz ist zuverlässiger als JOIN-basierte UPDATEs
+            self.cur.execute("""
+            UPDATE "MPSCDresden".citydb_filter cf
+            SET address = (
+                SELECT CONCAT(a.street, ' ', COALESCE(a.house_number, ''))
+                FROM citydb.property p
+                JOIN citydb.address a ON p.val_address_id = a.id
+                WHERE p.feature_id = cf.cityobject_id
+                AND p.name = 'address'
+                AND p.val_address_id IS NOT NULL
+                AND a.street IS NOT NULL
+                AND a.street != ''
+                AND a.street != '0'
+                LIMIT 1
+            )
+            WHERE EXISTS (
+                SELECT 1
+                FROM citydb.property p
+                JOIN citydb.address a ON p.val_address_id = a.id
+                WHERE p.feature_id = cf.cityobject_id
+                AND p.name = 'address'
+                AND p.val_address_id IS NOT NULL
+                AND a.street IS NOT NULL
+                AND a.street != ''
+                AND a.street != '0'
+            );
+            """)
+            
+            # Erweiterte Logging für besseres Debugging
+            self.cur.execute("""
+            SELECT COUNT(*) FROM "MPSCDresden".citydb_filter WHERE address IS NOT NULL;
+            """)
+            buildings_with_address = self.cur.fetchone()[0]
+            
+            self.cur.execute("""
+            SELECT COUNT(*) FROM "MPSCDresden".citydb_filter;
+            """)
+            total_buildings = self.cur.fetchone()[0]
+            
+            self.cur.execute("""
+            SELECT COUNT(*) FROM "MPSCDresden".citydb_filter WHERE function IN ('1000', '1100');
+            """)
+            function_buildings = self.cur.fetchone()[0]
+            
+            self.cur.execute("""
+            SELECT COUNT(*) FROM "MPSCDresden".citydb_filter WHERE function IN ('1000', '1100') AND address IS NOT NULL;
+            """)
+            function_buildings_with_address = self.cur.fetchone()[0]
+            
+            QgsMessageLog.logMessage(f"Address UPDATE Results:", level=Qgis.Warning)
+            QgsMessageLog.logMessage(f"- Total buildings in filter: {total_buildings}", level=Qgis.Warning)
+            QgsMessageLog.logMessage(f"- Buildings with addresses: {buildings_with_address}", level=Qgis.Warning)
+            QgsMessageLog.logMessage(f"- Function 1000/1100 buildings: {function_buildings}", level=Qgis.Warning)
+            QgsMessageLog.logMessage(f"- Function 1000/1100 with addresses: {function_buildings_with_address}", level=Qgis.Warning)
+            
+            # Konservative Filterung - nur offensichtlich leere Adressen entfernen
+            self.cur.execute("""
+            DELETE FROM "MPSCDresden".citydb_filter
+            WHERE address IS NULL;
+            """)
+            
+            self.cur.execute("""
+            SELECT COUNT(*) FROM "MPSCDresden".citydb_filter;
+            """)
+            remaining_buildings = self.cur.fetchone()[0]
+            
+            QgsMessageLog.logMessage(f"- Buildings remaining after address filtering: {remaining_buildings}", level=Qgis.Warning)
+            QgsMessageLog.logMessage(f"  (Note: Function filtering (1000/1100 only) will be applied next)", level=Qgis.Warning)
+            
             self.conn.commit()
-            QgsMessageLog.logMessage("Table citydb_filter filled with basic attributes (cityobject_id, gml_id, function)", level=Qgis.Info)
+            QgsMessageLog.logMessage("Table citydb_filter filled with basic attributes (cityobject_id, gml_id, function, address) and conservatively filtered", level=Qgis.Info)
             self.current_step += 1
             self.update_progress()
         except Exception as e:
@@ -181,16 +253,148 @@ class CityDBProcessor:
         except Exception as e:
             self.conn.rollback()
             QgsMessageLog.logMessage(f"Failed to update function from CSV: {str(e)}", level=Qgis.Critical)
+    
+    def intersect_and_update_citydb_filter(self):
+        """
+        Überträgt Attribute aus kartierung_dd_gesamt nach citydb_filter und setzt Quelle Kartierung (1) für übernommene sst.
+        """
+        try:
+            self.cur.execute("""
+            UPDATE "MPSCDresden".citydb_filter cf
+            SET 
+                mapping_id = k."id",
+                SST = k."sst",
+                SST_SUB = k."sst_sub",
+                development_type_code = k."development_type_code"
+            FROM "MPSCDresden".kartierung_dd_gesamt k
+            WHERE (
+                  cf.gml_id = k."id_alkis"
+               OR (
+                    k."id_alkis" IS NULL
+                    AND trim(lower(k.str || ' ' || k.hnr)) = trim(lower(cf.address))
+                  )
+            );
+            """)
+            self.conn.commit()
+
+            # Quelle Kartierung setzen (nur wenn sst vorhanden und noch keine Quelle)
+            self.cur.execute("""
+            UPDATE "MPSCDresden".citydb_filter
+            SET classification_source_id = 1,
+                classification_source = 'Kartierung'
+            WHERE sst IS NOT NULL
+              AND (classification_source_id IS NULL OR classification_source_id <> 1);
+            """)
+            self.conn.commit()
+
+            QgsMessageLog.logMessage("citydb_filter updated with Kartierung attributes + source.", level=Qgis.Info)
+            self.current_step += 1
+            self.update_progress()
+        except Exception as e:
+            self.conn.rollback()
+            QgsMessageLog.logMessage(f"Error intersecting and updating citydb_filter: {str(e)}", level=Qgis.Critical)
+            
+    def clean_sst_data(self):
+        """
+        Cleans the sst and sst_sub columns in citydb_filter.
+        Replaces sst with sst_sub when sst_sub is a valid target value.
+        """
+        try:
+            QgsMessageLog.logMessage("=== SST DATA CLEANING STARTED ===", level=Qgis.Info)
+            
+            # STEP 1: Define valid target values (Hard-Coding)
+            valid_targets = ['ER2', 'ER3', 'ER4', 'ER5', 'ER7',
+                            'EE1', 'EE2', 'EE3', 'EE4', 'EE5', 'EE7',
+                            'HH3', 'HH4',
+                            'MR5', 'MR6',
+                            'MRG2', 'MRO2', 'MRG3', 'MRO3', 'MRG4', 'MRO4', 'MRG7', 'MRO7',
+                            'ME2', 'ME3', 'ME4', 'ME5', 'ME6', 'ME7',
+                            'LW1', 'LW2', 'LW3', 'LW7']
+            
+            valid_str = ','.join([f"'{val}'" for val in valid_targets])
+            
+            # STEP 2: Replace sst with sst_sub (when valid)
+            self.cur.execute(f"""
+            UPDATE "MPSCDresden".citydb_filter
+            SET sst = sst_sub
+            WHERE sst_sub IS NOT NULL 
+            AND sst_sub IN ({valid_str});
+            """)
+            
+            # STEP 3: LWS → LW conversion
+            lws_mapping = {'LWS1': 'LW1', 'LWS2': 'LW2', 'LWS3': 'LW3'}
+            
+            for old, new in lws_mapping.items():
+                self.cur.execute(f"""
+                UPDATE "MPSCDresden".citydb_filter
+                SET sst = '{new}'
+                WHERE sst = '{old}';
+                """)
+        
+            # STEP 4: Clear sst_sub column
+            self.cur.execute("""
+            UPDATE "MPSCDresden".citydb_filter
+            SET sst_sub = NULL;
+            """)
+            
+            self.conn.commit()
+            QgsMessageLog.logMessage("SST data cleaning completed successfully", level=Qgis.Info)
+            
+        except Exception as e:
+            self.conn.rollback()
+            QgsMessageLog.logMessage(f"Failed to clean SST data: {str(e)}", level=Qgis.Critical)
             
     def filter_table(self):
         """
         Filtert die Tabelle citydb_filter nach zulässigen Funktionswerten (1000, 1100).
         """
         try:
+            # Zähle vor der Filterung
             self.cur.execute("""
-            DELETE FROM "MPSCDresden".citydb_filter
-            WHERE function NOT IN ('1000', '1100');
+            SELECT COUNT(*) FROM "MPSCDresden".citydb_filter;
             """)
+            before_filtering = self.cur.fetchone()[0]
+
+            # Zusatzdiagnose: prüfe, ob die Kartierungsliste NULL-Werte enthält
+            self.cur.execute("""
+            SELECT COUNT(*) FROM "MPSCDresden".kartierung_dd_gesamt
+            WHERE id_alkis IS NULL;
+            """)
+            null_ids = self.cur.fetchone()[0]
+            if null_ids > 0:
+                QgsMessageLog.logMessage(f"Warning: kartierung_dd_gesamt enthält {null_ids} NULL id_alkis."
+                                         " NOT IN wird dadurch neutralisiert.", level=Qgis.Warning)
+
+            # Löschen mit NOT EXISTS, inklusive Adressabgleich für NULL-id_alkis
+            self.cur.execute("""
+            DELETE FROM "MPSCDresden".citydb_filter cf
+            WHERE function NOT IN ('1000', '1100')
+              AND NOT EXISTS (
+                  SELECT 1
+                  FROM "MPSCDresden".kartierung_dd_gesamt k
+                  WHERE (
+                      k.id_alkis = cf.gml_id
+                      OR (
+                          k.id_alkis IS NULL
+                          AND trim(lower(k.str || ' ' || k.hnr)) = trim(lower(cf.address))
+                      )
+                  )
+              );
+            """)
+            
+            # Zähle nach der Filterung
+            self.cur.execute("""
+            SELECT COUNT(*) FROM "MPSCDresden".citydb_filter;
+            """)
+            after_filtering = self.cur.fetchone()[0]
+            
+            removed_buildings = before_filtering - after_filtering
+            
+            QgsMessageLog.logMessage(f"Function filtering completed:", level=Qgis.Warning)
+            QgsMessageLog.logMessage(f"- Buildings before function filtering: {before_filtering}", level=Qgis.Warning)
+            QgsMessageLog.logMessage(f"- Buildings removed (non-1000/1100): {removed_buildings}", level=Qgis.Warning)
+            QgsMessageLog.logMessage(f"- Final buildings (1000/1100 with addresses): {after_filtering}", level=Qgis.Warning)
+            
             self.conn.commit()
             QgsMessageLog.logMessage("Table citydb_filter filtered successfully", level=Qgis.Info)
             self.current_step += 1
@@ -205,42 +409,52 @@ class CityDBProcessor:
         Wird nach der Filterung aufgerufen, um nur noch relevante Gebäude zu verarbeiten.
         """
         try:
-            # Alle Attribute und Geometrie in einem einzigen optimierten Query
+            # EINFACHE UND DIREKTE GEOMETRIE-VERARBEITUNG
+            # Sammelt alle Ground Surfaces pro Building und vereint sie mit robuster Methode
             self.cur.execute("""
-            WITH ground AS (
-                SELECT f.id AS ground_id
-                FROM citydb.feature f
-                WHERE objectclass_id = 710
-            ),
-            ground_geometry AS (
-                SELECT
-                    g.feature_id AS ground_id,
-                    -- Stelle sicher, dass die Geometrie valide ist und verwende ST_Union für alle Fälle
-                    ST_MakeValid(ST_Union(
-                        CASE 
-                            WHEN ST_IsValid(g.geometry) THEN g.geometry
-                            ELSE ST_MakeValid(g.geometry)
-                        END
-                    )) AS unified_geom
-                FROM citydb.geometry_data g
-                JOIN ground gr ON g.feature_id = gr.ground_id
-                WHERE g.geometry IS NOT NULL
-                GROUP BY g.feature_id
-            ),
-            boundary_link AS (
-                SELECT
+            WITH building_ground_surfaces AS (
+                -- Sammle alle Ground Surface Geometrien pro Building
+                SELECT 
                     p.feature_id AS building_id,
-                    gg.unified_geom AS geom
+                    array_agg(g.geometry) AS all_geometries,
+                    COUNT(*) AS surface_count
                 FROM citydb.property p
-                JOIN ground_geometry gg ON p.val_feature_id = gg.ground_id
+                JOIN citydb.feature ground_f ON p.val_feature_id = ground_f.id
+                JOIN citydb.geometry_data g ON ground_f.id = g.feature_id
                 WHERE p.name = 'boundary'
-                AND gg.unified_geom IS NOT NULL
+                AND ground_f.objectclass_id = 710  -- Ground Surface
+                AND g.geometry IS NOT NULL
+                GROUP BY p.feature_id
+                HAVING COUNT(*) > 0
+            ),
+            unified_building_geometry AS (
+                SELECT 
+                    bgs.building_id,
+                    bgs.surface_count,
+                    -- ROBUSTE GEOMETRIE-VEREINIGUNG mit 3 Fallback-Strategien
+                    COALESCE(
+                        -- Strategie 1: Direkte Union mit 3D→2D Konvertierung (löst GEOS-Probleme)
+                        (SELECT ST_Union(ST_Force2D(ST_MakeValid(geom)))
+                         FROM unnest(bgs.all_geometries) AS geom
+                         WHERE geom IS NOT NULL),
+                        
+                        -- Strategie 2: Buffer-Reparatur bei Topology-Problemen  
+                        (SELECT ST_Union(ST_Buffer(ST_Force2D(ST_MakeValid(geom)), 0.001))
+                         FROM unnest(bgs.all_geometries) AS geom
+                         WHERE geom IS NOT NULL),
+                        
+                        -- Strategie 3: Collect als garantierter Fallback
+                        (SELECT ST_Multi(ST_Collect(ST_Force2D(ST_MakeValid(geom))))
+                         FROM unnest(bgs.all_geometries) AS geom
+                         WHERE geom IS NOT NULL)
+                    ) AS final_geometry
+                FROM building_ground_surfaces bgs
             )
-            
             UPDATE "MPSCDresden".citydb_filter cf
-            SET geom = bl.geom
-            FROM boundary_link bl
-            WHERE cf.cityobject_id = bl.building_id;
+            SET geom = ubg.final_geometry
+            FROM unified_building_geometry ubg
+            WHERE cf.cityobject_id = ubg.building_id
+            AND ubg.final_geometry IS NOT NULL;
             """)
             
             self.cur.execute("""
@@ -275,6 +489,36 @@ class CityDBProcessor:
             """)
             
             self.conn.commit()
+            
+            # Überprüfe Erfolgsrate der robusten Geometrie-Verarbeitung
+            self.cur.execute("""
+            SELECT 
+                COUNT(*) AS total_buildings,
+                COUNT(*) FILTER (WHERE geom IS NOT NULL) AS successful_geometries,
+                ROUND(100.0 * COUNT(*) FILTER (WHERE geom IS NOT NULL) / COUNT(*), 2) AS success_rate
+            FROM "MPSCDresden".citydb_filter;
+            """)
+            
+            result = self.cur.fetchone()
+            total_buildings = result[0]
+            successful_geometries = result[1] 
+            success_rate = result[2]
+            
+            QgsMessageLog.logMessage(
+                f"ROBUSTE GEOMETRIE-VERARBEITUNG ABGESCHLOSSEN:\n"
+                f"- Gebäude insgesamt: {total_buildings}\n"
+                f"- Erfolgreiche Geometrien: {successful_geometries}\n"
+                f"- Erfolgsrate: {success_rate}% (Ziel: 100%)", 
+                level=Qgis.Info
+            )
+            
+            if success_rate >= 99.0:
+                QgsMessageLog.logMessage("✓ HERVORRAGEND: Nahezu 100% Erfolgsrate erreicht!", level=Qgis.Info)
+            elif success_rate >= 90.0:
+                QgsMessageLog.logMessage("✓ GUT: Hohe Erfolgsrate erreicht", level=Qgis.Info)
+            else:
+                QgsMessageLog.logMessage("⚠ WARNUNG: Niedrige Erfolgsrate - weitere Optimierung nötig", level=Qgis.Warning)
+                
             QgsMessageLog.logMessage("Remaining attributes and geometry added successfully to filtered buildings", level=Qgis.Info)
             self.current_step += 1
             self.update_progress()
@@ -285,18 +529,32 @@ class CityDBProcessor:
     def calculate_footprint(self):
         """
         Berechnet Grundfläche, Länge und Breite des Gebäude-Footprints in einem optimierten Query.
+        Entfernt Gebäude mit einer Grundfläche kleiner als 30 m².
         """
         try:
+            # Erst die Grundfläche berechnen
+            self.cur.execute("""
+            UPDATE "MPSCDresden".citydb_filter
+            SET building_footprint = ST_Area(geom)
+            WHERE geom IS NOT NULL;
+            """)
+            
+            # Gebäude mit zu kleiner Grundfläche entfernen
+            self.cur.execute("""
+            DELETE FROM "MPSCDresden".citydb_filter
+            WHERE building_footprint < 30;
+            """)
+            
+            # Dann Länge und Breite für die verbleibenden Gebäude berechnen
             self.cur.execute("""
             UPDATE "MPSCDresden".citydb_filter
             SET 
-                building_footprint = ST_Area(ST_Force2D(geom)),
-                length_footprint = ST_XMax(ST_Envelope(ST_Force2D(geom))) - ST_XMin(ST_Envelope(ST_Force2D(geom))),
-                width_footprint = ST_YMax(ST_Envelope(ST_Force2D(geom))) - ST_YMin(ST_Envelope(ST_Force2D(geom)))
+                length_footprint = ST_XMax(ST_Envelope(geom)) - ST_XMin(ST_Envelope(geom)),
+                width_footprint = ST_YMax(ST_Envelope(geom)) - ST_YMin(ST_Envelope(geom))
             WHERE geom IS NOT NULL;
             """)
             self.conn.commit()
-            QgsMessageLog.logMessage("Table citydb_filter filled successfully with the footprint attributes", level=Qgis.Info)
+            QgsMessageLog.logMessage("Table citydb_filter filled successfully with the footprint attributes and filtered by minimum area", level=Qgis.Info)
             self.current_step += 1
             self.update_progress()
         except Exception as e:
@@ -467,79 +725,6 @@ class CityDBProcessor:
         except Exception as e:
             self.conn.rollback()
             QgsMessageLog.logMessage(f"Failed to calculate and update roof slope in citydb_filter: {str(e)}", level=Qgis.Critical)
-            
-    def intersect_and_update_citydb_filter(self):
-        """
-        Überträgt Attribute aus kartierung_dd_gesamt nach citydb_filter per Geometrie-Verschnitt.
-        """
-        try:
-            # Geometrischer Verschnitt der Tabellen und Aktualisierung von citydb_filter
-            self.cur.execute("""
-            UPDATE "MPSCDresden".citydb_filter cf
-            SET 
-                mapping_id = k."id",
-                SST = k."sst",
-                SST_SUB = k."sst_sub",
-                ID_ALKIS = k."guid_alkis",
-                development_type_code = k."development_type_code"
-            FROM "MPSCDresden".kartierung_dd_gesamt k
-            WHERE ST_Intersects(cf.geom, k.geom);
-            """)
-            self.conn.commit()
-            
-            QgsMessageLog.logMessage("citydb_filter updated with attributes from kartierung_dd_gesamt", level=Qgis.Info)
-            self.current_step += 1
-            self.update_progress()
-        except Exception as e:
-            self.conn.rollback()
-            QgsMessageLog.logMessage(f"Error intersecting and updating citydb_filter: {str(e)}", level=Qgis.Critical)
-            
-    def clean_sst_data(self):
-        """
-        Bereinigt die Spalten sst und sst_sub in citydb_filter nach festen Regeln.
-        """
-        try:
-            # Bereinigungsregeln für sst_sub
-            sst_sub_rules = [
-                ('MR2', ['MRG2', 'MRO2'], 'MRO2'),
-                ('MR3', ['MRG3', 'MRO3'], 'MRO3'),
-                ('MR4', ['MRG4', 'MRO4'], 'MRO4'),
-                ('MR7', ['MRG7', 'MRO7'], 'MRO7')
-            ]
-
-            for sst, valid_subs, default_sub in sst_sub_rules:
-                self.cur.execute(f"""
-                UPDATE "MPSCDresden".citydb_filter
-                SET sst_sub = '{default_sub}'
-                WHERE sst = '{sst}' AND sst_sub NOT IN ({','.join([f"'{sub}'" for sub in valid_subs])}) AND sst_sub IS NOT NULL;
-                """)
-
-            # Bereinigung der Daten für MR5 und MR6
-            self.cur.execute("""
-            UPDATE "MPSCDresden".citydb_filter
-            SET sst_sub = NULL
-            WHERE sst IN ('MR5', 'MR6');
-            """)
-
-            # Umwandlung von LWS1, LWS2 und LWS3 zu LW1, LW2 und LW3
-            lws_to_lw_mapping = {
-                'LWS1': 'LW1',
-                'LWS2': 'LW2',
-                'LWS3': 'LW3'
-            }
-
-            for old_value, new_value in lws_to_lw_mapping.items():
-                self.cur.execute(f"""
-                UPDATE "MPSCDresden".citydb_filter
-                SET sst = '{new_value}'
-                WHERE sst = '{old_value}';
-                """)
-
-            self.conn.commit()
-            QgsMessageLog.logMessage("sst and sst_sub columns cleaned successfully in citydb_filter", level=Qgis.Info)
-        except Exception as e:
-            self.conn.rollback()
-            QgsMessageLog.logMessage(f"Failed to clean sst and sst_sub columns in citydb_filter: {str(e)}", level=Qgis.Critical)
 
     def calculate_clusters(self, buffer_distance=100):
         """
@@ -571,86 +756,101 @@ class CityDBProcessor:
             self.cur.execute("""
             UPDATE "MPSCDresden".citydb_filter
             SET proximity = 'E',
-                neighbor_density = 0,
-                neighbor_avg_size = NULL,
-                neighbor_min_distance = NULL,
-                neighbor_majority_class = NULL;
+                neighbouring_buildings = 0,
+                neighbour_density = 0,
+                neighbour_avg_size = NULL,
+                neighbour_min_distance = NULL,
+                neighbour_majority_class = NULL;
             """)
             self.conn.commit()
         except Exception as e:
             self.conn.rollback()
             QgsMessageLog.logMessage(f"Fehler beim Setzen der Standardwerte: {str(e)}", level=Qgis.Critical)
 
-    def calculate_neighbors(self, buffer_distance=100):
+    def calculate_neighbours(self, buffer_distance=100):
         """
         Berechnet Nachbarschaftsmerkmale für jedes Gebäude (Dichte, Größe, Abstand, Mehrheitsklasse).
-        Optimiert mit räumlichen Indizes und vorberechneten 2D-Geometrien.
+        Optimiert mit räumlichen Indizes und 2D-Geometrien.
         """
         try:
-            # Erstelle temporäre 2D-Geometrie-Spalte für bessere Performance
+            # Optimierte Nachbarschaftsberechnung ohne temporäre 2D-Geometrie
+            # Schritt 1: Basis-Nachbarschaftsdaten berechnen
             self.cur.execute("""
-            ALTER TABLE "MPSCDresden".citydb_filter 
-            ADD COLUMN IF NOT EXISTS geom_2d GEOMETRY(MULTIPOLYGON, 25833);
-            """)
-            
-            self.cur.execute("""
-            UPDATE "MPSCDresden".citydb_filter 
-            SET geom_2d = ST_Force2D(geom)
-            WHERE geom_2d IS NULL AND geom IS NOT NULL;
-            """)
-            
-            # Erstelle räumlichen Index für 2D-Geometrien
-            self.cur.execute("""
-            CREATE INDEX IF NOT EXISTS citydb_filter_geom_2d_idx 
-            ON "MPSCDresden".citydb_filter USING GIST (geom_2d);
-            """)
-            
-            # Optimierte Nachbarschaftsberechnung mit vorberechneten Distanzen
-            self.cur.execute("""
-            WITH neighbor_data AS (
+            WITH neighbour_data AS (
                 SELECT 
                     a.gml_id AS target_gml_id,
                     a.cluster_id,
-                    COUNT(b.gml_id) AS neighbor_density,
-                    AVG(b.building_footprint) AS neighbor_avg_size,
-                    MIN(ST_Distance(a.geom_2d, b.geom_2d)) AS neighbor_min_distance
+                    COUNT(b.gml_id) AS neighbour_density,
+                    AVG(b.building_footprint) AS neighbour_avg_size,
+                    MIN(ST_Distance(a.geom, b.geom)) AS neighbour_min_distance
                 FROM "MPSCDresden".citydb_filter a
                 JOIN "MPSCDresden".citydb_filter b 
                 ON a.cluster_id = b.cluster_id
-                AND ST_DWithin(a.geom_2d, b.geom_2d, %s) 
+                AND ST_DWithin(a.geom, b.geom, %s) 
                 WHERE a.gml_id != b.gml_id
-                AND a.geom_2d IS NOT NULL
-                AND b.geom_2d IS NOT NULL
+                AND a.geom IS NOT NULL
+                AND b.geom IS NOT NULL
                 GROUP BY a.gml_id, a.cluster_id
-            ),
-            majority_class AS (
-                SELECT 
-                    nd.target_gml_id,
-                    (
-                        SELECT b.sst 
-                        FROM "MPSCDresden".citydb_filter b
-                        WHERE b.cluster_id = nd.cluster_id 
-                        AND b.sst IS NOT NULL
-                        GROUP BY b.sst 
-                        ORDER BY COUNT(*) DESC 
-                        LIMIT 1
-                    ) AS neighbor_majority_class
-                FROM neighbor_data nd
             )
             UPDATE "MPSCDresden".citydb_filter cf
             SET 
                 proximity = CASE 
-                    WHEN nd.neighbor_min_distance <= 1.5 THEN 'R'
+                    WHEN nd.neighbour_min_distance <= 1.5 THEN 'R'
                     ELSE 'E'
                 END,
-                neighbor_density = nd.neighbor_density,
-                neighbor_avg_size = COALESCE(nd.neighbor_avg_size, NULL),
-                neighbor_min_distance = COALESCE(nd.neighbor_min_distance, NULL),
-                neighbor_majority_class = COALESCE(mc.neighbor_majority_class, NULL)
-            FROM neighbor_data nd
-            LEFT JOIN majority_class mc ON nd.target_gml_id = mc.target_gml_id
+                neighbour_density = nd.neighbour_density,
+                neighbour_avg_size = COALESCE(nd.neighbour_avg_size, NULL),
+                neighbour_min_distance = COALESCE(nd.neighbour_min_distance, NULL)
+            FROM neighbour_data nd
             WHERE cf.gml_id = nd.target_gml_id;
             """, (buffer_distance,))
+            
+            self.conn.commit()
+            
+            # Schritt 2: Nahe Nachbarn zählen
+            self.cur.execute("""
+            WITH close_neighbours AS (
+                SELECT 
+                    a.gml_id AS target_gml_id,
+                    COUNT(b.gml_id) AS neighbouring_buildings
+                FROM "MPSCDresden".citydb_filter a
+                JOIN "MPSCDresden".citydb_filter b 
+                ON ST_DWithin(a.geom, b.geom, 1.5)
+                WHERE a.gml_id != b.gml_id
+                AND a.geom IS NOT NULL
+                AND b.geom IS NOT NULL
+                GROUP BY a.gml_id
+            )
+            UPDATE "MPSCDresden".citydb_filter cf
+            SET neighbouring_buildings = COALESCE(cn.neighbouring_buildings, 0)
+            FROM close_neighbours cn
+            WHERE cf.gml_id = cn.target_gml_id;
+            """)
+            
+            self.conn.commit()
+            
+            # Schritt 3: Mehrheitsklasse berechnen (vereinfacht)
+            self.cur.execute("""
+            WITH cluster_majority AS (
+                SELECT 
+                    cluster_id,
+                    sst,
+                    COUNT(*) as class_count,
+                    ROW_NUMBER() OVER (PARTITION BY cluster_id ORDER BY COUNT(*) DESC) as rank
+                FROM "MPSCDresden".citydb_filter 
+                WHERE sst IS NOT NULL 
+                GROUP BY cluster_id, sst
+            ),
+            majority_per_cluster AS (
+                SELECT cluster_id, sst as majority_sst
+                FROM cluster_majority 
+                WHERE rank = 1
+            )
+            UPDATE "MPSCDresden".citydb_filter cf
+            SET neighbour_majority_class = mpc.majority_sst
+            FROM majority_per_cluster mpc
+            WHERE cf.cluster_id = mpc.cluster_id;
+            """)
             
             self.conn.commit()
             QgsMessageLog.logMessage("Nachbarschaftsmerkmale erfolgreich berechnet & gespeichert.", level=Qgis.Info)
@@ -691,28 +891,23 @@ class CityDBProcessor:
             UPDATE "MPSCDresden".citydb_filter
             SET                 
                 compactness = CASE 
-                    WHEN ST_Perimeter(ST_Force2D(geom)) > 0 
-                    THEN (4 * PI() * ST_Area(ST_Force2D(geom))) / (ST_Perimeter(ST_Force2D(geom)) * ST_Perimeter(ST_Force2D(geom)))
+                    WHEN ST_Perimeter(geom) > 0 
+                    THEN (4 * PI() * ST_Area(geom)) / (ST_Perimeter(geom) * ST_Perimeter(geom))
                     ELSE NULL 
                 END,
                 convexity = CASE 
-                    WHEN ST_Area(ST_ConvexHull(ST_Force2D(geom))) > 0
-                    THEN ST_Area(ST_Force2D(geom)) / ST_Area(ST_ConvexHull(ST_Force2D(geom)))
+                    WHEN ST_Area(ST_ConvexHull(geom)) > 0
+                    THEN ST_Area(geom) / ST_Area(ST_ConvexHull(geom))
                     ELSE NULL 
                 END,
-                vertex_count = CASE 
-                    WHEN ST_GeometryType(ST_Force2D(geom)) LIKE '%POLYGON%'
-                    THEN ST_NPoints(ST_ExteriorRing(ST_GeometryN(ST_Force2D(geom), 1)))
-                    ELSE ST_NPoints(ST_Force2D(geom))
-                END,
                 rectangularity = CASE 
-                    WHEN ST_Area(ST_OrientedEnvelope(ST_Force2D(geom))) > 0
-                    THEN ST_Area(ST_Force2D(geom)) / ST_Area(ST_OrientedEnvelope(ST_Force2D(geom)))
+                    WHEN ST_Area(ST_OrientedEnvelope(geom)) > 0
+                    THEN ST_Area(geom) / ST_Area(ST_OrientedEnvelope(geom))
                     ELSE NULL 
                 END
             WHERE geom IS NOT NULL 
             AND ST_IsValid(geom) 
-            AND ST_Area(ST_Force2D(geom)) > 0;
+            AND ST_Area(geom) > 0;
             """)
             self.conn.commit()
             QgsMessageLog.logMessage("Geometric features calculated successfully", level=Qgis.Info)

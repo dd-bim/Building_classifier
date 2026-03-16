@@ -41,10 +41,11 @@ from .citydb_extender import CityDBExtender
 from .mapping_processor import MappingProcessor
 from .building_values_processor import BuildingValuesProcessor
 from .model_trainer import ModelTrainer
-from .validate_model import ValidateModel
-from .classify_data import ClassifyData
+from .validate_data import ValidateData
 from .manual_correction import ManualCorrection
 from .citygml_updater import CityGMLUpdater
+from .citydb_updater import CityDBUpdater
+from .classify_data import Classifier
 
 FORM_CLASS, _ = uic.loadUiType(os.path.join(
     os.path.dirname(__file__), 'building_classificator_dialog_base.ui'))
@@ -83,11 +84,13 @@ class MPSCDresdenDialog(QDialog, FORM_CLASS):
         self.pushButton_classification.clicked.connect(self.classify_data)
         self.pushButton_select.clicked.connect(self.select)
         self.pushButton_correct.clicked.connect(self.correct)
+        self.pushButton_additional_mapping.clicked.connect(self.add_mapping)
         self.pushButton_retrain.clicked.connect(self.retrain)
         self.pushButton_revalidate.clicked.connect(self.revalidate)
         self.pushButton_reclassify.clicked.connect(self.reclassify)
         self.pushButton_updatecitydb_filter.clicked.connect(self.update_citydb_filter)
         self.pushButton_updatecitygml.clicked.connect(self.update_citygml_files)
+        self.pushButton_updatecitydb.clicked.connect(self.update_citydb)
 
         # Initialize attributes to store loaded data
         self.building_development_df = pd.DataFrame()
@@ -130,10 +133,11 @@ class MPSCDresdenDialog(QDialog, FORM_CLASS):
         self.mapping_processor = MappingProcessor(self.conn, self.cur, self.connection_params)
         self.value_processor = BuildingValuesProcessor()
         self.model_trainer = ModelTrainer(self.conn, self.cur, self.connection_params)
-        self.model_validator = ValidateModel(self.conn, self.cur, self.connection_params)
-        self.model_classifier = ClassifyData(self.conn, self.cur, self.connection_params)
+        self.model_validator = ValidateData(self.conn, self.cur, self.connection_params)
+        self.model_classifier = Classifier(self.conn, self.cur, self.connection_params)
         self.manual_correction = ManualCorrection(self.iface, self.conn, self.cur, self.connection_params)
         self.citygml_updater = CityGMLUpdater(self.conn, self.cur, self.connection_params)
+        self.citydb_updater = CityDBUpdater(self.conn, self.cur, self.connection_params, confidence_threshold=None)
 
     def loading(self):
         load_building_development = self.checkBox_Bebauung.isChecked()
@@ -162,9 +166,8 @@ class MPSCDresdenDialog(QDialog, FORM_CLASS):
         # Vektorlayer erstellen
         self.building_development_layer = self.data_loader.create_vector_layer(self.filtered_building_development_df, 'building_development', 'geometry_building_development', 'srid_building_development')
         self.parcels_layer = self.data_loader.create_vector_layer(self.filtered_parcels_df, 'parcels', 'geometry_parcels', 'srid_parcels')
-
-        self.save_layer_as_qlr(self.building_development_layer, 'building_development_layer')
-        self.save_layer_as_qlr(self.parcels_layer, 'parcels_layer')
+        
+        self.data_loader.create_schema_if_not_exists()
         
         self.data_loader.export_layer_to_citydb(self.building_development_layer, 'building_development')
         self.data_loader.export_layer_to_citydb(self.parcels_layer, 'parcels')
@@ -173,7 +176,6 @@ class MPSCDresdenDialog(QDialog, FORM_CLASS):
         
     def processing_overlapping(self):
         try:
-            self.geometry_processor.create_schema_if_not_exists()
             self.geometry_processor.create_built_up_parcel_table()
             self.geometry_processor.create_indexes()
             self.geometry_processor.process_overlapping_geometries()
@@ -229,6 +231,8 @@ class MPSCDresdenDialog(QDialog, FORM_CLASS):
             self.citydb_processor.create_tables()
             self.citydb_processor.fill_table()
             self.citydb_processor.update_function_from_csv()
+            self.citydb_processor.intersect_and_update_citydb_filter()
+            self.citydb_processor.clean_sst_data()
             self.citydb_processor.filter_table()
             self.citydb_processor.fill_remaining_attributes_and_geometry()
             self.citydb_processor.calculate_footprint()
@@ -236,11 +240,9 @@ class MPSCDresdenDialog(QDialog, FORM_CLASS):
             self.citydb_processor.calculate_storey_height()
             self.citydb_processor.count_roof_surfaces()
             self.citydb_processor.calculate_roof_slope()
-            self.citydb_processor.intersect_and_update_citydb_filter()
-            self.citydb_processor.clean_sst_data()
             self.citydb_processor.calculate_clusters()
             self.citydb_processor.set_default_values()
-            self.citydb_processor.calculate_neighbors()
+            self.citydb_processor.calculate_neighbours()
             self.citydb_processor.add_feature_engineering_attributes()
             self.citydb_processor.calculate_geometric_features()
             QgsMessageLog.logMessage("CityDB table filled successfully", level=Qgis.Info)
@@ -263,7 +265,6 @@ class MPSCDresdenDialog(QDialog, FORM_CLASS):
             self.citydb_extender.add_new_buildings()
             self.citydb_extender.update_building_age()
             self.citydb_extender.update_building_age_from_monuments()
-            self.citydb_extender.update_sst_from_csv()
             self.citydb_extender.set_classification_source_kartierung()
             
             self.citydb_filter_layer = DataLoader.load_layer_from_db(self.connection_params, 'MPSCDresden', 'citydb_filter')
@@ -287,25 +288,39 @@ class MPSCDresdenDialog(QDialog, FORM_CLASS):
         
     def validate_model(self):
         try:
-            self.model_validator.validate()
-            self.model_validator.load_and_visualize_validation_data()
-            
-            QgsMessageLog.logMessage("Model validation completed successfully", level=Qgis.Info)
+            validation_results = self.model_validator.validate()
+            if validation_results:
+                QgsMessageLog.logMessage(
+                    f"Model validation completed successfully for {len(validation_results)} levels",
+                    level=Qgis.Info
+                )
+                
+                # Logge Zusammenfassung der Ergebnisse
+                for level, results in validation_results.items():
+                    accuracy = results.get('accuracy', 0)
+                    f1_weighted = results.get('f1_weighted', 0)
+                    direct_assignments = results.get('direct_assignment_count', 0)
+                    
+                    QgsMessageLog.logMessage(
+                        f"Level {level}: Accuracy={accuracy:.3f}, F1={f1_weighted:.3f}, "
+                        f"Direct assignments={direct_assignments}",
+                        level=Qgis.Info
+                    )
+            else:
+                QgsMessageLog.logMessage("No validation results obtained", level=Qgis.Warning)
         except Exception as e:
             QgsMessageLog.logMessage(f"Error during model validation: {str(e)}", level=Qgis.Critical)
             QgsMessageLog.logMessage(traceback.format_exc(), level=Qgis.Critical)
             
     def classify_data(self):
         try:
-            self.model_classifier.create_result_relation()
             self.model_classifier.classify()
-            self.model_classifier.load_and_visualize_classification_data()
-            
+
             QgsMessageLog.logMessage("Data classification completed successfully", level=Qgis.Info)
         except Exception as e:
             QgsMessageLog.logMessage(f"Error during data classification: {str(e)}", level=Qgis.Critical)
             QgsMessageLog.logMessage(traceback.format_exc(), level=Qgis.Critical)
-            
+
     def select(self):
         try:
             self.manual_correction.select_building()
@@ -322,8 +337,18 @@ class MPSCDresdenDialog(QDialog, FORM_CLASS):
             QgsMessageLog.logMessage(f"Error during correction: {str(e)}", level=Qgis.Critical)
             QgsMessageLog.logMessage(traceback.format_exc(), level=Qgis.Critical)
             
+    def add_mapping(self):
+        try:
+            self.citydb_extender.update_sst_from_csv()
+            self.citydb_extender.set_classification_source_kartierung()
+            QgsMessageLog.logMessage("Additional mapping added successfully", level=Qgis.Info)
+        except Exception as e:
+            QgsMessageLog.logMessage(f"Error adding additional mapping: {str(e)}", level=Qgis.Critical)
+            QgsMessageLog.logMessage(traceback.format_exc(), level=Qgis.Critical)
+            
     def retrain(self):
         try:
+            # Vereinfachtes Retraining: Split + Train (Validierung separat über Revalidate)
             self.manual_correction.retrain_all_levels()
             QgsMessageLog.logMessage("Retraining completed successfully", level=Qgis.Info)
         except Exception as e:
@@ -332,20 +357,49 @@ class MPSCDresdenDialog(QDialog, FORM_CLASS):
             
     def revalidate(self):
         try:
-            self.validate_model()
-            QgsMessageLog.logMessage("Revalidation completed successfully", level=Qgis.Info)
+            # Reset der Metriken-Zähler vor der Neuvalidierung
+            self.model_validator.reset_counters()
+            
+            # Führe vollständige Validierung durch
+            validation_results = self.model_validator.validate()
+            
+            if validation_results:
+                QgsMessageLog.logMessage(
+                    f"Revalidation completed successfully for {len(validation_results)} levels", 
+                    level=Qgis.Info
+                )
+                
+                # Zeige verbesserte Statistiken
+                overall_accuracy = 0
+                total_direct_assignments = 0
+                
+                for level, results in validation_results.items():
+                    if level != 'end_to_end':
+                        overall_accuracy = results.get('overall_accuracy', 0)
+                        total_direct_assignments += results.get('direct_assignment_count', 0)
+                
+                QgsMessageLog.logMessage(
+                    f"Overall validation accuracy: {overall_accuracy:.3f}, "
+                    f"Total direct assignments: {total_direct_assignments}",
+                    level=Qgis.Info
+                )
+            else:
+                QgsMessageLog.logMessage("No revalidation results obtained", level=Qgis.Warning)
+                
         except Exception as e:
             QgsMessageLog.logMessage(f"Error during revalidation: {str(e)}", level=Qgis.Critical)
             QgsMessageLog.logMessage(traceback.format_exc(), level=Qgis.Critical)
             
     def reclassify(self):
         try:
-            self.classify_data()
+            # Führe komplette Reklassifikation durch
+            self.model_classifier.classify()
+
             QgsMessageLog.logMessage("Reclassification completed successfully", level=Qgis.Info)
         except Exception as e:
             QgsMessageLog.logMessage(f"Error during reclassification: {str(e)}", level=Qgis.Critical)
             QgsMessageLog.logMessage(traceback.format_exc(), level=Qgis.Critical)
-            
+
     def update_citydb_filter(self):
         try:
             self.citygml_updater.update_citydb_filter()
@@ -362,10 +416,37 @@ class MPSCDresdenDialog(QDialog, FORM_CLASS):
         except Exception as e:
             QgsMessageLog.logMessage(f"Error updating CityGML files: {str(e)}", level=Qgis.Critical)
             QgsMessageLog.logMessage(traceback.format_exc(), level=Qgis.Critical)
+    
+    def update_citydb(self):
+        """
+        Aktualisiert die 3DCityDB Version 5 mit generischen sst-Attributen aus den Klassifikationsergebnissen.
+        """
+        try:
+            self.citydb_updater.update_citydb_properties()
+            QgsMessageLog.logMessage("3DCityDB successfully updated with SST attributes", level=Qgis.Info)
+        except Exception as e:
+            QgsMessageLog.logMessage(f"Error updating 3DCityDB: {str(e)}", level=Qgis.Critical)
+            QgsMessageLog.logMessage(traceback.format_exc(), level=Qgis.Critical)
             
     def close_db_connection(self):
-        if self.cur:
-            self.cur.close()
-        if self.conn:
-            self.conn.close()
-        QgsMessageLog.logMessage("Closed connection to CityDB", level=Qgis.Info)
+        """
+        Schließt alle Datenbankverbindungen ordnungsgemäß.
+        """
+        try:
+            # Schließe Verbindungen in allen Prozessoren
+            if hasattr(self.model_validator, 'conn') and self.model_validator.conn:
+                self.model_validator.conn.close()
+            if hasattr(self.model_classifier, 'conn') and self.model_classifier.conn:
+                self.model_classifier.conn.close()
+            if hasattr(self.manual_correction, 'conn') and self.manual_correction.conn:
+                self.manual_correction.conn.close()
+                
+            # Schließe Haupt-Verbindung
+            if self.cur:
+                self.cur.close()
+            if self.conn:
+                self.conn.close()
+                
+            QgsMessageLog.logMessage("All database connections closed successfully", level=Qgis.Info)
+        except Exception as e:
+            QgsMessageLog.logMessage(f"Error closing database connections: {str(e)}", level=Qgis.Warning)

@@ -257,6 +257,7 @@ class CityDBExtender:
             csv_ids = set(df['gml_id'].astype(str))
             self.cur.execute('SELECT gml_id FROM "MPSCDresden".citydb_filter')
             db_ids = set(row[0] for row in self.cur.fetchall())
+            
             fehlende = csv_ids - db_ids
             QgsMessageLog.logMessage(f"Nicht in DB gefundene gml_id aus der Nachkartierung: {fehlende}", level=Qgis.Warning)
 

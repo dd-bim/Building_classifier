@@ -2,26 +2,26 @@
 RandomForest Model Training Summary for 122
 ============================================================
 
-🔹 Best Score: 0.3971
+🔹 Best Score: 0.4030
 🔹 Best Parameters:
 {'class_weight': 'balanced', 'max_depth': 10, 'min_samples_leaf': 4, 'min_samples_split': 10, 'n_estimators': 300}
 
-🔹 Training Samples: 349
+🔹 Training Samples: 362
 🔹 CV Folds: 5
 🔹 Features Used: 24
 
 🔹 Top 10 Feature Importances:
-                 Feature  Importance
-       neighbour_density    0.078004
-            building_age    0.074117
-             compactness    0.065537
-       roof_ridge_height    0.058696
-  neighbour_min_distance    0.054070
-              roof_slope    0.052623
-    height_to_area_ratio    0.050075
-         building_volume    0.047686
-           storey_height    0.046317
-neighbour_majority_class    0.043079
+               Feature  Importance
+     roof_ridge_height    0.080358
+ development_type_code    0.067629
+           compactness    0.059494
+          eaves_height    0.059190
+  height_to_area_ratio    0.055959
+          building_age    0.055875
+neighbour_min_distance    0.054688
+     roof_height_ratio    0.052830
+            roof_slope    0.052288
+         storey_height    0.049922
 
 🔹 Training Configuration:
  - RandomForest with adaptive class weights

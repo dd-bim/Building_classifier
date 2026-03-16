@@ -1,32 +1,32 @@
 level: 121
 accuracy: 1.0
-overall_accuracy: 0.9698417671941093
-overall_sensitivity: 0.970131421744325
-overall_specificity: 0.9696545284780579
+overall_accuracy: 0.935375268953297
+overall_sensitivity: 0.8617159571010725
+overall_specificity: 0.9517354809437386
 end_to_end_accuracy: None
 end_to_end_f1: None
 end_to_end_precision: None
 end_to_end_recall: None
-direct_assignment_count: 13
+direct_assignment_count: 11
 weighted_accuracy: 1.0
 weighted_sensitivity: 1.0
 weighted_specificity: 0.0
-total_TP: 4060
-total_TN: 8308
-total_FP: 260
-total_FN: 125
+total_TP: 15909
+total_TN: 50343
+total_FP: 2553
+total_FN: 2553
 f1_weighted: 1.0
 f1_macro: 0.3333333333333333
 precision: 1.0
 recall: 1.0
 mcc: 0.0
-conf_matrix: [[67, 0, 0], [0, 0, 0], [0, 0, 0]]
-TP: [67, 0, 0]
-TN: [0, 67, 67]
+conf_matrix: [[6, 0, 0], [0, 0, 0], [0, 0, 0]]
+TP: [6, 0, 0]
+TN: [0, 6, 6]
 FP: [0, 0, 0]
 FN: [0, 0, 0]
 precision_recall_curve: {'precision': [], 'recall': []}
 roc_curve: {'fpr': [], 'tpr': [], 'roc_auc': 0}
 class_names: ['HH3', 'HH4', 'HH7']
-y_true: ['HH3', 'HH3', 'HH3', 'HH3', 'HH3', 'HH3', 'HH3', 'HH3', 'HH3', 'HH3', 'HH3', 'HH3', 'HH3', 'HH3', 'HH3', 'HH3', 'HH3', 'HH3', 'HH3', 'HH3', 'HH3', 'HH3', 'HH3', 'HH3', 'HH3', 'HH3', 'HH3', 'HH3', 'HH3', 'HH3', 'HH3', 'HH3', 'HH3', 'HH3', 'HH3', 'HH3', 'HH3', 'HH3', 'HH3', 'HH3', 'HH3', 'HH3', 'HH3', 'HH3', 'HH3', 'HH3', 'HH3', 'HH3', 'HH3', 'HH3', 'HH3', 'HH3', 'HH3', 'HH3', 'HH3', 'HH3', 'HH3', 'HH3', 'HH3', 'HH3', 'HH3', 'HH3', 'HH3', 'HH3', 'HH3', 'HH3', 'HH3']
-y_pred: ['HH3', 'HH3', 'HH3', 'HH3', 'HH3', 'HH3', 'HH3', 'HH3', 'HH3', 'HH3', 'HH3', 'HH3', 'HH3', 'HH3', 'HH3', 'HH3', 'HH3', 'HH3', 'HH3', 'HH3', 'HH3', 'HH3', 'HH3', 'HH3', 'HH3', 'HH3', 'HH3', 'HH3', 'HH3', 'HH3', 'HH3', 'HH3', 'HH3', 'HH3', 'HH3', 'HH3', 'HH3', 'HH3', 'HH3', 'HH3', 'HH3', 'HH3', 'HH3', 'HH3', 'HH3', 'HH3', 'HH3', 'HH3', 'HH3', 'HH3', 'HH3', 'HH3', 'HH3', 'HH3', 'HH3', 'HH3', 'HH3', 'HH3', 'HH3', 'HH3', 'HH3', 'HH3', 'HH3', 'HH3', 'HH3', 'HH3', 'HH3']
+y_true: ['HH3', 'HH3', 'HH3', 'HH3', 'HH3', 'HH3']
+y_pred: ['HH3', 'HH3', 'HH3', 'HH3', 'HH3', 'HH3']

@@ -2,26 +2,26 @@
 RandomForest Model Training Summary for 1
 ============================================================
 
-🔹 Best Score: 0.8763
+🔹 Best Score: 0.8660
 🔹 Best Parameters:
-{'class_weight': {'M': 0.4939409813165706, 'E': 1.1209383420510382, 'Other': 17.99491094147583}, 'max_depth': 10, 'min_samples_leaf': 4, 'min_samples_split': 10, 'n_estimators': 100}
+{'class_weight': {'M': 0.4922469135802469, 'E': 1.1306715063520871, 'Other': 17.842482100238662}, 'max_depth': 10, 'min_samples_leaf': 4, 'min_samples_split': 10, 'n_estimators': 100}
 
-🔹 Training Samples: 14144
+🔹 Training Samples: 14952
 🔹 CV Folds: 5
 🔹 Features Used: 24
 
 🔹 Top 10 Feature Importances:
               Feature  Importance
-    roof_ridge_height    0.124216
-         eaves_height    0.107355
-      building_volume    0.095573
-         building_age    0.078329
- storeys_above_ground    0.067945
-development_type_code    0.066630
-          compactness    0.063116
-   neighbour_avg_size    0.062066
-   building_footprint    0.053589
-      width_footprint    0.034662
+    roof_ridge_height    0.123520
+         eaves_height    0.109901
+      building_volume    0.096853
+         building_age    0.087957
+          compactness    0.072695
+development_type_code    0.062902
+ storeys_above_ground    0.061491
+   neighbour_avg_size    0.058474
+   building_footprint    0.049091
+      width_footprint    0.042116
 
 🔹 Training Configuration:
  - RandomForest with adaptive class weights
