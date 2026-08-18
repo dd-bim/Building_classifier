@@ -159,10 +159,17 @@ class MPSCDresden:
         """Create the menu entries and toolbar icons inside the QGIS GUI."""
 
         icon_path = ':/plugins/building_classificator/icon.png'
+        icon_short_path = ':/plugins/building_classificator/icon_short.png'
         self.add_action(
             icon_path,
             text=self.tr(u'BuildingClassificator'),
             callback=self.run,
+            parent=self.iface.mainWindow())
+
+        self.add_action(
+            icon_short_path,
+            text=self.tr(u'BuildingClassificatorShort'),
+            callback=self.run_short,
             parent=self.iface.mainWindow())
 
         # will be set False in run()
@@ -191,3 +198,10 @@ class MPSCDresden:
 
         self.dlg = MPSCDresdenDialog(iface = self.iface)
         self.dlg.show()
+
+    def run_short(self):
+        self.dlg_short = MPSCDresdenDialog(
+            iface=self.iface,
+            ui_file='building_classificator_short_dialog_base.ui',
+        )
+        self.dlg_short.show()

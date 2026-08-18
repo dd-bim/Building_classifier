@@ -3,10 +3,11 @@ import json
 import numpy as np
 import pandas as pd
 import joblib
-import configparser
 from typing import List, Dict, Tuple, Optional
 from qgis.core import QgsMessageLog, Qgis, QgsDataSourceUri, QgsVectorLayer, QgsProject
 
+from .config_loader import get_config
+from .classification_config import LEVELS, ENDLEVELS_DIRECT_AGE, SKIP_METRIC_LEVELS
 from .validate_data import ValidateData
 
 class Classifier:
@@ -24,17 +25,17 @@ class Classifier:
         self.cur = cur
         self.connection_params = connection_params
 
-        config = configparser.ConfigParser()
-        config.read(os.path.join(os.path.dirname(__file__), 'config.ini'))
+        config = get_config()
+        self.schema = config.get('Database', 'schema')
         self.model_dir = os.path.join(os.path.dirname(__file__), config.get('Paths', 'model_dir'))
         self.vis_path = os.path.join(os.path.dirname(__file__), config.get('Paths', 'vis_path'))
         self.conf_report_path = os.path.join(os.path.dirname(__file__), config.get('Paths', 'confidence_report'))
 
         # Reuse validator helpers to keep logic consistent
         self.validator = ValidateData(conn, cur, connection_params)
-        self.LEVELS: List[Tuple[str, List[str]]] = self.validator.LEVELS
-        self.ENDLEVELS_DIRECT_AGE = self.validator.ENDLEVELS_DIRECT_AGE
-        self.SKIP_METRIC_LEVELS = getattr(self.validator, 'SKIP_METRIC_LEVELS', {'11', '1111'})
+        self.LEVELS: List[Tuple[str, List[str]]] = LEVELS
+        self.ENDLEVELS_DIRECT_AGE = ENDLEVELS_DIRECT_AGE
+        self.SKIP_METRIC_LEVELS = SKIP_METRIC_LEVELS
 
     # -----------------------------
     # DB utilities
@@ -56,7 +57,7 @@ class Classifier:
                           AND table_name = 'classification_data' 
                           AND column_name = '{column}'
                     ) THEN
-                        ALTER TABLE "MPSCDresden".classification_data 
+                        ALTER TABLE "{self.schema}".classification_data 
                         ADD COLUMN "{column}" VARCHAR;
                     END IF;
                 END $$;
@@ -72,7 +73,7 @@ class Classifier:
                           AND table_name = 'classification_data' 
                           AND column_name = '{confidence_column}'
                     ) THEN
-                        ALTER TABLE "MPSCDresden".classification_data 
+                        ALTER TABLE "{self.schema}".classification_data 
                         ADD COLUMN "{confidence_column}" FLOAT;
                     END IF;
                 END $$;
@@ -80,7 +81,7 @@ class Classifier:
         self.conn.commit()
 
         # Gesamtconfidence
-        self.cur.execute("""
+        self.cur.execute(f"""
             DO $$
             BEGIN
                 IF NOT EXISTS (
@@ -89,7 +90,7 @@ class Classifier:
                       AND table_name = 'classification_data'
                       AND column_name = 'overall_confidence'
                 ) THEN
-                    ALTER TABLE "MPSCDresden".classification_data
+                    ALTER TABLE "{self.schema}".classification_data
                     ADD COLUMN overall_confidence FLOAT;
                 END IF;
             END $$;
@@ -97,7 +98,7 @@ class Classifier:
         self.conn.commit()
 
         # Metadaten-Spalten (correct column name: classification_source_id)
-        self.cur.execute("""
+        self.cur.execute(f"""
             DO $$
             BEGIN
                 IF NOT EXISTS (
@@ -106,7 +107,7 @@ class Classifier:
                       AND table_name = 'classification_data'
                       AND column_name = 'confidence'
                 ) THEN
-                    ALTER TABLE "MPSCDresden".classification_data
+                    ALTER TABLE "{self.schema}".classification_data
                     ADD COLUMN confidence FLOAT;
                 END IF;
                 IF NOT EXISTS (
@@ -115,7 +116,7 @@ class Classifier:
                       AND table_name = 'classification_data'
                       AND column_name = 'classification_source'
                 ) THEN
-                    ALTER TABLE "MPSCDresden".classification_data
+                    ALTER TABLE "{self.schema}".classification_data
                     ADD COLUMN classification_source VARCHAR;
                 END IF;
                 IF NOT EXISTS (
@@ -124,7 +125,7 @@ class Classifier:
                       AND table_name = 'classification_data'
                       AND column_name = 'classification_source_id'
                 ) THEN
-                    ALTER TABLE "MPSCDresden".classification_data
+                    ALTER TABLE "{self.schema}".classification_data
                     ADD COLUMN classification_source_id INTEGER;
                 END IF;
             END $$;
@@ -132,29 +133,36 @@ class Classifier:
         self.conn.commit()
 
     def load_classification_data(self) -> pd.DataFrame:
-        query = 'SELECT * FROM "MPSCDresden".classification_data'
+        query = f'SELECT * FROM "{self.schema}".classification_data'
         self.cur.execute(query)
         rows = self.cur.fetchall()
         colnames = [desc[0] for desc in self.cur.description]
         return pd.DataFrame(rows, columns=colnames)
 
-    def reset_level_columns(self, df: pd.DataFrame):
+    def reset_level_columns(self, df: pd.DataFrame, ids: Optional[List[int]] = None):
         """
         Setzt Level- und Confidence-Spalten auf NULL vor der neuen Klassifikation.
+        Wenn ``ids`` angegeben, werden nur die Zeilen mit diesen db_filter_ids zurückgesetzt.
         """
         level_columns = [lvl for (lvl, _) in self.LEVELS]
         set_null_sql = ', '.join([f'"{col}" = NULL, "{col}_confidence" = NULL' for col in level_columns])
+        if ids is not None:
+            id_list = ','.join(str(i) for i in ids)
+            where_clause = f'WHERE db_filter_id IN ({id_list})'
+        else:
+            where_clause = ''
         self.cur.execute(f'''
-            UPDATE "MPSCDresden".classification_data
+            UPDATE "{self.schema}".classification_data
             SET {set_null_sql},
                 "sst" = NULL,
                 "overall_confidence" = NULL,
                 "confidence" = NULL,
                 "classification_source" = NULL,
                 "classification_source_id" = NULL
+            {where_clause}
         ''')
         self.conn.commit()
-        QgsMessageLog.logMessage("classification_data Level-, Confidence- und Metadaten-Spalten zurückgesetzt.", level=Qgis.Info)
+        QgsMessageLog.logMessage("classification_data level, confidence, and metadata columns reset.", level=Qgis.Info)
 
     def batch_update_level(self, df: pd.DataFrame, level: str, indices: pd.Index, preds: pd.Series, confs: pd.Series):
         """
@@ -195,7 +203,7 @@ class Classifier:
                 update_rows.append((str(cls), float(conf) if pd.notna(conf) else None, int(df.at[idx, 'db_filter_id'])))
         if update_rows:
             self.cur.executemany(
-                f'UPDATE "MPSCDresden".classification_data SET "{level}" = %s, "{level}_confidence" = %s WHERE db_filter_id = %s',
+                f'UPDATE "{self.schema}".classification_data SET "{level}" = %s, "{level}_confidence" = %s WHERE db_filter_id = %s',
                 update_rows
             )
             self.conn.commit()
@@ -253,8 +261,8 @@ class Classifier:
                 ))
         if update_rows:
             self.cur.executemany(
-                '''
-                UPDATE "MPSCDresden".classification_data
+                f'''
+                UPDATE "{self.schema}".classification_data
                 SET "sst" = %s,
                     "overall_confidence" = %s,
                     "confidence" = %s,
@@ -305,21 +313,38 @@ class Classifier:
             with open(self.conf_report_path, "w", encoding="utf-8") as f:
                 f.writelines(report_lines)
 
-            QgsMessageLog.logMessage(f"Confidence-Report erstellt: {self.conf_report_path}", level=Qgis.Info)
+            QgsMessageLog.logMessage(f"Confidence report created: {self.conf_report_path}", level=Qgis.Info)
         except Exception as e:
-            QgsMessageLog.logMessage(f"Fehler beim Confidence-Report: {str(e)}", level=Qgis.Critical)
+            QgsMessageLog.logMessage(f"Error generating confidence report: {str(e)}", level=Qgis.Critical)
 
     # -----------------------------
     # Main classification flow (consistent with ValidateData)
     # -----------------------------
-    def classify(self):
+    def classify(self, confidence_threshold: Optional[float] = None):
         # Prepare (keine Kartierung-Übernahme notwendig)
         self.ensure_level_columns()
         all_data = self.load_classification_data()
         if all_data.empty:
-            QgsMessageLog.logMessage("Keine Daten in classification_data.", level=Qgis.Critical)
+            QgsMessageLog.logMessage("No data in classification_data.", level=Qgis.Critical)
             return
-        self.reset_level_columns(all_data)
+
+        if confidence_threshold is not None:
+            # Nur Gebäude mit Confidence < Schwelle (oder ohne Confidence) reklassifizieren
+            mask = all_data['confidence'].isna() | (all_data['confidence'] < confidence_threshold)
+            all_data = all_data[mask].copy()
+            if all_data.empty:
+                QgsMessageLog.logMessage(
+                    f"No buildings found with confidence below {confidence_threshold}.",
+                    level=Qgis.Warning
+                )
+                return
+            QgsMessageLog.logMessage(
+                f"Reclassification: {len(all_data)} buildings with confidence below {confidence_threshold}",
+                level=Qgis.Info
+            )
+            self.reset_level_columns(all_data, ids=all_data['db_filter_id'].tolist())
+        else:
+            self.reset_level_columns(all_data)
 
         # working frame with results + source to drive the pipeline
         all_data['results'] = None

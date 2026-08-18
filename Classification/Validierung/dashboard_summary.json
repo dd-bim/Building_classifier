@@ -1,0 +1,137 @@
+{
+    "funnel": {
+        "total": 5661,
+        "after_level_1": 5280,
+        "after_branch_11_12": 5144,
+        "final_correct": 4262,
+        "rates": {
+            "after_level_1": 0.9326974032856385,
+            "after_branch_11_12": 0.9086733792616145,
+            "final": 0.7528705175763999
+        }
+    },
+    "stage_errors": {
+        "level_1_errors": 381,
+        "branch_errors_11_12": 136,
+        "endlevel_errors": 882
+    },
+    "source_accuracy": {
+        "model": {
+            "count": 2827,
+            "correct": 1948,
+            "accuracy": 0.6890696851786346
+        },
+        "age_direct": {
+            "count": 1935,
+            "correct": 1675,
+            "accuracy": 0.8656330749354005
+        },
+        "rule": {
+            "count": 899,
+            "correct": 639,
+            "accuracy": 0.710789766407119
+        }
+    },
+    "end_to_end_accuracy": 0.7528705175763999,
+    "per_level_accuracy": {
+        "1": 0.9323799435028248,
+        "12": 0.9427083333333334,
+        "121": 1.0,
+        "122": 0.6949152542372882,
+        "112": 0.8693115519253208,
+        "113": 0.9519725557461407,
+        "114": 0.8586448598130841,
+        "111": 0.9910714285714286
+    },
+    "wrong_stage_counts": {
+        "level_1": 381,
+        "branch": 136,
+        "endlevel": 882,
+        "correct": 4262
+    },
+    "wrong_stage_by_path": {
+        "M": {
+            "total": 3248,
+            "level_1": 243,
+            "branch": 64,
+            "endlevel": 669,
+            "correct": 2272
+        },
+        "E": {
+            "total": 2185,
+            "level_1": 101,
+            "branch": 62,
+            "endlevel": 177,
+            "correct": 1845
+        },
+        "Other": {
+            "total": 228,
+            "level_1": 37,
+            "branch": 10,
+            "endlevel": 36,
+            "correct": 145
+        }
+    },
+    "wrong_turns_top": [
+        {
+            "stage": "level_1",
+            "expected": "M",
+            "predicted": "E",
+            "count": 182
+        },
+        {
+            "stage": "endlevel",
+            "expected": "MRO4",
+            "predicted": "MR5",
+            "count": 121
+        },
+        {
+            "stage": "endlevel",
+            "expected": "MRG3",
+            "predicted": "MR5",
+            "count": 91
+        },
+        {
+            "stage": "endlevel",
+            "expected": "MRO4",
+            "predicted": "MRG4",
+            "count": 70
+        },
+        {
+            "stage": "level_1",
+            "expected": "M",
+            "predicted": "Other",
+            "count": 61
+        },
+        {
+            "stage": "endlevel",
+            "expected": "MRO3",
+            "predicted": "MR5",
+            "count": 57
+        },
+        {
+            "stage": "level_1",
+            "expected": "E",
+            "predicted": "Other",
+            "count": 51
+        },
+        {
+            "stage": "level_1",
+            "expected": "E",
+            "predicted": "M",
+            "count": 50
+        },
+        {
+            "stage": "branch",
+            "expected": "EE",
+            "predicted": "ER",
+            "count": 50
+        },
+        {
+            "stage": "endlevel",
+            "expected": "MRG4",
+            "predicted": "MR5",
+            "count": 46
+        }
+    ]
+}

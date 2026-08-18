@@ -32,10 +32,10 @@
   <widget class="QTabWidget" name="tabWidget">
    <property name="geometry">
     <rect>
-     <x>30</x>
+     <x>20</x>
      <y>20</y>
-     <width>841</width>
-     <height>551</height>
+     <width>861</width>
+     <height>561</height>
     </rect>
    </property>
    <property name="font">
@@ -96,7 +96,7 @@
         </size>
        </property>
        <property name="text">
-        <string>Flurstücke.csv</string>
+        <string>Flurstuecke.csv</string>
        </property>
       </widget>
      </item>
@@ -307,6 +307,33 @@
       </widget>
      </item>
      <item>
+      <widget class="QLabel" name="label_24">
+       <property name="font">
+        <font>
+         <pointsize>10</pointsize>
+         <weight>75</weight>
+         <bold>true</bold>
+        </font>
+       </property>
+       <property name="text">
+        <string>8. Store relevant attributes of the CityDB</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="pushButton_mirror_citydb">
+       <property name="minimumSize">
+        <size>
+         <width>200</width>
+         <height>23</height>
+        </size>
+       </property>
+       <property name="text">
+        <string>Mirror CityDB</string>
+       </property>
+      </widget>
+     </item>
+     <item>
       <widget class="QLabel" name="label_7">
        <property name="font">
         <font>
@@ -316,7 +343,7 @@
         </font>
        </property>
        <property name="text">
-        <string>8. Filtering CityDB with relevant attributes</string>
+        <string>9. Filtering mirror of CityDB</string>
        </property>
       </widget>
      </item>
@@ -343,7 +370,7 @@
         </font>
        </property>
        <property name="text">
-        <string>9. Add building age data to CityDB</string>
+        <string>10. Add building age data to CityDB</string>
        </property>
       </widget>
      </item>
@@ -370,7 +397,7 @@
         </font>
        </property>
        <property name="text">
-        <string>10. Statistics of the attribute values of the buildings in txt-files</string>
+        <string>11. Statistics of the attribute values of the buildings in txt-files</string>
        </property>
       </widget>
      </item>
@@ -385,7 +412,7 @@
    </widget>
    <widget class="QWidget" name="tabWidgetPage3">
     <attribute name="title">
-     <string>Model - Training|Validation|Classification</string>
+     <string>Training|Validation|Classification</string>
     </attribute>
     <layout class="QVBoxLayout" name="verticalLayout_3">
      <item>
@@ -398,7 +425,7 @@
         </font>
        </property>
        <property name="text">
-        <string>11. Training the model for classification</string>
+        <string>12. Training the model for classification</string>
        </property>
       </widget>
      </item>
@@ -419,7 +446,7 @@
         </font>
        </property>
        <property name="text">
-        <string>12. Validation of the model and display in the dashboard</string>
+        <string>13. Validation of the model and display in the dashboard</string>
        </property>
       </widget>
      </item>
@@ -440,7 +467,7 @@
         </font>
        </property>
        <property name="text">
-        <string>13. Classification of new buildings based on the trained model</string>
+        <string>14. Classification of new buildings based on the trained model</string>
        </property>
       </widget>
      </item>
@@ -468,7 +495,7 @@
         </font>
        </property>
        <property name="text">
-        <string>14. Select a building you want to correct</string>
+        <string>15. Select a building you want to correct</string>
        </property>
       </widget>
      </item>
@@ -489,7 +516,7 @@
         </font>
        </property>
        <property name="text">
-        <string>15. Type in the correct value for the classification</string>
+        <string>16. Type in the correct value for the classification</string>
        </property>
       </widget>
      </item>
@@ -506,7 +533,7 @@
         </font>
        </property>
        <property name="text">
-        <string>16. Correct the value for 'sst'</string>
+        <string>17. Correct the value for 'sst'</string>
        </property>
       </widget>
      </item>
@@ -518,6 +545,34 @@
       </widget>
      </item>
      <item>
+      <widget class="QLabel" name="label_23">
+       <property name="font">
+        <font>
+         <pointsize>10</pointsize>
+         <weight>75</weight>
+         <bold>true</bold>
+        </font>
+       </property>
+       <property name="text">
+        <string>18. Adding additional mapping data</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="pushButton_additional_mapping">
+       <property name="text">
+        <string>Add data</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </widget>
+   <widget class="QWidget" name="tab_3">
+    <attribute name="title">
+     <string>Retraining</string>
+    </attribute>
+    <layout class="QVBoxLayout" name="verticalLayout_6">
+     <item>
       <widget class="QLabel" name="label_16">
        <property name="font">
         <font>
@@ -527,7 +582,7 @@
         </font>
        </property>
        <property name="text">
-        <string>17. Retrain the model</string>
+        <string>19. Retrain the model</string>
        </property>
       </widget>
      </item>
@@ -548,7 +603,7 @@
         </font>
        </property>
        <property name="text">
-        <string>18. Revalidate the model</string>
+        <string>20. Revalidate the model</string>
        </property>
       </widget>
      </item>
@@ -556,6 +611,39 @@
       <widget class="QPushButton" name="pushButton_revalidate">
        <property name="text">
         <string>Revalidate</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLabel" name="label_25">
+       <property name="font">
+        <font>
+         <pointsize>10</pointsize>
+         <weight>75</weight>
+         <bold>true</bold>
+        </font>
+       </property>
+       <property name="text">
+        <string>21. Confidence threshold for reclassification</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLineEdit" name="lineEdit_threshold_classi">
+       <property name="minimumSize">
+        <size>
+         <width>400</width>
+         <height>23</height>
+        </size>
+       </property>
+       <property name="text">
+        <string>Type in the threshold! (e.g. 0.8)</string>
+       </property>
+       <property name="dragEnabled">
+        <bool>false</bool>
+       </property>
+       <property name="clearButtonEnabled">
+        <bool>true</bool>
        </property>
       </widget>
      </item>
@@ -569,7 +657,7 @@
         </font>
        </property>
        <property name="text">
-        <string>19. Reclassify the buildings</string>
+        <string>22. Reclassify the buildings below the threshold</string>
        </property>
       </widget>
      </item>
@@ -597,7 +685,7 @@
         </font>
        </property>
        <property name="text">
-        <string>20. Update your citydb_filter relation with the building classes</string>
+        <string>21. Update your citydb_filter relation with the building classes</string>
        </property>
       </widget>
      </item>
@@ -618,7 +706,7 @@
         </font>
        </property>
        <property name="text">
-        <string>21. Update your CityGML files with the additional attribute 'sst' and the building class</string>
+        <string>22. Update your CityGML files with the additional attribute 'sst' and the building class</string>
        </property>
       </widget>
      </item>
@@ -626,6 +714,27 @@
       <widget class="QPushButton" name="pushButton_updatecitygml">
        <property name="text">
         <string>Update CityGML</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLabel" name="label_22">
+       <property name="font">
+        <font>
+         <pointsize>10</pointsize>
+         <weight>75</weight>
+         <bold>true</bold>
+        </font>
+       </property>
+       <property name="text">
+        <string>23. Update your 3DCityDB with the additional attribute 'sst' and the building class</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="pushButton_updatecitydb">
+       <property name="text">
+        <string>Update CityDB</string>
        </property>
       </widget>
      </item>

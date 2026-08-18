@@ -1,11 +1,11 @@
 import os
 import csv
 import numpy as np
-import configparser
 from scipy import stats
 from qgis.core import QgsProject, QgsMessageLog, Qgis
 from PyQt5.QtCore import QVariant
 from collections import Counter
+from .config_loader import get_config
 
 class BuildingValuesProcessor:
     def __init__(self):
@@ -13,11 +13,8 @@ class BuildingValuesProcessor:
         Initialisiert den BuildingValuesProcessor und lädt relevante Dateipfade aus der Konfiguration.
         """
         self.layer_name = 'citydb_filter'
-        
-        # Lade Pfade aus der config.ini
-        config = configparser.ConfigParser()
-        config.read(os.path.join(os.path.dirname(__file__), 'config.ini'))
-        
+
+        config = get_config()
         self.output_file = os.path.join(os.path.dirname(__file__), config.get('Paths', 'building_values_file'))
         self.separate_output_file = os.path.join(os.path.dirname(__file__), config.get('Paths', 'values_separate_file'))
         self.csv_output_file = os.path.join(os.path.dirname(__file__), config.get('Paths', 'building_values_csv_file'))

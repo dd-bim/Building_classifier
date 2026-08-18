@@ -6,8 +6,8 @@ RandomForest Model Training Summary for 121
 🔹 Best Parameters:
 {'class_weight': 'balanced', 'max_depth': 10, 'min_samples_leaf': 1, 'min_samples_split': 2, 'n_estimators': 100}
 
-🔹 Training Samples: 49
-🔹 CV Folds: 3
+🔹 Training Samples: 299
+🔹 CV Folds: 5
 🔹 Features Used: 24
 
 🔹 Top 10 Feature Importances:

@@ -5,58 +5,32 @@ import numpy as np
 from collections import Counter
 from sklearn.model_selection import StratifiedShuffleSplit, GridSearchCV
 from sklearn.ensemble import RandomForestClassifier
-from sklearn.preprocessing import LabelEncoder
 import joblib
-import configparser
 from qgis.core import QgsMessageLog, Qgis, QgsProject, QgsDataSourceUri, QgsVectorLayer
 
-from .mapping_processor import MappingProcessor
+from .config_loader import get_config
+from .label_encoder import LabelEncoderManager
+from .classification_config import (
+    ALL_FEATURES, CATEGORICAL, CORE_FEATURES, SIMPLE_GEOM_FEATURES,
+    ADV_GEOM_FEATURES, NEIGH_FEATURES, RATIO_FEATURES,
+)
 
 
-class LabelEncoderManager:
-    def __init__(self, model_dir):
-        self.model_dir = model_dir
-        self.label_encoders_path = os.path.join(model_dir, 'label_encoders.pkl')
-        self.label_encoders = self.load_label_encoders()
-
-    def load_label_encoders(self):
-        if os.path.exists(self.label_encoders_path):
-            with open(self.label_encoders_path, 'rb') as f:
-                label_encoders = joblib.load(f)
-        else:
-            label_encoders = {}
-
-        for feature in ['roof_type', 'development_type_code', 'neighbour_majority_class', 'building_age']:
-            if feature not in label_encoders:
-                label_encoders[feature] = LabelEncoder()
-        
-        return label_encoders
-
-    def save_label_encoders(self):
-        with open(self.label_encoders_path, 'wb') as f:
-            joblib.dump(self.label_encoders, f)
-
-    def get_label_encoders(self):
-        return self.label_encoders
-    
 class ModelTrainer:  
     def __init__(self, conn, cur, connection_params):
         """
-        Initialisiert den ModelTrainer mit DB-Verbindung, LabelEncodern und MappingProcessor.
+        Initialisiert den ModelTrainer mit DB-Verbindung und LabelEncodern.
         """
         self.connection_params = connection_params
         self.conn = conn
         self.cur = cur
-        
-        config = configparser.ConfigParser()
-        config.read(os.path.join(os.path.dirname(__file__), 'config.ini'))
-        
+
+        config = get_config()
+        self.schema = config.get('Database', 'schema')
         self.model_dir = os.path.join(os.path.dirname(__file__), config.get('Paths', 'model_dir'))
-        
+
         self.label_encoder_manager = LabelEncoderManager(self.model_dir)
         self.label_encoders = self.label_encoder_manager.get_label_encoders()
-        
-        self.mapping_processor = MappingProcessor(conn, cur, connection_params)
             
     def get_label_encoders(self):
         """
@@ -88,48 +62,15 @@ class ModelTrainer:
         - warm_start=True: Vorhandene LabelEncoder nur transformieren, Fehler bei unbekannten Kategorien.
         """
 
-        core_features = [
-            'roof_type', 'storeys_above_ground', 'building_footprint', 
-            'roof_ridge_height', 'eaves_height', 'storey_height', 
-            'number_roof_surfaces', 'roof_slope', 'development_type_code',
-            'building_age'
-        ]
-        
-        # Einfache geometrische Features aus citydb_processor.py (absolute Dimensionen)
-        simple_geometric_features = [
-            'length_footprint',     # Gebäudelänge
-            'width_footprint',      # Gebäudebreite
-            'building_volume'       # Gebäudevolumen (absolut)
-        ]
-        
-        # Advanced geometric features (geometrische Charakteristika)
-        geometric_features = [
-            'compactness',         # Form-Kompaktheit
-            'convexity',          # Konvexität der Form  
-            'rectangularity'      # Rechteckigkeit
-        ]
-        
-        # Neighborhood features (Kontext)
-        neighbourhood_features = [
-            'neighbour_density', 'neighbour_avg_size', 'neighbour_min_distance', 'neighbour_majority_class'
-        ]
-    
-        ratio_features = [
-            'ground_area_per_storey',  # Grundfläche pro Stockwerk
-            'height_to_area_ratio',    # Höhen-zu-Flächen-Verhältnis
-            'footprint_ratio',          # Längen-zu-Breiten-Verhältnis
-            'roof_height_ratio'
-        ]
-        
-        features = core_features + simple_geometric_features + geometric_features + neighbourhood_features + ratio_features
+        features = ALL_FEATURES
         X = data[features].copy()
         y = data[target_column]
 
         # building_age wird als kategorisches Feature encoded
-        for feature in ['roof_type', 'development_type_code', 'neighbour_majority_class', 'building_age']:
+        for feature in CATEGORICAL:
             if feature in X.columns and feature in self.label_encoders:
                 if not isinstance(X[feature].iloc[0], str):
-                    QgsMessageLog.logMessage(f"Warnung: {feature} ist kein String vor Label-Encoding!", level=Qgis.Warning)
+                    QgsMessageLog.logMessage(f"Warning: {feature} is not a string before label encoding!", level=Qgis.Warning)
                 # Missing-Handling konsistent zum bisherigen Verhalten
                 if feature == 'building_age':
                     X[feature] = X[feature].apply(lambda x: str(x) if pd.notna(x) else "unknown")
@@ -230,10 +171,10 @@ class ModelTrainer:
         Teilt die Daten in Trainings-, Validierungs- und Klassifikationsdaten auf und speichert sie in der Datenbank.
         """
         try:
-            data = self.load_data_from_db('"MPSCDresden".citydb_filter')
+            data = self.load_data_from_db(f'"{self.schema}".citydb_filter')
 
             if data.empty:
-                QgsMessageLog.logMessage("Die Tabelle 'citydb_filter' enthält keine Daten.", level=Qgis.Critical)
+                QgsMessageLog.logMessage("Table 'citydb_filter' contains no data.", level=Qgis.Critical)
                 return
 
             target_column = 'sst'
@@ -243,13 +184,13 @@ class ModelTrainer:
 
             data_with_target = data.dropna(subset=[target_column])
             if data_with_target.empty:
-                QgsMessageLog.logMessage("Keine Daten mit Zielvariablen vorhanden.", level=Qgis.Critical)
+                QgsMessageLog.logMessage("No data with target variables available.", level=Qgis.Critical)
                 return
             
             data_with_target = self.filter_valid_classes(data_with_target, target_column)
 
             if data_with_target.empty:
-                QgsMessageLog.logMessage("Keine gültigen Daten nach dem Entfernen von Klassen mit weniger als 2 Vertretern.", level=Qgis.Critical)
+                QgsMessageLog.logMessage("No valid data after removing classes with fewer than 2 members.", level=Qgis.Critical)
                 return
 
             stratified_split = StratifiedShuffleSplit(n_splits=1, test_size=0.2, random_state=42)
@@ -261,50 +202,50 @@ class ModelTrainer:
             validation_data.loc[:, 'training'] = 'v'
             classification_data.loc[:, 'training'] = 'c'
 
-            self.cur.execute('''
-                ALTER TABLE "MPSCDresden".citydb_filter ADD COLUMN IF NOT EXISTS "training" VARCHAR(1);
+            self.cur.execute(f'''
+                ALTER TABLE "{self.schema}".citydb_filter ADD COLUMN IF NOT EXISTS "training" VARCHAR(1);
             ''')
             self.conn.commit()
 
             combined_data = pd.concat([train_data, validation_data, classification_data])
             for index, row in combined_data.iterrows():
                 self.cur.execute(f'''
-                    UPDATE "MPSCDresden".citydb_filter
+                    UPDATE "{self.schema}".citydb_filter
                     SET "training" = %s
                     WHERE db_filter_id = %s
                 ''', (row['training'], row['db_filter_id']))
             self.conn.commit()
 
             # Tabellen für Training, Validierung und Klassifikation erstellen
-            self.cur.execute('''
-                DROP TABLE IF EXISTS "MPSCDresden".train_data;
-                CREATE TABLE "MPSCDresden".train_data AS
-                SELECT *, NULL::VARCHAR AS results FROM "MPSCDresden".citydb_filter WHERE "training" = 't';
-                ALTER TABLE "MPSCDresden".train_data
+            self.cur.execute(f'''
+                DROP TABLE IF EXISTS "{self.schema}".train_data;
+                CREATE TABLE "{self.schema}".train_data AS
+                SELECT *, NULL::VARCHAR AS results FROM "{self.schema}".citydb_filter WHERE "training" = 't';
+                ALTER TABLE "{self.schema}".train_data
                 ADD COLUMN train_id SERIAL PRIMARY KEY,
-                ADD CONSTRAINT fk_gml_id FOREIGN KEY (gml_id) REFERENCES "MPSCDresden".citydb_filter (gml_id),
+                ADD CONSTRAINT fk_gml_id FOREIGN KEY (gml_id) REFERENCES "{self.schema}".citydb_filter (gml_id),
                 ADD CONSTRAINT train_data_db_filter_id_unique UNIQUE (db_filter_id);
 
-                DROP TABLE IF EXISTS "MPSCDresden".validation_data;
-                CREATE TABLE "MPSCDresden".validation_data AS
-                SELECT *, NULL::VARCHAR AS results FROM "MPSCDresden".citydb_filter WHERE "training" = 'v';
-                ALTER TABLE "MPSCDresden".validation_data
+                DROP TABLE IF EXISTS "{self.schema}".validation_data;
+                CREATE TABLE "{self.schema}".validation_data AS
+                SELECT *, NULL::VARCHAR AS results FROM "{self.schema}".citydb_filter WHERE "training" = 'v';
+                ALTER TABLE "{self.schema}".validation_data
                 ADD COLUMN validation_id SERIAL PRIMARY KEY,
-                ADD CONSTRAINT fk_gml_id FOREIGN KEY (gml_id) REFERENCES "MPSCDresden".citydb_filter (gml_id),
+                ADD CONSTRAINT fk_gml_id FOREIGN KEY (gml_id) REFERENCES "{self.schema}".citydb_filter (gml_id),
                 ADD CONSTRAINT validation_data_db_filter_id_unique UNIQUE (db_filter_id);
 
-                DROP TABLE IF EXISTS "MPSCDresden".classification_data CASCADE;
-                CREATE TABLE "MPSCDresden".classification_data AS
-                SELECT *, NULL::VARCHAR AS results FROM "MPSCDresden".citydb_filter WHERE "training" = 'c';
-                ALTER TABLE "MPSCDresden".classification_data
+                DROP TABLE IF EXISTS "{self.schema}".classification_data CASCADE;
+                CREATE TABLE "{self.schema}".classification_data AS
+                SELECT *, NULL::VARCHAR AS results FROM "{self.schema}".citydb_filter WHERE "training" = 'c';
+                ALTER TABLE "{self.schema}".classification_data
                 ADD COLUMN classification_id SERIAL PRIMARY KEY,
-                ADD CONSTRAINT fk_gml_id FOREIGN KEY (gml_id) REFERENCES "MPSCDresden".citydb_filter (gml_id),
+                ADD CONSTRAINT fk_gml_id FOREIGN KEY (gml_id) REFERENCES "{self.schema}".citydb_filter (gml_id),
                 ADD CONSTRAINT classification_data_db_filter_id_unique UNIQUE (db_filter_id);
             ''')
             self.conn.commit()
 
         except Exception as e:
-            QgsMessageLog.logMessage(f"Fehler beim Aufteilen der Daten: {str(e)}", level=Qgis.Critical)
+            QgsMessageLog.logMessage(f"Error splitting the data: {str(e)}", level=Qgis.Critical)
             import traceback
             QgsMessageLog.logMessage(traceback.format_exc(), level=Qgis.Critical)
             raise e
@@ -394,7 +335,7 @@ class ModelTrainer:
         try:
             # Datenvalidierung
             if X_train.empty or y_train.empty:
-                QgsMessageLog.logMessage(f"Keine Daten für das Training von {level_name} vorhanden.", level=Qgis.Warning)
+                QgsMessageLog.logMessage(f"No data available for training {level_name}.", level=Qgis.Warning)
                 return None, None
 
             # Nur gültige Zielklassen verwenden
@@ -402,19 +343,19 @@ class ModelTrainer:
             X_train = X_train[valid_indices]
             y_train = y_train[valid_indices]
             if y_train.empty:
-                QgsMessageLog.logMessage(f"Keine gültigen Zielwerte für {level_name}.", level=Qgis.Warning)
+                QgsMessageLog.logMessage(f"No valid target values for {level_name}.", level=Qgis.Warning)
                 return None, None
 
             # Klassen mit weniger als 2 Einträgen filtern
             class_counts = y_train.value_counts()
             insufficient_classes = class_counts[class_counts < 2].index.tolist()
             if insufficient_classes:
-                QgsMessageLog.logMessage(f"Unzureichende Klassen für {level_name}: {insufficient_classes}", level=Qgis.Warning)
+                QgsMessageLog.logMessage(f"Insufficient classes for {level_name}: {insufficient_classes}", level=Qgis.Warning)
                 valid_indices = ~y_train.isin(insufficient_classes)
                 X_train = X_train[valid_indices]
                 y_train = y_train[valid_indices]
             if X_train.empty or y_train.empty:
-                QgsMessageLog.logMessage(f"Keine validen Daten nach Filterung für {level_name}.", level=Qgis.Warning)
+                QgsMessageLog.logMessage(f"No valid data after filtering for {level_name}.", level=Qgis.Warning)
                 return None, None
 
             # NaN-Behandlung
@@ -426,6 +367,10 @@ class ModelTrainer:
             for col in categorical_cols:
                 mode_value = X_train[col].mode().iloc[0] if not X_train[col].mode().empty else 'unknown'
                 X_train[col] = X_train[col].fillna(mode_value)
+            # Sicherheitsnetz: alle verbleibenden object-dtype-Spalten zu Integer kodieren,
+            # da sklearn ausschließlich numerische Werte akzeptiert.
+            for col in X_train.select_dtypes(include=['object', 'category']).columns:
+                X_train[col], _ = pd.factorize(X_train[col])
 
             # WARMSTART: vorhandenes Modell laden und erweitern
             if warm_start:
@@ -443,9 +388,9 @@ class ModelTrainer:
                             )
                             if prev_classes != y_classes or prev_model.n_classes_ != len(y_classes) or mixed_trees:
                                 QgsMessageLog.logMessage(
-                                    f"Klassenänderung oder inkonsistente Bäume für {level_name}: "
-                                    f"alt={sorted(prev_classes)}, neu={sorted(y_classes)}, "
-                                    f"mixed_trees={mixed_trees}. Fallback auf Full-Retrain.",
+                                    f"Class change or inconsistent trees for {level_name}: "
+                                    f"old={sorted(prev_classes)}, new={sorted(y_classes)}, "
+                                    f"mixed_trees={mixed_trees}. Falling back to full retrain.",
                                     level=Qgis.Warning
                                 )
                             else:
@@ -454,7 +399,7 @@ class ModelTrainer:
                                 new_n = old_n + add_trees
                                 prev_model.set_params(warm_start=True, n_estimators=new_n, n_jobs=-1, random_state=42)
                                 QgsMessageLog.logMessage(
-                                    f"Warmstart {level_name}: Bäume {old_n}->{new_n}", level=Qgis.Info
+                                    f"Warm start {level_name}: trees {old_n}->{new_n}", level=Qgis.Info
                                 )
                                 prev_model.fit(X_train, y_train)
                                 importance_df = pd.DataFrame({
@@ -464,7 +409,7 @@ class ModelTrainer:
                                 joblib.dump(prev_model, model_path)
                                 return prev_model, importance_df
                     except Exception as e:
-                        QgsMessageLog.logMessage(f"Warmstart-Laden fehlgeschlagen ({level_name}): {e}", level=Qgis.Warning)
+                        QgsMessageLog.logMessage(f"Warm-start loading failed ({level_name}): {e}", level=Qgis.Warning)
                 # Falls kein Modell/Fehler/Neue Klassen: Full-Retrain (weiter unten)
 
             # ADAPTIVE CLASS WEIGHTS & GridSearch (Full-Retrain)
@@ -488,12 +433,12 @@ class ModelTrainer:
                 scoring='balanced_accuracy',
                 verbose=1
             )
-            QgsMessageLog.logMessage(f"Starte RandomForest GridSearch für {level_name} mit {n_samples} Samples", level=Qgis.Info)
+            QgsMessageLog.logMessage(f"Starting RandomForest GridSearch for {level_name} with {n_samples} samples", level=Qgis.Info)
             grid_search.fit(X_train, y_train)
             best_model = grid_search.best_estimator_
             best_score = grid_search.best_score_
             QgsMessageLog.logMessage(
-                f"RandomForest für {level_name}: Score={best_score:.4f}, Params={grid_search.best_params_}",
+                f"RandomForest for {level_name}: Score={best_score:.4f}, Params={grid_search.best_params_}",
                 level=Qgis.Info
             )
             importance_df = pd.DataFrame({
@@ -523,7 +468,7 @@ class ModelTrainer:
             return best_model, importance_df
 
         except Exception as e:
-            QgsMessageLog.logMessage(f"Fehler beim Training von {level_name}: {str(e)}", level=Qgis.Critical)
+            QgsMessageLog.logMessage(f"Error training {level_name}: {str(e)}", level=Qgis.Critical)
             import traceback
             QgsMessageLog.logMessage(traceback.format_exc(), level=Qgis.Critical)
             return None, None
@@ -535,15 +480,15 @@ class ModelTrainer:
         """
         # KEIN Re-Splitting beim Warmstart – train_data wird als Basis genutzt
         if warm_start:
-            QgsMessageLog.logMessage("Warm Start: Bestehende Modelle mit neuen Trainingsdaten weitertrainieren.", level=Qgis.Info)
+            QgsMessageLog.logMessage("Warm start: continuing training of existing models with new training data.", level=Qgis.Info)
             return self.train_warm_start()
 
         # Lade die Trainingsdaten
-        QgsMessageLog.logMessage("Training aller Level gestartet...", level=Qgis.Info)
-        train_data = self.load_data_from_db('"MPSCDresden".train_data')
+        QgsMessageLog.logMessage("Training started for all levels...", level=Qgis.Info)
+        train_data = self.load_data_from_db(f'"{self.schema}".train_data')
         train_data = self.filter_valid_classes(train_data, 'sst')
         if train_data.empty:
-            QgsMessageLog.logMessage("Keine gültigen Trainingsdaten nach Filterung der Klassen mit weniger als 2 Einträgen.", level=Qgis.Critical)
+            QgsMessageLog.logMessage("No valid training data after filtering classes with fewer than 2 entries.", level=Qgis.Critical)
             return
 
         train_data['results'] = None
@@ -555,7 +500,7 @@ class ModelTrainer:
                 train_data[level_name] = train_data.apply(logic, axis=1)
                 level_data = train_data[train_data[level_name].isin(target_names)]
                 if level_data.empty:
-                    QgsMessageLog.logMessage(f"Keine gültigen Daten für Level {level_name} nach Filterung.", level=Qgis.Warning)
+                    QgsMessageLog.logMessage(f"No valid data for level {level_name} after filtering.", level=Qgis.Warning)
                     continue
                 # Encoder fit (vollständiges Training)
                 X_train, y_train = self.prepare_data(level_data, level_name, warm_start=False)
@@ -571,7 +516,7 @@ class ModelTrainer:
         try:
             self.save_label_encoders()
         except Exception as e:
-            QgsMessageLog.logMessage(f"Warnung: LabelEncoder konnten nicht gespeichert werden: {e}", level=Qgis.Warning)
+            QgsMessageLog.logMessage(f"Warning: LabelEncoders could not be saved: {e}", level=Qgis.Warning)
         QgsMessageLog.logMessage("Models saved for all levels", level=Qgis.Info)
         return train_data
     
@@ -581,30 +526,30 @@ class ModelTrainer:
         - nutzt bestehende train_data
         - verwendet prepare_data(..., warm_start=True), Fallback auf prepare_data(..., False) bei neuen Kategorien
         """
-        QgsMessageLog.logMessage("Warm Start: Bestehende Modelle mit neuen Trainingsdaten weitertrainieren.", level=Qgis.Info)
+        QgsMessageLog.logMessage("Warm start: continuing training of existing models with new training data.", level=Qgis.Info)
 
         # Rekonstruiere train/validation Tabellen aus citydb_filter.training Flags,
         # damit neu hinzugefügte Nachkartierungen sicher in den Tabellen landen.
         try:
             # IDs aus citydb_filter holen
-            self.cur.execute('SELECT db_filter_id FROM "MPSCDresden".citydb_filter WHERE training = %s', ('t',))
+            self.cur.execute(f'SELECT db_filter_id FROM "{self.schema}".citydb_filter WHERE training = %s', ('t',))
             train_ids = [int(r[0]) for r in self.cur.fetchall()]
-            self.cur.execute('SELECT db_filter_id FROM "MPSCDresden".citydb_filter WHERE training = %s', ('v',))
+            self.cur.execute(f'SELECT db_filter_id FROM "{self.schema}".citydb_filter WHERE training = %s', ('v',))
             val_ids = [int(r[0]) for r in self.cur.fetchall()]
 
             # Tabellen neu befüllen (update_train_and_validation_tables erwartet DataFrames mit db_filter_id)
             train_df = pd.DataFrame({'db_filter_id': train_ids})
             val_df = pd.DataFrame({'db_filter_id': val_ids})
             self.update_train_and_validation_tables(train_df, val_df)
-            QgsMessageLog.logMessage(f"Train/Validation Tabellen vor Warm-Start rekonstruiert: {len(train_ids)} train, {len(val_ids)} val", level=Qgis.Info)
+            QgsMessageLog.logMessage(f"Train/validation tables reconstructed before warm start: {len(train_ids)} train, {len(val_ids)} val", level=Qgis.Info)
         except Exception as e:
-            QgsMessageLog.logMessage(f"Warnung: Rekonstruktion der Train/Validation Tabellen vor Warm-Start fehlgeschlagen: {e}", level=Qgis.Warning)
+            QgsMessageLog.logMessage(f"Warning: Reconstruction of train/validation tables before warm start failed: {e}", level=Qgis.Warning)
             # Fortfahren: versuche trotzdem die bestehenden train_data zu laden
 
-        train_data = self.load_data_from_db('"MPSCDresden".train_data')
+        train_data = self.load_data_from_db(f'"{self.schema}".train_data')
         train_data = self.filter_valid_classes(train_data, 'sst')
         if train_data.empty:
-            QgsMessageLog.logMessage("Keine gültigen Trainingsdaten nach Filterung der Klassen mit weniger als 2 Einträgen.", level=Qgis.Critical)
+            QgsMessageLog.logMessage("No valid training data after filtering classes with fewer than 2 entries.", level=Qgis.Critical)
             return
 
         train_data['results'] = None
@@ -616,14 +561,14 @@ class ModelTrainer:
                 train_data[level_name] = train_data.apply(logic, axis=1)
                 level_data = train_data[train_data[level_name].isin(target_names)]
                 if level_data.empty:
-                    QgsMessageLog.logMessage(f"Keine gültigen Daten für Level {level_name} nach Filterung.", level=Qgis.Warning)
+                    QgsMessageLog.logMessage(f"No valid data for level {level_name} after filtering.", level=Qgis.Warning)
                     continue
 
                 # Warmstart-Encoder verwenden, bei Problemen Full-Retrain
                 try:
                     X_train, y_train = self.prepare_data(level_data, level_name, warm_start=True)
                 except Exception as enc_err:
-                    QgsMessageLog.logMessage(f"Encoder-Problem ({level_name}): {enc_err}. Fallback auf Full-Retrain.", level=Qgis.Warning)
+                    QgsMessageLog.logMessage(f"Encoder problem ({level_name}): {enc_err}. Falling back to full retrain.", level=Qgis.Warning)
                     X_train, y_train = self.prepare_data(level_data, level_name, warm_start=False)
 
                 trained_model, importance_df = self.train_level(
@@ -639,9 +584,9 @@ class ModelTrainer:
         try:
             self.save_label_encoders()
         except Exception as e:
-            QgsMessageLog.logMessage(f"Warnung: LabelEncoder konnten nicht gespeichert werden: {e}", level=Qgis.Warning)
+            QgsMessageLog.logMessage(f"Warning: LabelEncoders could not be saved: {e}", level=Qgis.Warning)
 
-        QgsMessageLog.logMessage("Warmstart-Training abgeschlossen.", level=Qgis.Info)
+        QgsMessageLog.logMessage("Warm-start training completed.", level=Qgis.Info)
         return train_data
 
     def filter_valid_classes(self, data, target_column='sst', min_samples=2):
@@ -663,7 +608,7 @@ class ModelTrainer:
         if len(valid_classes) < len(class_counts):
             removed_classes = class_counts[class_counts < min_samples].index.tolist()
             QgsMessageLog.logMessage(
-                f"Entfernte Klassen mit < {min_samples} Samples: {removed_classes}", 
+                f"Removed classes with fewer than {min_samples} samples: {removed_classes}",
                 level=Qgis.Info
             )
         
@@ -680,11 +625,11 @@ class ModelTrainer:
             val_ids = validation_data['db_filter_id'].dropna().astype(int).tolist()
 
             # Wenn keine IDs vorhanden, Tabellen leeren und zurück
-            self.cur.execute('TRUNCATE "MPSCDresden".train_data RESTART IDENTITY CASCADE')
-            self.cur.execute('TRUNCATE "MPSCDresden".validation_data RESTART IDENTITY CASCADE')
+            self.cur.execute(f'TRUNCATE "{self.schema}".train_data RESTART IDENTITY CASCADE')
+            self.cur.execute(f'TRUNCATE "{self.schema}".validation_data RESTART IDENTITY CASCADE')
             self.conn.commit()
             if not train_ids and not val_ids:
-                QgsMessageLog.logMessage("Keine IDs für Train/Validation vorhanden. Tabellen geleert.", level=Qgis.Warning)
+                QgsMessageLog.logMessage("No IDs available for train/validation. Tables cleared.", level=Qgis.Warning)
                 return
 
             # Hilfsfunktion zum Laden geordneter Spaltennamen
@@ -722,9 +667,9 @@ class ModelTrainer:
             if train_ids:
                 self.cur.execute(
                     f'''
-                    INSERT INTO "MPSCDresden".train_data ({train_cols_sql})
+                    INSERT INTO "{self.schema}".train_data ({train_cols_sql})
                     SELECT {train_select_sql}
-                    FROM "MPSCDresden".citydb_filter cf
+                    FROM "{self.schema}".citydb_filter cf
                     WHERE cf.db_filter_id = ANY(%s)
                     ''',
                     (train_ids,)
@@ -734,20 +679,20 @@ class ModelTrainer:
             if val_ids:
                 self.cur.execute(
                     f'''
-                    INSERT INTO "MPSCDresden".validation_data ({val_cols_sql})
+                    INSERT INTO "{self.schema}".validation_data ({val_cols_sql})
                     SELECT {val_select_sql}
-                    FROM "MPSCDresden".citydb_filter cf
+                    FROM "{self.schema}".citydb_filter cf
                     WHERE cf.db_filter_id = ANY(%s)
                     ''',
                     (val_ids,)
                 )
 
             self.conn.commit()
-            QgsMessageLog.logMessage("Train/Validation Tabellen für Retraining aktualisiert.", level=Qgis.Info)
-            
+            QgsMessageLog.logMessage("Train/validation tables updated for retraining.", level=Qgis.Info)
+
         except Exception as e:
             self.conn.rollback()
-            QgsMessageLog.logMessage(f"Fehler beim Aktualisieren der Train/Validation Tabellen: {str(e)}", level=Qgis.Critical)
+            QgsMessageLog.logMessage(f"Error updating the train/validation tables: {str(e)}", level=Qgis.Critical)
             raise e
 
     def load_and_visualize_training_data(self):
@@ -780,14 +725,14 @@ class ModelTrainer:
 
             layer = QgsVectorLayer(uri.uri(False), layer_name, 'postgres')
             if not layer.isValid():
-                QgsMessageLog.logMessage("Training Data Layer ist ungültig", level=Qgis.Critical)
+                QgsMessageLog.logMessage("Training Data layer is invalid", level=Qgis.Critical)
                 return
 
             QgsProject.instance().addMapLayer(layer)
-            QgsMessageLog.logMessage("Training Data Layer erfolgreich geladen.", level=Qgis.Info)
-            
+            QgsMessageLog.logMessage("Training Data layer loaded successfully.", level=Qgis.Info)
+
         except Exception as e:
-            QgsMessageLog.logMessage(f"Fehler beim Laden der Trainingsdaten: {str(e)}", level=Qgis.Critical)
+            QgsMessageLog.logMessage(f"Error loading the training data: {str(e)}", level=Qgis.Critical)
     
     def save_model(self, model, level_name):
         
@@ -812,12 +757,12 @@ class ModelTrainer:
                 json.dump(importance_data, f, indent=4)
 
             QgsMessageLog.logMessage(
-                f"Feature Importance für Level {level_name} gespeichert: {importance_file}",
+                f"Feature importance for level {level_name} saved: {importance_file}",
                 level=Qgis.Info
             )
         except Exception as e:
             QgsMessageLog.logMessage(
-                f"Fehler beim Speichern der Feature Importance für Level {level_name}: {str(e)}",
+                f"Error saving feature importance for level {level_name}: {str(e)}",
                 level=Qgis.Critical
             )
             

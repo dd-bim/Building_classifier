@@ -2,10 +2,12 @@ import pandas as pd
 import os
 from lxml import etree
 from concurrent.futures import ThreadPoolExecutor
-import configparser
 import random
 from qgis.core import QgsMessageLog, Qgis, QgsVectorLayer, QgsDataSourceUri, QgsProject
-from xml.dom.minidom import parseString
+from .config_loader import get_config
+
+CITYGML_BATCH_SIZE = 10
+CITYGML_MAX_WORKERS = 4
 
 class CityGMLUpdater:
     """
@@ -28,17 +30,11 @@ class CityGMLUpdater:
         self.conn = conn
         self.cur = cur
         self.connection_params = connection_params
-        
-        # Lade die Konfiguration aus der config.ini
-        self.config = configparser.ConfigParser()
-        config_path = os.path.join(os.path.dirname(__file__), 'config.ini')
-        if not os.path.exists(config_path):
-            raise FileNotFoundError(f"Die Konfigurationsdatei '{config_path}' wurde nicht gefunden.")
-        self.config.read(config_path)
 
-        # Speichere die Pfade als Attribute
-        self.input_dir = self.config.get('Paths', 'input_citygml_dir', fallback=None)
-        self.output_dir = self.config.get('Paths', 'output_citygml_dir', fallback=None)
+        config = get_config()
+        self.schema = config.get('Database', 'schema')
+        self.input_dir = config.get('Paths', 'input_citygml_dir', fallback=None)
+        self.output_dir = config.get('Paths', 'output_citygml_dir', fallback=None)
 
         if not self.input_dir or not self.output_dir:
             raise ValueError("Die Pfade 'input_citygml_dir' und 'output_citygml_dir' müssen in der config.ini definiert sein.")
@@ -48,9 +44,9 @@ class CityGMLUpdater:
         Lädt die Klassifikationsergebnisse (gml_id, sst, confidence, classification_source_id, classification_source) aus der Datenbank.
         :return: DataFrame mit den Spalten gml_id, sst, confidence, classification_source_id, classification_source
         """
-        query = '''
+        query = f'''
             SELECT gml_id, sst, overall_confidence, classification_source_id, classification_source
-            FROM "MPSCDresden".classification_data
+            FROM "{self.schema}".classification_data
         '''
         self.cur.execute(query)
         rows = self.cur.fetchall()
@@ -67,10 +63,11 @@ class CityGMLUpdater:
         try:
             classification_results = self.load_classification_results()
             if classification_results.empty:
-                QgsMessageLog.logMessage("Keine Klassifizierungsergebnisse gefunden.", level=Qgis.Warning)
+                QgsMessageLog.logMessage("No classification results found.", level=Qgis.Warning)
                 return
 
             successful_updates = 0
+            mirror_updates = 0
 
             for index, row in classification_results.iterrows():
                 gml_id = row['gml_id']
@@ -80,8 +77,8 @@ class CityGMLUpdater:
                 classification_source = row['classification_source']
 
                 # Prüfe, ob das Attribut bereits existiert
-                check_query = """
-                SELECT sst, confidence, classification_source_id, classification_source FROM "MPSCDresden".citydb_filter 
+                check_query = f"""
+                SELECT sst, confidence, classification_source_id, classification_source FROM "{self.schema}".citydb_filter
                 WHERE gml_id = %s
                 """
                 self.cur.execute(check_query, (gml_id,))
@@ -89,30 +86,47 @@ class CityGMLUpdater:
 
                 if existing_result is None:
                     # Falls Attribut nicht existiert → Einfügen
-                    insert_query = """
-                    INSERT INTO "MPSCDresden".citydb_filter (gml_id, sst, confidence, classification_source_id, classification_source)
+                    insert_query = f"""
+                    INSERT INTO "{self.schema}".citydb_filter (gml_id, sst, confidence, classification_source_id, classification_source)
                     VALUES (%s, %s, %s, %s, %s)
                     """
                     self.cur.execute(insert_query, (gml_id, sst, confidence, classification_source_id, classification_source))
                     successful_updates += 1
-                
+
                 elif (existing_result[0] != sst or existing_result[1] != confidence or
                       existing_result[2] != classification_source_id or existing_result[3] != classification_source):
                     # Falls sich das Ergebnis geändert hat → Aktualisieren
-                    update_query = """
-                    UPDATE "MPSCDresden".citydb_filter
+                    update_query = f"""
+                    UPDATE "{self.schema}".citydb_filter
                     SET sst = %s, confidence = %s, classification_source_id = %s, classification_source = %s
                     WHERE gml_id = %s
                     """
                     self.cur.execute(update_query, (sst, confidence, classification_source_id, classification_source, gml_id))
                     successful_updates += 1
 
+                # citydb_mirror analog zu citydb_filter aktualisieren (Quelle der Wahrheit für sst/sst_sub,
+                # gleiches Muster wie citydb_extender.update_sst_from_csv). sst_sub wird zurückgesetzt, da
+                # das Modell keine Unterklassen liefert und der neue sst-Wert die alte Kartierungs-Unterklasse ersetzt.
+                if pd.notna(sst):
+                    mirror_query = f"""
+                    UPDATE "{self.schema}".citydb_mirror
+                    SET sst = %s, sst_sub = NULL
+                    WHERE gml_id = %s AND sst IS DISTINCT FROM %s
+                    """
+                    self.cur.execute(mirror_query, (sst, gml_id, sst))
+                    if self.cur.rowcount > 0:
+                        mirror_updates += self.cur.rowcount
+
             self.conn.commit()
-            QgsMessageLog.logMessage(f"citydb_filter erfolgreich aktualisiert. Anzahl der erfolgreichen Übertragungen: {successful_updates}", level=Qgis.Success)
+            QgsMessageLog.logMessage(
+                f"citydb_filter successfully updated. Number of successful transfers: {successful_updates}. "
+                f"citydb_mirror updated analogously: {mirror_updates}.",
+                level=Qgis.Success
+            )
 
         except Exception as e:
             self.conn.rollback()
-            QgsMessageLog.logMessage(f"Fehler beim Aktualisieren der citydb_filter: {str(e)}", level=Qgis.Critical)
+            QgsMessageLog.logMessage(f"Error updating citydb_filter: {str(e)}", level=Qgis.Critical)
             import traceback
             QgsMessageLog.logMessage(traceback.format_exc(), level=Qgis.Critical)
             raise e
@@ -125,9 +139,9 @@ class CityGMLUpdater:
         """
         try:
             # Lade die Zuordnung von gml_id zu sst aus der Datenbank
-            query = """
+            query = f"""
             SELECT gml_id, sst
-            FROM "MPSCDresden".citydb_filter
+            FROM "{self.schema}".citydb_filter
             WHERE sst IS NOT NULL
             """
             self.cur.execute(query)
@@ -135,7 +149,7 @@ class CityGMLUpdater:
             sst_mapping = {f"bldg_{row[0]}": row[1] for row in classification_results}
 
             if not sst_mapping:
-                QgsMessageLog.logMessage("Keine gültigen Klassifizierungsergebnisse gefunden.", level=Qgis.Warning)
+                QgsMessageLog.logMessage("No valid classification results found.", level=Qgis.Warning)
                 return
 
             # Verarbeite CityGML-Dateien im Eingabeverzeichnis
@@ -144,22 +158,25 @@ class CityGMLUpdater:
             if test_mode:
                 # Wähle eine zufällige Datei aus
                 if not file_names:
-                    QgsMessageLog.logMessage("Keine CityGML-Dateien im Eingabeverzeichnis gefunden.", level=Qgis.Warning)
+                    QgsMessageLog.logMessage("No CityGML files found in the input directory.", level=Qgis.Warning)
                     return
                 file_name = random.choice(file_names)
-                QgsMessageLog.logMessage(f"Testmodus aktiviert: Verarbeite zufällige Datei {file_name}.", level=Qgis.Info)
+                QgsMessageLog.logMessage(f"Test mode activated: processing random file {file_name}.", level=Qgis.Info)
                 self.process_file(file_name, self.input_dir, self.output_dir, sst_mapping, test_mode)
             else:
-                # Verarbeite alle Dateien parallel
-                with ThreadPoolExecutor() as executor:
-                    futures = [executor.submit(self.process_file, file_name, self.input_dir, self.output_dir, sst_mapping) for file_name in file_names]
-                    for future in futures:
-                        future.result()
+                # Verarbeite die Dateien in Batches mit begrenzter Worker-Anzahl,
+                # damit nicht zu viele XML-Baeume gleichzeitig im Speicher gehalten werden
+                for i in range(0, len(file_names), CITYGML_BATCH_SIZE):
+                    batch = file_names[i:i + CITYGML_BATCH_SIZE]
+                    with ThreadPoolExecutor(max_workers=CITYGML_MAX_WORKERS) as executor:
+                        futures = [executor.submit(self.process_file, file_name, self.input_dir, self.output_dir, sst_mapping) for file_name in batch]
+                        for future in futures:
+                            future.result()
 
-            QgsMessageLog.logMessage("CityGML-Dateien erfolgreich aktualisiert.", level=Qgis.Success)
+            QgsMessageLog.logMessage("CityGML files successfully updated.", level=Qgis.Success)
 
         except Exception as e:
-            QgsMessageLog.logMessage(f"Fehler beim Aktualisieren der CityGML-Dateien: {str(e)}", level=Qgis.Critical)
+            QgsMessageLog.logMessage(f"Error updating CityGML files: {str(e)}", level=Qgis.Critical)
             import traceback
             QgsMessageLog.logMessage(traceback.format_exc(), level=Qgis.Critical)
             raise e
@@ -184,16 +201,18 @@ class CityGMLUpdater:
             # Füge sst-Werte zur CityGML-Datei hinzu
             self.add_sst_to_citygml(input_file, output_file, sst_mapping, test_mode)
 
-            QgsMessageLog.logMessage(f"Datei {file_name} erfolgreich verarbeitet.", level=Qgis.Info)
+            QgsMessageLog.logMessage(f"File {file_name} successfully processed.", level=Qgis.Info)
 
         except Exception as e:
-            QgsMessageLog.logMessage(f"Fehler beim Verarbeiten der Datei {file_name}: {str(e)}", level=Qgis.Critical)
+            QgsMessageLog.logMessage(f"Error processing file {file_name}: {str(e)}", level=Qgis.Critical)
             import traceback
             QgsMessageLog.logMessage(traceback.format_exc(), level=Qgis.Critical)
 
     def add_sst_to_citygml(self, input_file, output_file, sst_mapping, test_mode=False):
         """
-        Fügt die sst-Werte als generisches Attribut zu den Gebäuden in einer CityGML-Datei hinzu.
+        Fügt die sst-Werte als generisches Attribut zu bldg:Building-Elementen hinzu.
+        BuildingPart-Elemente werden explizit ausgeschlossen.
+        Unterstützt CityGML 1.0 und 2.0 (Namespace-Erkennung aus dem Dokument).
 
         :param input_file: Pfad zur Eingabedatei
         :param output_file: Pfad zur Ausgabedatei
@@ -203,73 +222,86 @@ class CityGMLUpdater:
         try:
             tree = etree.parse(input_file)
             root = tree.getroot()
-            ns = {
-                'core': 'http://www.opengis.net/citygml/1.0',
-                'gen': 'http://www.opengis.net/citygml/generics/1.0',
-                'bldg': 'http://www.opengis.net/citygml/building/1.0',
-                'gml': 'http://www.opengis.net/gml'
+
+            # Namespace-Erkennung: CityGML 1.0 oder 2.0
+            all_ns_uris = set(root.nsmap.values())
+            if 'http://www.opengis.net/citygml/building/2.0' in all_ns_uris:
+                bldg_ns = 'http://www.opengis.net/citygml/building/2.0'
+                gen_ns  = 'http://www.opengis.net/citygml/generics/2.0'
+            else:
+                bldg_ns = 'http://www.opengis.net/citygml/building/1.0'
+                gen_ns  = 'http://www.opengis.net/citygml/generics/1.0'
+            gml_ns = 'http://www.opengis.net/gml'
+
+            ns = {'bldg': bldg_ns, 'gen': gen_ns, 'gml': gml_ns}
+
+            # Nur bldg:Building-Elemente erfassen – bldg:BuildingPart explizit ausgeschlossen
+            gml_id_map = {
+                elem.attrib[f'{{{gml_ns}}}id']: elem
+                for elem in root.xpath('.//bldg:Building[@gml:id]', namespaces=ns)
             }
 
-            # Mappe alle gml:ids auf ihre Elemente
-            gml_id_map = {elem.attrib['{http://www.opengis.net/gml}id']: elem for elem in root.xpath(".//*[@gml:id]", namespaces=ns)}
-            filtered_sst_mapping = {gml_id: sst_value for gml_id, sst_value in sst_mapping.items() if gml_id in gml_id_map}
+            filtered_sst_mapping = {
+                gml_id: sst_value
+                for gml_id, sst_value in sst_mapping.items()
+                if gml_id in gml_id_map
+            }
 
             for gml_id, sst_value in filtered_sst_mapping.items():
                 target_elem = gml_id_map.get(gml_id)
-                if target_elem:
-                    # Prüfe, ob das Attribut bereits existiert
-                    existing_sst = target_elem.find(".//gen:stringAttribute[@name='sst']", ns)
+                if target_elem is not None:
+                    # Nur direkte Kinder prüfen – kein rekursives Suchen in BuildingParts
+                    existing_sst = next(
+                        (child for child in target_elem
+                         if child.tag == f'{{{gen_ns}}}stringAttribute'
+                         and child.get('name') == 'sst'),
+                        None
+                    )
                     if existing_sst is not None:
-                        value_elem = existing_sst.find('.//gen:value', ns)
-                        value_elem.text = sst_value
+                        value_elem = existing_sst.find(f'{{{gen_ns}}}value')
+                        if value_elem is not None:
+                            value_elem.text = sst_value
                     else:
-                        # Erzeuge neues generisches Attribut
-                        string_attr = etree.Element('{http://www.opengis.net/citygml/generics/1.0}stringAttribute')
+                        # Neues generisches Attribut erzeugen
+                        string_attr = etree.Element(f'{{{gen_ns}}}stringAttribute')
                         string_attr.set('name', 'sst')
-                        value_elem = etree.SubElement(string_attr, '{http://www.opengis.net/citygml/generics/1.0}value')
+                        value_elem = etree.SubElement(string_attr, f'{{{gen_ns}}}value')
                         value_elem.text = sst_value
 
-                        # Füge das Attribut an geeigneter Stelle ein
-                        last_gen_attr = None
-                        for child in target_elem:
-                            if child.tag == '{http://www.opengis.net/citygml/generics/1.0}stringAttribute':
-                                last_gen_attr = child
+                        # Einfügeposition: nach dem letzten gen:stringAttribute,
+                        # sonst vor dem ersten bldg:-Kindelement, sonst ans Ende
+                        children = list(target_elem)
+                        last_gen_idx = None
+                        first_bldg_idx = None
+                        for i, child in enumerate(children):
+                            if child.tag == f'{{{gen_ns}}}stringAttribute':
+                                last_gen_idx = i
+                            if first_bldg_idx is None and child.tag.startswith(f'{{{bldg_ns}}}'):
+                                first_bldg_idx = i
 
-                        if last_gen_attr is not None:
-                            index = list(target_elem).index(last_gen_attr)
-                            target_elem.insert(index + 1, string_attr)
+                        if last_gen_idx is not None:
+                            target_elem.insert(last_gen_idx + 1, string_attr)
+                        elif first_bldg_idx is not None:
+                            target_elem.insert(first_bldg_idx, string_attr)
                         else:
-                            first_bldg_attr = None
-                            for child in target_elem:
-                                if child.tag.startswith('{http://www.opengis.net/citygml/building/1.0}'):
-                                    first_bldg_attr = child
-                                    break
-
-                            if first_bldg_attr is not None:
-                                index = list(target_elem).index(first_bldg_attr)
-                                target_elem.insert(index, string_attr)
-                            else:
-                                target_elem.append(string_attr)
+                            target_elem.append(string_attr)
                 else:
                     if not test_mode:
-                        QgsMessageLog.logMessage(f"gml_id '{gml_id}' nicht in Datei gefunden.", level=Qgis.Warning)
+                        QgsMessageLog.logMessage(f"gml_id '{gml_id}' not found as bldg:Building in file.", level=Qgis.Warning)
 
             try:
-                # Schreibe die aktualisierte Datei als formatiertes XML
-                formatted_xml = parseString(etree.tostring(tree, encoding='UTF-8')).toprettyxml(indent="    ")
-                formatted_xml = "\n".join([line for line in formatted_xml.splitlines() if line.strip()])
+                # Schreibe die aktualisierte Datei als formatiertes XML (lxml-eigenes Pretty-Print,
+                # vermeidet den speicherintensiven Umweg Ã¼ber minidom)
+                tree.write(output_file, encoding='UTF-8', xml_declaration=True, pretty_print=True)
 
-                with open(output_file, 'w', encoding='utf-8') as f:
-                    f.write(formatted_xml)
-
-                QgsMessageLog.logMessage(f"Datei erfolgreich aktualisiert: {output_file}", level=Qgis.Info)
+                QgsMessageLog.logMessage(f"File successfully updated: {output_file}", level=Qgis.Info)
             except Exception as e:
-                QgsMessageLog.logMessage(f"Fehler beim Schreiben der Datei {output_file}: {str(e)}", level=Qgis.Critical)
+                QgsMessageLog.logMessage(f"Error writing file {output_file}: {str(e)}", level=Qgis.Critical)
                 import traceback
                 QgsMessageLog.logMessage(traceback.format_exc(), level=Qgis.Critical)
 
         except Exception as e:
-            QgsMessageLog.logMessage(f"Fehler beim Verarbeiten der Datei {input_file}: {str(e)}", level=Qgis.Critical)
+            QgsMessageLog.logMessage(f"Error processing file {input_file}: {str(e)}", level=Qgis.Critical)
             import traceback
             QgsMessageLog.logMessage(traceback.format_exc(), level=Qgis.Critical)
             raise e
@@ -281,8 +313,8 @@ class CityGMLUpdater:
         """
         # View erzeugen, falls nicht vorhanden
         try:
-            self.cur.execute("""
-                CREATE OR REPLACE VIEW "MPSCDresden".citydb_filter_view AS
+            self.cur.execute(f"""
+                CREATE OR REPLACE VIEW "{self.schema}".citydb_filter_view AS
                 SELECT 
                     db_filter_id, 
                     gml_id, 
@@ -291,13 +323,13 @@ class CityGMLUpdater:
                     classification_source, 
                     confidence, 
                     geom
-                FROM "MPSCDresden".citydb_filter;
+                FROM "{self.schema}".citydb_filter;
             """)
             self.conn.commit()
-            QgsMessageLog.logMessage("View citydb_filter_view wurde (ggf. erneut) erzeugt.", level=Qgis.Info)
+            QgsMessageLog.logMessage("View citydb_filter_view was (re-)created.", level=Qgis.Info)
         except Exception as e:
             self.conn.rollback()
-            QgsMessageLog.logMessage(f"Fehler beim Erzeugen der View citydb_filter_view: {str(e)}", level=Qgis.Critical)
+            QgsMessageLog.logMessage(f"Error creating view citydb_filter_view: {str(e)}", level=Qgis.Critical)
             import traceback
             QgsMessageLog.logMessage(traceback.format_exc(), level=Qgis.Critical)
             return
@@ -311,7 +343,7 @@ class CityGMLUpdater:
             self.connection_params['password']
         )
         uri.setDataSource(
-            'MPSCDresden',
+            self.schema,
             'citydb_filter_view',
             'geom',
             '',
@@ -330,4 +362,4 @@ class CityGMLUpdater:
             return
 
         QgsProject.instance().addMapLayer(layer)
-        QgsMessageLog.logMessage("Layer CityDB Filter erfolgreich geladen.", level=Qgis.Info)
+        QgsMessageLog.logMessage("Layer CityDB Filter successfully loaded.", level=Qgis.Info)

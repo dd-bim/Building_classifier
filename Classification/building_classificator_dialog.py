@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+﻿# -*- coding: utf-8 -*-
 """
 /***************************************************************************
  MPSCDresdenDialog
@@ -23,10 +23,10 @@
 """
 
 import os
+import functools
 import pandas as pd
 import psycopg2
 import traceback
-import configparser
 
 from qgis.PyQt import uic
 from qgis.core import QgsMessageLog, Qgis, QgsProject
@@ -46,407 +46,411 @@ from .manual_correction import ManualCorrection
 from .citygml_updater import CityGMLUpdater
 from .citydb_updater import CityDBUpdater
 from .classify_data import Classifier
-
-FORM_CLASS, _ = uic.loadUiType(os.path.join(
-    os.path.dirname(__file__), 'building_classificator_dialog_base.ui'))
+from .config_loader import get_config, get_schema, get_layer_name
 
 
-class MPSCDresdenDialog(QDialog, FORM_CLASS):
+def _handle_errors(fn):
+    """Decorator: catches all exceptions and logs them via QgsMessageLog.
+    Qt button signals send a 'checked' boolean — extra positional args are discarded."""
+    @functools.wraps(fn)
+    def wrapper(self, *args, **kwargs):
+        try:
+            return fn(self)
+        except Exception as e:
+            QgsMessageLog.logMessage(
+                f"Error in {fn.__name__}: {e}", level=Qgis.Critical
+            )
+            QgsMessageLog.logMessage(traceback.format_exc(), level=Qgis.Critical)
+    return wrapper
+
+PLUGIN_DIR = os.path.dirname(__file__)
+
+
+class MPSCDresdenDialog(QDialog):
+    """Dialog für das QGIS-Plugin zur Gebäudeklassifikation.
+
+    Wird sowohl für die volle UI als auch für die abgespeckte Korrektur-UI verwendet.
+    Der gewünschte UI-Dialog wird über den Parameter ``ui_file`` gewählt.
     """
-    Dialog und zentrale Steuereinheit für das QGIS-Plugin zur Gebäudeklassifikation in Dresden.
 
-    Diese Klasse bietet Methoden zum:
-    - Laden, Filtern und Exportieren von Gebäudedaten und Flurstücken
-    - Geometrische Verarbeitung und Transformation der Daten
-    - Aufbau und Erweiterung der CityDB sowie Feature Engineering
-    - Mapping, Attributübertragung und Layer-Kategorisierung
-    - Training, Validierung und Klassifikation von Modellen
-    - Manuelle Korrektur und Retraining
-    - Aktualisierung von CityDB-Tabellen und CityGML-Dateien
-    - Verwaltung des Plugin-Zustands und der Layer in QGIS
-    """    
-    
-    def __init__(self, iface, parent=None):
-        """Constructor."""
-        super(MPSCDresdenDialog, self).__init__(parent)
-        self.setupUi(self)
-        self.pushButton_load_data.clicked.connect(self.loading)
-        self.pushButton_filter_merge.clicked.connect(self.filtering)
-        self.pushButton_overlapping_geometries.clicked.connect(self.processing_overlapping)
-        self.pushButton_transform_validate.clicked.connect(self.transform_and_validate)
-        self.pushButton_load_built_up_parcel_layer.clicked.connect(self.load_built_up_parcel_layer)
-        self.pushButton_filter_citydb.clicked.connect(self.filter_citydb)
-        self.pushButton_extend_citydb.clicked.connect(self.extend_citydb)
-        self.pushButton_check_mapping.clicked.connect(self.check_mapping)
-        self.pushButton_building_values.clicked.connect(self.calculate_building_values)
-        self.pushButton_training.clicked.connect(self.train_model)
-        self.pushButton_validation.clicked.connect(self.validate_model)
-        self.pushButton_classification.clicked.connect(self.classify_data)
-        self.pushButton_select.clicked.connect(self.select)
-        self.pushButton_correct.clicked.connect(self.correct)
-        self.pushButton_additional_mapping.clicked.connect(self.add_mapping)
-        self.pushButton_retrain.clicked.connect(self.retrain)
-        self.pushButton_revalidate.clicked.connect(self.revalidate)
-        self.pushButton_reclassify.clicked.connect(self.reclassify)
-        self.pushButton_updatecitydb_filter.clicked.connect(self.update_citydb_filter)
-        self.pushButton_updatecitygml.clicked.connect(self.update_citygml_files)
-        self.pushButton_updatecitydb.clicked.connect(self.update_citydb)
+    def __init__(self, iface, ui_file='building_classificator_dialog_base.ui', parent=None):
+        super().__init__(parent)
+        uic.loadUi(os.path.join(PLUGIN_DIR, ui_file), self)
+        self.iface = iface
 
-        # Initialize attributes to store loaded data
+        # Daten-Attribute (nur von der vollen UI benötigt, aber billig zu initialisieren)
         self.building_development_df = pd.DataFrame()
         self.parcels_df = pd.DataFrame()
         
         # Initialize attributes to store filtered data
         self.filtered_building_development_df = pd.DataFrame()
         self.filtered_parcels_df = pd.DataFrame()
-        
-        # Initialize attributes to store vector layers
         self.building_development_layer = None
         self.parcels_layer = None
         self.citydb_filter_layer = None
         
         # Load CityDB connection parameters from config file
-        config = configparser.ConfigParser()
-        config.read(os.path.join(os.path.dirname(__file__), 'config.ini'))
+        config = get_config()
         self.connection_params = {
             'host': config.get('Database', 'host'),
             'port': config.get('Database', 'port'),
             'dbname': config.get('Database', 'dbname'),
             'user': config.get('Database', 'user'),
-            'password': config.get('Database', 'password')
+            'password': config.get('Database', 'password'),
         }
-        
-        self.conn = psycopg2.connect(
-            host=self.connection_params['host'],
-            port=self.connection_params['port'],
-            dbname=self.connection_params['dbname'],
-            user=self.connection_params['user'],
-            password=self.connection_params['password']
-        )
+        self.conn = psycopg2.connect(**self.connection_params)
         self.cur = self.conn.cursor()
-        self.iface = iface
-        
-        self.data_loader = DataLoader(self.conn, self.cur, self.connection_params)
-        self.geometry_processor = GeometryProcessor(self.conn, self.cur, self.connection_params)
-        self.citydb_processor = CityDBProcessor(self.conn, self.cur, self.connection_params)
-        self.citydb_extender = CityDBExtender(self.conn, self.cur, self.connection_params)
-        self.mapping_processor = MappingProcessor(self.conn, self.cur, self.connection_params)
-        self.value_processor = BuildingValuesProcessor()
-        self.model_trainer = ModelTrainer(self.conn, self.cur, self.connection_params)
-        self.model_validator = ValidateData(self.conn, self.cur, self.connection_params)
-        self.model_classifier = Classifier(self.conn, self.cur, self.connection_params)
-        self.manual_correction = ManualCorrection(self.iface, self.conn, self.cur, self.connection_params)
-        self.citygml_updater = CityGMLUpdater(self.conn, self.cur, self.connection_params)
-        self.citydb_updater = CityDBUpdater(self.conn, self.cur, self.connection_params, confidence_threshold=None)
+        self.schema = get_schema()
 
+        # Lazy Processor-Platzhalter
+        self._data_loader = None
+        self._geometry_processor = None
+        self._citydb_processor = None
+        self._citydb_extender = None
+        self._mapping_processor = None
+        self._value_processor = None
+        self._model_trainer = None
+        self._model_validator = None
+        self._model_classifier = None
+        self._manual_correction = None
+        self._citygml_updater = None
+        self._citydb_updater = None
+
+        # Buttons verbinden – nur die, die in der geladenen UI existieren
+        self._connect_buttons()
+
+    def _connect_buttons(self):
+        mapping = {
+            'pushButton_load_data':                self.loading,
+            'pushButton_filter_merge':             self.filtering,
+            'pushButton_overlapping_geometries':   self.processing_overlapping,
+            'pushButton_transform_validate':       self.transform_and_validate,
+            'pushButton_load_built_up_parcel_layer': self.load_built_up_parcel_layer,
+            'pushButton_mirror_citydb':             self.create_citydb_mirror,
+            'pushButton_filter_citydb':            self.filter_citydb,
+            'pushButton_extend_citydb':            self.extend_citydb,
+            'pushButton_check_mapping':            self.check_mapping,
+            'pushButton_building_values':          self.calculate_building_values,
+            'pushButton_training':                 self.train_model,
+            'pushButton_validation':               self.validate_model,
+            'pushButton_classification':           self.classify_data,
+            'pushButton_select':                   self.select,
+            'pushButton_correct':                  self.correct,
+            'pushButton_additional_mapping':       self.add_mapping,
+            'pushButton_retrain':                  self.retrain,
+            'pushButton_revalidate':               self.revalidate,
+            'pushButton_reclassify':               self.reclassify,
+            'pushButton_updatecitydb_filter':      self.update_citydb_filter,
+            'pushButton_updatecitygml':            self.update_citygml_files,
+            'pushButton_updatecitydb':             self.update_citydb,
+        }
+        for name, handler in mapping.items():
+            btn = getattr(self, name, None)
+            if btn is not None:
+                btn.clicked.connect(handler)
+
+    # ------------------------------------------------------------------
+    # Lazy Processor Properties
+    # ------------------------------------------------------------------
+    @property
+    def data_loader(self):
+        if self._data_loader is None:
+            self._data_loader = DataLoader(self.conn, self.cur, self.connection_params)
+        return self._data_loader
+
+    @property
+    def geometry_processor(self):
+        if self._geometry_processor is None:
+            self._geometry_processor = GeometryProcessor(self.conn, self.cur, self.connection_params)
+        return self._geometry_processor
+
+    @property
+    def citydb_processor(self):
+        if self._citydb_processor is None:
+            self._citydb_processor = CityDBProcessor(self.conn, self.cur, self.connection_params)
+        return self._citydb_processor
+
+    @property
+    def citydb_extender(self):
+        if self._citydb_extender is None:
+            self._citydb_extender = CityDBExtender(self.conn, self.cur, self.connection_params)
+        return self._citydb_extender
+
+    @property
+    def mapping_processor(self):
+        if self._mapping_processor is None:
+            self._mapping_processor = MappingProcessor(self.conn, self.cur, self.connection_params)
+        return self._mapping_processor
+
+    @property
+    def value_processor(self):
+        if self._value_processor is None:
+            self._value_processor = BuildingValuesProcessor()
+        return self._value_processor
+
+    @property
+    def model_trainer(self):
+        if self._model_trainer is None:
+            self._model_trainer = ModelTrainer(self.conn, self.cur, self.connection_params)
+        return self._model_trainer
+
+    @property
+    def model_validator(self):
+        if self._model_validator is None:
+            self._model_validator = ValidateData(self.conn, self.cur, self.connection_params)
+        return self._model_validator
+
+    @property
+    def model_classifier(self):
+        if self._model_classifier is None:
+            self._model_classifier = Classifier(self.conn, self.cur, self.connection_params)
+        return self._model_classifier
+
+    @property
+    def manual_correction(self):
+        if self._manual_correction is None:
+            self._manual_correction = ManualCorrection(self.iface, self.conn, self.cur, self.connection_params)
+        return self._manual_correction
+
+    @property
+    def citygml_updater(self):
+        if self._citygml_updater is None:
+            self._citygml_updater = CityGMLUpdater(self.conn, self.cur, self.connection_params)
+        return self._citygml_updater
+
+    @property
+    def citydb_updater(self):
+        if self._citydb_updater is None:
+            self._citydb_updater = CityDBUpdater(self.conn, self.cur, self.connection_params, confidence_threshold=None)
+        return self._citydb_updater
+
+    # ------------------------------------------------------------------
+    # Aktionsmethoden
+    # ------------------------------------------------------------------
+    @_handle_errors
     def loading(self):
         load_building_development = self.checkBox_Bebauung.isChecked()
         load_parcels = self.checkBox_Flurstuecke.isChecked()
-
         if load_building_development:
             self.building_development_df = self.data_loader.load_csv(self.data_loader.paths['building_development'])
             QgsMessageLog.logMessage("building_development data loaded.", level=Qgis.Info)
-
         if load_parcels:
             self.parcels_df = self.data_loader.load_csv(self.data_loader.paths['parcels'])
             QgsMessageLog.logMessage("parcels data loaded.", level=Qgis.Info)
-            
         return self.building_development_df, self.parcels_df
-        
-    def filtering(self):
 
+    @_handle_errors
+    def filtering(self):
         if not self.building_development_df.empty:
             self.filtered_building_development_df = self.data_loader.filter_data('building_development', self.building_development_df)
             QgsMessageLog.logMessage("Filtered building_development data.", level=Qgis.Info)
-            
         if not self.parcels_df.empty:
             self.filtered_parcels_df = self.data_loader.filter_data('parcels', self.parcels_df)
             QgsMessageLog.logMessage("Filtered parcels data.", level=Qgis.Info)
-
-        # Vektorlayer erstellen
         self.building_development_layer = self.data_loader.create_vector_layer(self.filtered_building_development_df, 'building_development', 'geometry_building_development', 'srid_building_development')
         self.parcels_layer = self.data_loader.create_vector_layer(self.filtered_parcels_df, 'parcels', 'geometry_parcels', 'srid_parcels')
-        
         self.data_loader.create_schema_if_not_exists()
-        
         self.data_loader.export_layer_to_citydb(self.building_development_layer, 'building_development')
         self.data_loader.export_layer_to_citydb(self.parcels_layer, 'parcels')
-        
-        return self.filtered_building_development_df, self.filtered_parcels_df 
-        
+        return self.filtered_building_development_df, self.filtered_parcels_df
+
+    @_handle_errors
     def processing_overlapping(self):
-        try:
-            self.geometry_processor.create_built_up_parcel_table()
-            self.geometry_processor.create_indexes()
-            self.geometry_processor.process_overlapping_geometries()
-                       
-        except Exception as e:
-            QgsMessageLog.logMessage(f"Error during geometric processing: {str(e)}", level=Qgis.Critical)
-            
+        self.geometry_processor.create_built_up_parcel_table()
+        self.geometry_processor.create_indexes()
+        self.geometry_processor.process_overlapping_geometries()
+
+    @_handle_errors
     def transform_and_validate(self):
         try:
             target_epsg = int(self.lineEdit_EPSG_Code.text())
-            self.geometry_processor.transform_built_up_parcel_table(target_epsg)
-            QgsMessageLog.logMessage(f"Transformation to EPSG:{target_epsg} completed.", level=Qgis.Info)
         except ValueError:
             QgsMessageLog.logMessage("Invalid EPSG code entered.", level=Qgis.Warning)
-        except Exception as e:
-            QgsMessageLog.logMessage(f"Error during transformation: {str(e)}", level=Qgis.Critical)
-            
+            return
+        self.geometry_processor.transform_built_up_parcel_table(target_epsg)
+        QgsMessageLog.logMessage(f"Transformation to EPSG:{target_epsg} completed.", level=Qgis.Info)
+
+    @_handle_errors
     def load_built_up_parcel_layer(self):
-        try:
-            built_up_parcel_layer = self.data_loader.load_layer_from_db(self.connection_params, 'MPSCDresden', 'built_up_parcel')
-            if built_up_parcel_layer:
-                QgsMessageLog.logMessage("built_up_parcel layer loaded into QGIS.", level=Qgis.Info)
-            else:
-                QgsMessageLog.logMessage("Failed to load built_up_parcel layer into QGIS.", level=Qgis.Critical)
-        except Exception as e:
-            QgsMessageLog.logMessage(f"Error loading built_up_parcel layer: {str(e)}", level=Qgis.Critical)
-            
+        built_up_parcel_layer = self.data_loader.load_layer_from_db(self.connection_params, self.schema, 'built_up_parcel')
+        if built_up_parcel_layer:
+            QgsMessageLog.logMessage("built_up_parcel layer loaded into QGIS.", level=Qgis.Info)
+        else:
+            QgsMessageLog.logMessage("Failed to load built_up_parcel layer into QGIS.", level=Qgis.Critical)
+
+    @_handle_errors
     def check_mapping(self):
-        try:
-            kartierung_dd_gesamt_layer = QgsProject.instance().mapLayersByName('Kartierung_DD_Gesamt')[0]
-            
-            # Exportiere den Layer in die Datenbank
-            self.data_loader.export_layer_to_citydb(kartierung_dd_gesamt_layer, 'kartierung_dd_gesamt', drop_existing=True)
-            self.mapping_processor.add_additional_columns()
-            
-            # Transferiere Attribute und kategorisiere Layer
-            self.mapping_processor.transfer_attributes_to_kartierung_dd_gesamt()
-            self.mapping_processor.compare_and_categorize_layers()
-            
-            # Lade den Layer neu in QGIS
-            layer = self.data_loader.load_layer_from_db(self.connection_params, 'MPSCDresden', 'kartierung_dd_gesamt')
-            if layer:
-                self.mapping_processor.categorize_and_colorize(layer)
-                QgsProject.instance().addMapLayer(layer)
-                QgsMessageLog.logMessage("Kartierung_DD_Gesamt layer reloaded into QGIS.", level=Qgis.Info)
-            else:
-                QgsMessageLog.logMessage("Failed to reload Kartierung_DD_Gesamt layer into QGIS.", level=Qgis.Critical)
-        except Exception as e:
-            QgsMessageLog.logMessage(f"Error in check_mapping: {str(e)}", level=Qgis.Critical)
-            
+        kartierung_dd_gesamt_layer = QgsProject.instance().mapLayersByName(get_layer_name('kartierung_dd_gesamt'))[0]
+        self.data_loader.export_layer_to_citydb(kartierung_dd_gesamt_layer, 'kartierung_dd_gesamt')
+        self.mapping_processor.add_additional_columns()
+        self.mapping_processor.transfer_attributes_to_kartierung_dd_gesamt()
+        self.mapping_processor.compare_and_categorize_layers()
+        layer = self.data_loader.load_layer_from_db(self.connection_params, self.schema, 'kartierung_dd_gesamt')
+        if layer:
+            self.mapping_processor.categorize_and_colorize(layer)
+            QgsProject.instance().addMapLayer(layer)
+            QgsMessageLog.logMessage("Kartierung_DD_Gesamt layer reloaded into QGIS.", level=Qgis.Info)
+        else:
+            QgsMessageLog.logMessage("Failed to reload Kartierung_DD_Gesamt layer into QGIS.", level=Qgis.Critical)
+
+    @_handle_errors
+    def create_citydb_mirror(self):
+        self.citydb_processor.create_tables()
+        self.citydb_processor.fill_mirror_table()
+        self.citydb_processor.update_address_from_shp()
+        self.citydb_processor.apply_kartierung_to_mirror()
+        self.citydb_processor.clean_sst_data()
+        layer = self.data_loader.load_layer_from_db(self.connection_params, self.schema, 'citydb_mirror')
+        if not layer:
+            QgsMessageLog.logMessage("citydb_mirror layer could not be loaded into QGIS.", level=Qgis.Warning)
+        QgsMessageLog.logMessage("CityDB mirror table created successfully", level=Qgis.Info)
+
+    @_handle_errors
     def filter_citydb(self):
-        try:
-            self.citydb_processor.create_tables()
-            self.citydb_processor.fill_table()
-            self.citydb_processor.update_function_from_csv()
-            self.citydb_processor.intersect_and_update_citydb_filter()
-            self.citydb_processor.clean_sst_data()
-            self.citydb_processor.filter_table()
-            self.citydb_processor.fill_remaining_attributes_and_geometry()
-            self.citydb_processor.calculate_footprint()
-            self.citydb_processor.calculate_eaves_height()
-            self.citydb_processor.calculate_storey_height()
-            self.citydb_processor.count_roof_surfaces()
-            self.citydb_processor.calculate_roof_slope()
-            self.citydb_processor.calculate_clusters()
-            self.citydb_processor.set_default_values()
-            self.citydb_processor.calculate_neighbours()
-            self.citydb_processor.add_feature_engineering_attributes()
-            self.citydb_processor.calculate_geometric_features()
-            QgsMessageLog.logMessage("CityDB table filled successfully", level=Qgis.Info)
-        except Exception as e:
-            QgsMessageLog.logMessage(f"Error filtering CityDB: {str(e)}", level=Qgis.Critical)
-            
+        self.citydb_processor.populate_filter_from_mirror()
+        self.citydb_processor.intersect_and_update_citydb_filter()
+        self.citydb_processor.calculate_clusters()
+        self.citydb_processor.set_default_values()
+        self.citydb_processor.calculate_neighbours()
+        self.citydb_processor.correct_invalid_mr_sst()
+        self.citydb_processor.add_feature_engineering_attributes()
+        self.citydb_processor.calculate_geometric_features()
+        QgsMessageLog.logMessage("CityDB filter table filled successfully", level=Qgis.Info)
+
+    @_handle_errors
     def extend_citydb(self):
-        try:
-            neubauten = QgsProject.instance().mapLayersByName('Neubauten seit 1990')[0]
-            baualter = QgsProject.instance().mapLayersByName('Adrpkt_DD_2024_Baujahr_ohneVonovia')[0]
-            
-            self.data_loader.set_crs_for_layer(neubauten, 25833)
-            self.data_loader.set_crs_for_layer(baualter, 25833)
-            
-            self.data_loader.export_layer_to_citydb(neubauten, 'neubauten', drop_existing=True)
-            self.data_loader.export_layer_to_citydb(baualter, 'baualter', drop_existing=True)
-            
-            self.citydb_extender.add_additional_columns()
-            self.citydb_extender.reset_columns()
-            self.citydb_extender.add_new_buildings()
-            self.citydb_extender.update_building_age()
-            self.citydb_extender.update_building_age_from_monuments()
-            self.citydb_extender.set_classification_source_kartierung()
-            
-            self.citydb_filter_layer = DataLoader.load_layer_from_db(self.connection_params, 'MPSCDresden', 'citydb_filter')
-        except Exception as e:
-            QgsMessageLog.logMessage(f"Error extending CityDB: {str(e)}", level=Qgis.Critical)
-    
+        neubauten = QgsProject.instance().mapLayersByName(get_layer_name('neubauten'))[0]
+        baualter = QgsProject.instance().mapLayersByName(get_layer_name('baualter'))[0]
+        self.data_loader.set_crs_for_layer(neubauten, 25833)
+        self.data_loader.set_crs_for_layer(baualter, 25833)
+        self.data_loader.export_layer_to_citydb(neubauten, 'neubauten')
+        self.data_loader.export_layer_to_citydb(baualter, 'baualter')
+        self.citydb_extender.add_additional_columns()
+        self.citydb_extender.reset_columns()
+        self.citydb_extender.add_new_buildings()
+        self.citydb_extender.update_building_age()
+        self.citydb_extender.update_building_age_from_monuments()
+        self.citydb_extender.set_classification_source_kartierung()
+        self.citydb_filter_layer = self.data_loader.load_layer_from_db(self.connection_params, self.schema, 'citydb_filter')
+
+    @_handle_errors
     def calculate_building_values(self):
         self.value_processor.process_values()
-        
+
+    @_handle_errors
     def train_model(self):
-        try:
-            self.model_trainer.split_and_save_data()
-            self.model_trainer.train()
-            self.model_trainer.save_label_encoders()
-            self.model_trainer.load_and_visualize_training_data()
-            
-            QgsMessageLog.logMessage("Model training completed successfully", level=Qgis.Info)
-        except Exception as e:
-            QgsMessageLog.logMessage(f"Error during model training: {str(e)}", level=Qgis.Critical)
-            QgsMessageLog.logMessage(traceback.format_exc(), level=Qgis.Critical)
-        
+        self.model_trainer.split_and_save_data()
+        self.model_trainer.train()
+        self.model_trainer.save_label_encoders()
+        self.model_trainer.load_and_visualize_training_data()
+        QgsMessageLog.logMessage("Model training completed successfully", level=Qgis.Info)
+
+    @_handle_errors
     def validate_model(self):
-        try:
-            validation_results = self.model_validator.validate()
-            if validation_results:
+        validation_results = self.model_validator.validate()
+        if validation_results:
+            QgsMessageLog.logMessage(
+                f"Model validation completed successfully for {len(validation_results)} levels",
+                level=Qgis.Info
+            )
+            for level, results in validation_results.items():
                 QgsMessageLog.logMessage(
-                    f"Model validation completed successfully for {len(validation_results)} levels",
+                    f"Level {level}: Accuracy={results.get('accuracy', 0):.3f}, "
+                    f"F1={results.get('f1_weighted', 0):.3f}, "
+                    f"Direct assignments={results.get('direct_assignment_count', 0)}",
                     level=Qgis.Info
                 )
-                
-                # Logge Zusammenfassung der Ergebnisse
-                for level, results in validation_results.items():
-                    accuracy = results.get('accuracy', 0)
-                    f1_weighted = results.get('f1_weighted', 0)
-                    direct_assignments = results.get('direct_assignment_count', 0)
-                    
-                    QgsMessageLog.logMessage(
-                        f"Level {level}: Accuracy={accuracy:.3f}, F1={f1_weighted:.3f}, "
-                        f"Direct assignments={direct_assignments}",
-                        level=Qgis.Info
-                    )
-            else:
-                QgsMessageLog.logMessage("No validation results obtained", level=Qgis.Warning)
-        except Exception as e:
-            QgsMessageLog.logMessage(f"Error during model validation: {str(e)}", level=Qgis.Critical)
-            QgsMessageLog.logMessage(traceback.format_exc(), level=Qgis.Critical)
-            
+        else:
+            QgsMessageLog.logMessage("No validation results obtained", level=Qgis.Warning)
+
+    @_handle_errors
     def classify_data(self):
-        try:
-            self.model_classifier.classify()
+        self.model_classifier.classify()
+        QgsMessageLog.logMessage("Data classification completed successfully", level=Qgis.Info)
 
-            QgsMessageLog.logMessage("Data classification completed successfully", level=Qgis.Info)
-        except Exception as e:
-            QgsMessageLog.logMessage(f"Error during data classification: {str(e)}", level=Qgis.Critical)
-            QgsMessageLog.logMessage(traceback.format_exc(), level=Qgis.Critical)
-
+    @_handle_errors
     def select(self):
-        try:
-            self.manual_correction.select_building()
-        except Exception as e:
-            QgsMessageLog.logMessage(f"Error during selection: {str(e)}", level=Qgis.Critical)
-            QgsMessageLog.logMessage(traceback.format_exc(), level=Qgis.Critical)
+        self.manual_correction.select_building()
 
+    @_handle_errors
     def correct(self):
-        try:
-            new_sst = self.lineEdit.text()
-            self.manual_correction.correct_building(new_sst)
-            QgsMessageLog.logMessage("Building corrected successfully", level=Qgis.Info)
-        except Exception as e:
-            QgsMessageLog.logMessage(f"Error during correction: {str(e)}", level=Qgis.Critical)
-            QgsMessageLog.logMessage(traceback.format_exc(), level=Qgis.Critical)
-            
+        self.manual_correction.correct_building(self.lineEdit.text())
+        QgsMessageLog.logMessage("Building corrected successfully", level=Qgis.Info)
+
+    @_handle_errors
     def add_mapping(self):
-        try:
-            self.citydb_extender.update_sst_from_csv()
-            self.citydb_extender.set_classification_source_kartierung()
-            QgsMessageLog.logMessage("Additional mapping added successfully", level=Qgis.Info)
-        except Exception as e:
-            QgsMessageLog.logMessage(f"Error adding additional mapping: {str(e)}", level=Qgis.Critical)
-            QgsMessageLog.logMessage(traceback.format_exc(), level=Qgis.Critical)
-            
+        self.citydb_extender.update_sst_from_csv()
+        QgsMessageLog.logMessage("Re-survey imported and transferred to citydb_filter.", level=Qgis.Info)
+
+    @_handle_errors
     def retrain(self):
-        try:
-            # Vereinfachtes Retraining: Split + Train (Validierung separat über Revalidate)
-            self.manual_correction.retrain_all_levels()
-            QgsMessageLog.logMessage("Retraining completed successfully", level=Qgis.Info)
-        except Exception as e:
-            QgsMessageLog.logMessage(f"Error during retraining: {str(e)}", level=Qgis.Critical)
-            QgsMessageLog.logMessage(traceback.format_exc(), level=Qgis.Critical)
-            
+        self.manual_correction.retrain_all_levels()
+        QgsMessageLog.logMessage("Retraining completed successfully", level=Qgis.Info)
+
+    @_handle_errors
     def revalidate(self):
-        try:
-            # Reset der Metriken-Zähler vor der Neuvalidierung
-            self.model_validator.reset_counters()
-            
-            # Führe vollständige Validierung durch
-            validation_results = self.model_validator.validate()
-            
-            if validation_results:
-                QgsMessageLog.logMessage(
-                    f"Revalidation completed successfully for {len(validation_results)} levels", 
-                    level=Qgis.Info
-                )
-                
-                # Zeige verbesserte Statistiken
-                overall_accuracy = 0
-                total_direct_assignments = 0
-                
-                for level, results in validation_results.items():
-                    if level != 'end_to_end':
-                        overall_accuracy = results.get('overall_accuracy', 0)
-                        total_direct_assignments += results.get('direct_assignment_count', 0)
-                
-                QgsMessageLog.logMessage(
-                    f"Overall validation accuracy: {overall_accuracy:.3f}, "
-                    f"Total direct assignments: {total_direct_assignments}",
-                    level=Qgis.Info
-                )
-            else:
-                QgsMessageLog.logMessage("No revalidation results obtained", level=Qgis.Warning)
-                
-        except Exception as e:
-            QgsMessageLog.logMessage(f"Error during revalidation: {str(e)}", level=Qgis.Critical)
-            QgsMessageLog.logMessage(traceback.format_exc(), level=Qgis.Critical)
-            
+        self.model_validator.reset_counters()
+        validation_results = self.model_validator.validate()
+        if validation_results:
+            overall_accuracy = 0
+            total_direct_assignments = 0
+            for level, results in validation_results.items():
+                if level != 'end_to_end':
+                    overall_accuracy = results.get('overall_accuracy', 0)
+                    total_direct_assignments += results.get('direct_assignment_count', 0)
+            QgsMessageLog.logMessage(
+                f"Revalidation completed: {len(validation_results)} levels — "
+                f"accuracy={overall_accuracy:.3f}, direct={total_direct_assignments}",
+                level=Qgis.Info
+            )
+        else:
+            QgsMessageLog.logMessage("No revalidation results obtained", level=Qgis.Warning)
+
+    @_handle_errors
     def reclassify(self):
+        raw = self.lineEdit_threshold_classi.text().strip()
         try:
-            # Führe komplette Reklassifikation durch
-            self.model_classifier.classify()
+            confidence_threshold = float(raw)
+        except ValueError:
+            QgsMessageLog.logMessage(
+                f"Invalid threshold value: '{raw}'. Please enter a number between 0 and 1.",
+                level=Qgis.Critical
+            )
+            return
+        self.model_classifier.classify(confidence_threshold=confidence_threshold)
+        QgsMessageLog.logMessage(
+            f"Reclassification completed (confidence below {confidence_threshold})",
+            level=Qgis.Info
+        )
 
-            QgsMessageLog.logMessage("Reclassification completed successfully", level=Qgis.Info)
-        except Exception as e:
-            QgsMessageLog.logMessage(f"Error during reclassification: {str(e)}", level=Qgis.Critical)
-            QgsMessageLog.logMessage(traceback.format_exc(), level=Qgis.Critical)
-
+    @_handle_errors
     def update_citydb_filter(self):
-        try:
-            self.citygml_updater.update_citydb_filter()
-            self.citygml_updater.load_and_visualize_citydb_filter()
-            QgsMessageLog.logMessage("CityDB_Filter updated successfully", level=Qgis.Info)
-        except Exception as e:
-            QgsMessageLog.logMessage(f"Error updating CityGML files: {str(e)}", level=Qgis.Critical)
-            QgsMessageLog.logMessage(traceback.format_exc(), level=Qgis.Critical)
-    
+        self.citygml_updater.update_citydb_filter()
+        self.citygml_updater.load_and_visualize_citydb_filter()
+        QgsMessageLog.logMessage("CityDB_Filter updated successfully", level=Qgis.Info)
+
+    @_handle_errors
     def update_citygml_files(self):
-        try:
-            self.citygml_updater.update_citygml_files(test_mode=False)
-            QgsMessageLog.logMessage("CityGML files updated successfully", level=Qgis.Info)
-        except Exception as e:
-            QgsMessageLog.logMessage(f"Error updating CityGML files: {str(e)}", level=Qgis.Critical)
-            QgsMessageLog.logMessage(traceback.format_exc(), level=Qgis.Critical)
-    
+        self.citygml_updater.update_citygml_files(test_mode=False)
+        QgsMessageLog.logMessage("CityGML files updated successfully", level=Qgis.Info)
+
+    @_handle_errors
     def update_citydb(self):
-        """
-        Aktualisiert die 3DCityDB Version 5 mit generischen sst-Attributen aus den Klassifikationsergebnissen.
-        """
-        try:
-            self.citydb_updater.update_citydb_properties()
-            QgsMessageLog.logMessage("3DCityDB successfully updated with SST attributes", level=Qgis.Info)
-        except Exception as e:
-            QgsMessageLog.logMessage(f"Error updating 3DCityDB: {str(e)}", level=Qgis.Critical)
-            QgsMessageLog.logMessage(traceback.format_exc(), level=Qgis.Critical)
-            
+        self.citydb_updater.update_citydb_properties()
+        QgsMessageLog.logMessage("3DCityDB successfully updated with SST attributes", level=Qgis.Info)
+
     def close_db_connection(self):
-        """
-        Schließt alle Datenbankverbindungen ordnungsgemäß.
-        """
         try:
-            # Schließe Verbindungen in allen Prozessoren
-            if hasattr(self.model_validator, 'conn') and self.model_validator.conn:
-                self.model_validator.conn.close()
-            if hasattr(self.model_classifier, 'conn') and self.model_classifier.conn:
-                self.model_classifier.conn.close()
-            if hasattr(self.manual_correction, 'conn') and self.manual_correction.conn:
-                self.manual_correction.conn.close()
-                
-            # Schließe Haupt-Verbindung
+            for proc in (self._model_validator, self._model_classifier, self._manual_correction):
+                if proc is not None and hasattr(proc, 'conn') and proc.conn:
+                    proc.conn.close()
             if self.cur:
                 self.cur.close()
             if self.conn:
                 self.conn.close()
-                
             QgsMessageLog.logMessage("All database connections closed successfully", level=Qgis.Info)
         except Exception as e:
             QgsMessageLog.logMessage(f"Error closing database connections: {str(e)}", level=Qgis.Warning)
+
+
+

@@ -2,26 +2,26 @@
 RandomForest Model Training Summary for 112
 ============================================================
 
-🔹 Best Score: 0.5886
+🔹 Best Score: 0.6014
 🔹 Best Parameters:
-{'class_weight': {'ME2': 14.015814883438859, 'ME3': 0.2761832829808661, 'ME4': 0.5061987636589645, 'ME5': 5.32115597478196, 'ME6': 5.5178677147968225, 'ME7': 0.3846038806461104}, 'max_depth': None, 'min_samples_leaf': 4, 'min_samples_split': 10, 'n_estimators': 100}
+{'class_weight': 'balanced', 'max_depth': 10, 'min_samples_leaf': 1, 'min_samples_split': 10, 'n_estimators': 100}
 
-🔹 Training Samples: 3291
+🔹 Training Samples: 3289
 🔹 CV Folds: 5
 🔹 Features Used: 24
 
 🔹 Top 10 Feature Importances:
              Feature  Importance
-        building_age    0.155603
-   roof_ridge_height    0.067472
-       storey_height    0.061867
-     building_volume    0.060329
-        eaves_height    0.049249
-storeys_above_ground    0.044678
-   roof_height_ratio    0.042369
-     width_footprint    0.041921
-          roof_slope    0.040195
-           roof_type    0.040181
+        building_age    0.108039
+        eaves_height    0.078681
+     building_volume    0.074751
+          roof_slope    0.064443
+   roof_ridge_height    0.058393
+  building_footprint    0.056760
+       storey_height    0.055335
+   roof_height_ratio    0.050341
+           roof_type    0.049386
+storeys_above_ground    0.048295
 
 🔹 Training Configuration:
  - RandomForest with adaptive class weights

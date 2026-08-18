@@ -2,26 +2,26 @@
 RandomForest Model Training Summary for 111
 ============================================================
 
-🔹 Best Score: 0.7306
+🔹 Best Score: 0.9875
 🔹 Best Parameters:
-{'class_weight': {'MR2': 24.727586015713307, 'MR3': 24.727586015713307, 'MR4': 24.727586015713307, 'MR5': 0.485104654613944, 'MR6': 0.485104654613944, 'MR7': 6.536161467690405}, 'max_depth': 10, 'min_samples_leaf': 1, 'min_samples_split': 10, 'n_estimators': 100}
+{'class_weight': {'MR2': 33.46772609499933, 'MR3': 33.46772609499933, 'MR4': 33.46772609499933, 'MR5': 0.6570180212153476, 'MR6': 0.6570180212153476, 'MR7': 33.46772609499933}, 'max_depth': 15, 'min_samples_leaf': 1, 'min_samples_split': 2, 'n_estimators': 100}
 
-🔹 Training Samples: 3691
+🔹 Training Samples: 2148
 🔹 CV Folds: 5
 🔹 Features Used: 24
 
 🔹 Top 10 Feature Importances:
-               Feature  Importance
-     roof_height_ratio    0.198521
-             roof_type    0.188722
-            roof_slope    0.112562
-          eaves_height    0.096194
-          building_age    0.086688
-  number_roof_surfaces    0.079302
- development_type_code    0.059494
-  storeys_above_ground    0.027127
-           compactness    0.021150
-ground_area_per_storey    0.019972
+              Feature  Importance
+           roof_slope    0.199422
+    roof_height_ratio    0.186348
+            roof_type    0.128482
+         eaves_height    0.091288
+         building_age    0.085433
+development_type_code    0.081136
+ number_roof_surfaces    0.046616
+          compactness    0.021098
+ storeys_above_ground    0.018339
+   neighbour_avg_size    0.016784
 
 🔹 Training Configuration:
  - RandomForest with adaptive class weights

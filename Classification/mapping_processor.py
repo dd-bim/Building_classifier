@@ -1,7 +1,5 @@
+from .config_loader import get_config
 from qgis.core import QgsMessageLog, Qgis, QgsCategorizedSymbolRenderer, QgsRendererCategory, QgsRandomColorRamp, QgsSymbol
-
-from .data_loader import DataLoader
-from .geometry_processor import GeometryProcessor
 
 class MappingProcessor:
     def __init__(self, conn, cur, connection_params):
@@ -11,17 +9,15 @@ class MappingProcessor:
         self.connection_params = connection_params
         self.conn = conn
         self.cur = cur
-        
-        self.data_loader = DataLoader(conn, cur, connection_params)
-        self.geometry_processor = GeometryProcessor(conn, cur, connection_params)
+        self.schema = get_config().get('Database', 'schema')
         
     def add_additional_columns(self):
         """
         Fügt zusätzliche Spalten zu 'kartierung_dd_gesamt' hinzu, falls sie nicht existieren.
         """
         try:
-            add_columns_query = """
-            ALTER TABLE "MPSCDresden".kartierung_dd_gesamt
+            add_columns_query = f"""
+            ALTER TABLE "{self.schema}".kartierung_dd_gesamt
             ADD COLUMN IF NOT EXISTS topo_id INTEGER,
             ADD COLUMN IF NOT EXISTS guid_alkis VARCHAR,
             ADD COLUMN IF NOT EXISTS blocknr VARCHAR,
@@ -43,8 +39,8 @@ class MappingProcessor:
         """
         try:
             # Transfer attributes from built_up_parcel to kartierung_dd_gesamt
-            transfer_query = """
-            UPDATE "MPSCDresden".kartierung_dd_gesamt k
+            transfer_query = f"""
+            UPDATE "{self.schema}".kartierung_dd_gesamt k
             SET 
                 topo_id = COALESCE(k.topo_id, b.topo_id),
                 guid_alkis = COALESCE(k.guid_alkis, b.guid_alkis),
@@ -53,7 +49,7 @@ class MappingProcessor:
                 development_type_lv2 = COALESCE(k.development_type_lv2, b.development_type_lv2),
                 development_type_lv3 = COALESCE(k.development_type_lv3, b.development_type_lv3),
                 development_type_code = COALESCE(k.development_type_code, b.development_type_code)
-            FROM "MPSCDresden".built_up_parcel b
+            FROM "{self.schema}".built_up_parcel b
             WHERE ST_Intersects(k.geom, b.geom);
             """
             self.cur.execute(transfer_query)
@@ -72,15 +68,15 @@ class MappingProcessor:
         """
         try:
             # Add the new attribute check_type if it doesn't exist
-            self.cur.execute("""
-            ALTER TABLE "MPSCDresden".kartierung_dd_gesamt
+            self.cur.execute(f"""
+            ALTER TABLE "{self.schema}".kartierung_dd_gesamt
             ADD COLUMN IF NOT EXISTS check_type BOOLEAN;
             """)
             self.conn.commit()
 
             # Compare attributes and categorize the new QGIS layer
-            compare_query = """
-            UPDATE "MPSCDresden".kartierung_dd_gesamt
+            compare_query = f"""
+            UPDATE "{self.schema}".kartierung_dd_gesamt
             SET check_type = CASE
                 WHEN ("development_type_code" = 'A11' AND "sstg" IN ('LW', 'LWS', 'EE', 'ER')) OR
                      ("development_type_code" = 'A12' AND "sstg" IN ('EE', 'ER')) OR
@@ -102,13 +98,13 @@ class MappingProcessor:
             self.conn.commit()
             
             # Berechnung der Ergebnisse
-            self.cur.execute("""
+            self.cur.execute(f"""
             SELECT 
                 COUNT(*) FILTER (WHERE check_type = TRUE) AS correct_count,
                 COUNT(*) FILTER (WHERE check_type = FALSE) AS incorrect_count,
                 COUNT(*) FILTER (WHERE check_type IS NULL) AS not_categorized_count,
                 COUNT(*) AS total_count
-            FROM "MPSCDresden".kartierung_dd_gesamt;
+            FROM "{self.schema}".kartierung_dd_gesamt;
             """)
             result = self.cur.fetchone()
             correct_count = result[0]

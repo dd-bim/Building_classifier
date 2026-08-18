@@ -2,26 +2,26 @@
 RandomForest Model Training Summary for 12
 ============================================================
 
-🔹 Best Score: 0.8975
+🔹 Best Score: 0.9598
 🔹 Best Parameters:
-{'class_weight': 'balanced', 'max_depth': 10, 'min_samples_leaf': 2, 'min_samples_split': 10, 'n_estimators': 100}
+{'class_weight': {'HH': 1.9183168316831685, 'LW': 0.8209745762711864}, 'max_depth': 10, 'min_samples_leaf': 1, 'min_samples_split': 5, 'n_estimators': 200}
 
-🔹 Training Samples: 412
+🔹 Training Samples: 775
 🔹 CV Folds: 5
 🔹 Features Used: 24
 
 🔹 Top 10 Feature Importances:
               Feature  Importance
-            roof_type    0.193229
-    roof_height_ratio    0.124255
-           roof_slope    0.123394
-         building_age    0.076949
-    roof_ridge_height    0.072950
- number_roof_surfaces    0.064255
-   neighbour_avg_size    0.056259
-development_type_code    0.039605
-    neighbour_density    0.036695
-      building_volume    0.028527
+           roof_slope    0.278258
+    roof_height_ratio    0.182467
+            roof_type    0.126516
+ number_roof_surfaces    0.078250
+         building_age    0.055029
+    roof_ridge_height    0.053726
+development_type_code    0.047262
+   neighbour_avg_size    0.032243
+        storey_height    0.020287
+      building_volume    0.019642
 
 🔹 Training Configuration:
  - RandomForest with adaptive class weights

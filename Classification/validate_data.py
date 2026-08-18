@@ -3,7 +3,6 @@ import json
 import numpy as np
 import pandas as pd
 import joblib
-import configparser
 from typing import List, Dict, Tuple, Optional
 from sklearn.metrics import (
     classification_report,
@@ -16,7 +15,13 @@ import sys
 import subprocess
 import webbrowser
 
-from .model_trainer import LabelEncoderManager
+from .config_loader import get_config
+from .label_encoder import LabelEncoderManager
+from .classification_config import (
+    LEVELS, CORE_FEATURES, SIMPLE_GEOM_FEATURES, ADV_GEOM_FEATURES,
+    NEIGH_FEATURES, RATIO_FEATURES, CATEGORICAL,
+    ENDLEVELS_DIRECT_AGE, SKIP_METRIC_LEVELS,
+)
 
 class ValidateData:
     """
@@ -28,47 +33,24 @@ class ValidateData:
     - Dashboard-kompatible JSON-Ausgabe
     """
 
-    # Features identisch zur Trainings-Pipeline
-    CORE_FEATURES = [
-        'roof_type', 'storeys_above_ground', 'building_footprint',
-        'roof_ridge_height', 'eaves_height', 'storey_height',
-        'number_roof_surfaces', 'roof_slope', 'development_type_code',
-        'building_age'
-    ]
-    SIMPLE_GEOM_FEATURES = ['length_footprint', 'width_footprint', 'building_volume']
-    ADV_GEOM_FEATURES = ['compactness', 'convexity', 'rectangularity']
-    NEIGH_FEATURES = ['neighbour_density', 'neighbour_avg_size', 'neighbour_min_distance', 'neighbour_majority_class']
-    RATIO_FEATURES = ['ground_area_per_storey', 'height_to_area_ratio', 'footprint_ratio', 'roof_height_ratio']
-
-    CATEGORICAL = ['roof_type', 'development_type_code', 'neighbour_majority_class', 'building_age']
-
-    # Leveldefinitionen (Trainings-/Modell-Levels, Zielklassen)
-    LEVELS: List[Tuple[str, List[str]]] = [
-        ('1',   ['M', 'E', 'Other']),
-        ('11',  ['MR', 'ME', 'ER', 'EE']),               # rule-based
-        ('12',  ['HH', 'LW']),
-        ('121', ['HH3', 'HH4']),                         # Endlevel, direkt wenn building_age vorhanden
-        ('122', ['LW1', 'LW2', 'LW3', 'LW7']),           # Endlevel, direkt wenn building_age vorhanden
-        ('112', ['ME2', 'ME3', 'ME4', 'ME5', 'ME6', 'ME7']),  # Endlevel, direkt wenn building_age vorhanden
-        ('113', ['ER2', 'ER3', 'ER4', 'ER5', 'ER7']),         # Endlevel, direkt wenn building_age vorhanden
-        ('114', ['EE1', 'EE2', 'EE3', 'EE4', 'EE5', 'EE7']),  # Endlevel, direkt wenn building_age vorhanden
-        ('111', ['MR2', 'MR3', 'MR4', 'MR5', 'MR6', 'MR7']),  # Endlevel, direkt wenn building_age vorhanden
-        ('1111',['MRO2', 'MRO3', 'MRO4', 'MRO7', 'MRG2', 'MRG3', 'MRG4', 'MRG7'])  # rule-based
-    ]
-
-    # Endlevels mit direkter Baualterszuweisung (kein Modell bei vorhandenem building_age)
-    # Hinweis: Direkte Zuweisung nur für atomare Ages (z.B. "3"); zusammengesetzte Ages ("1/2","5/6") dienen nur als Constraints.
-    ENDLEVELS_DIRECT_AGE = {'111', '112', '113', '114', '121', '122'}
-    # NEU: Levels ohne Modelle, für die keine Metriken berechnet oder exportiert werden
-    SKIP_METRIC_LEVELS = {'11', '1111'}
+    # Konstanten aus classification_config — einzige Quelle der Wahrheit
+    CORE_FEATURES = CORE_FEATURES
+    SIMPLE_GEOM_FEATURES = SIMPLE_GEOM_FEATURES
+    ADV_GEOM_FEATURES = ADV_GEOM_FEATURES
+    NEIGH_FEATURES = NEIGH_FEATURES
+    RATIO_FEATURES = RATIO_FEATURES
+    CATEGORICAL = CATEGORICAL
+    LEVELS: List[Tuple[str, List[str]]] = LEVELS
+    ENDLEVELS_DIRECT_AGE = ENDLEVELS_DIRECT_AGE
+    SKIP_METRIC_LEVELS = SKIP_METRIC_LEVELS
 
     def __init__(self, conn, cur, connection_params):
         self.conn = conn
         self.cur = cur
         self.connection_params = connection_params
 
-        config = configparser.ConfigParser()
-        config.read(os.path.join(os.path.dirname(__file__), 'config.ini'))
+        config = get_config()
+        self.schema = config.get('Database', 'schema')
         self.model_dir = os.path.join(os.path.dirname(__file__), config.get('Paths', 'model_dir'))
         self.vis_path = os.path.join(os.path.dirname(__file__), config.get('Paths', 'vis_path'))
 
@@ -112,7 +94,7 @@ class ValidateData:
     # Datenzugriff + Utilities
     # -----------------------------
     def load_validation_data(self) -> pd.DataFrame:
-        query = 'SELECT * FROM "MPSCDresden".validation_data'
+        query = f'SELECT * FROM "{self.schema}".validation_data'
         self.cur.execute(query)
         rows = self.cur.fetchall()
         colnames = [desc[0] for desc in self.cur.description]
@@ -121,8 +103,8 @@ class ValidateData:
     def save_results_to_db(self, all_data: pd.DataFrame):
         # Persistiere finale results in validation_data.results
         update_data = list(zip(all_data['results'].astype(str), all_data['db_filter_id']))
-        update_query = '''
-            UPDATE "MPSCDresden".validation_data
+        update_query = f'''
+            UPDATE "{self.schema}".validation_data
             SET "results" = %s
             WHERE db_filter_id = %s
         '''
@@ -371,6 +353,61 @@ class ValidateData:
                 return sub
             # construct from MR? + neighbourhood? Fallback to None if unknown
             return None
+        return None
+
+    def normalize_truth_label(self, value) -> Optional[str]:
+        if pd.isna(value):
+            return None
+        label = str(value).strip()
+        if not label:
+            return None
+        return {'LWS1': 'LW1', 'LWS2': 'LW2', 'LWS3': 'LW3'}.get(label, label)
+
+    def split_mr_leaf_truth(self, label: Optional[str], neighbouring_buildings) -> Optional[str]:
+        if not label or not label.startswith('MR'):
+            return label
+        if label in {'MR5', 'MR6'}:
+            return label
+        if label not in {'MR2', 'MR3', 'MR4', 'MR7'}:
+            return None
+        if pd.isna(neighbouring_buildings):
+            return None
+        return f"{'MRO' if neighbouring_buildings < 2 else 'MRG'}{label[2:]}"
+
+    def derive_final_truth_label(self, row: pd.Series) -> Optional[str]:
+        """
+        Leitet das feinste fachlich belastbare Endlabel ab.
+        Bevorzugt explizite Endlabels aus sst_sub/sst und nutzt sonst nur deterministische
+        Regeln (building_age, MR->MRO/MRG), damit grobe Truth-Labels die Gesamtgenauigkeit
+        nicht künstlich nach unten ziehen.
+        """
+        sst = self.normalize_truth_label(row.get('sst'))
+        sst_sub = self.normalize_truth_label(row.get('sst_sub'))
+
+        if sst_sub in self.final_classes:
+            return sst_sub
+        if sst in self.final_classes:
+            return sst
+
+        group_to_level = {
+            'MR': '111',
+            'ME': '112',
+            'ER': '113',
+            'EE': '114',
+            'HH': '121',
+            'LW': '122'
+        }
+        if sst in group_to_level:
+            ages = self.parse_building_age(row.get('building_age'))
+            level = group_to_level[sst]
+            derived = self.direct_assign_endlevel(level, ages, self.level_targets[level])
+            if derived and derived.startswith('MR'):
+                return self.split_mr_leaf_truth(derived, row.get('neighbouring_buildings'))
+            return derived
+
+        if sst in {'MR2', 'MR3', 'MR4', 'MR7'}:
+            return self.split_mr_leaf_truth(sst, row.get('neighbouring_buildings'))
+
         return None
 
     # -----------------------------
@@ -629,9 +666,10 @@ class ValidateData:
         return {lvl['level']: lvl for lvl in per_level_results}
 
     def compute_overall_metrics(self, all_data: pd.DataFrame) -> Dict:
-        # End-to-end correctness: final results vs sst
-        valid_truth = all_data['sst'].notna()
-        y_true = all_data.loc[valid_truth, 'sst'].astype(str)
+        # End-to-end correctness: final results vs. feinste belastbare Truth.
+        final_truth = all_data.apply(self.derive_final_truth_label, axis=1)
+        valid_truth = final_truth.notna()
+        y_true = final_truth.loc[valid_truth].astype(str)
         y_pred = all_data.loc[valid_truth, 'results'].astype(str)
 
         correct_mask = (y_true == y_pred)
@@ -639,7 +677,7 @@ class ValidateData:
 
         # count "correct_by_model" and "direct_assignment_count" on final results
         direct_assignment_count = int((all_data['source'] == 'age_direct').sum())
-        correct_by_model = int(((all_data['source'] == 'model') & correct_mask.reindex(all_data.index, fill_value=False)).sum())
+        correct_by_model = int((((all_data.loc[valid_truth, 'source'] == 'model') & correct_mask)).sum())
 
         total_count = int(valid_truth.sum())
         end_to_end_accuracy = (correct_total / total_count) if total_count > 0 else 0.0
@@ -648,7 +686,8 @@ class ValidateData:
         def truth_map(level: str, row) -> Optional[str]:
             return self.map_truth_for_level(level, row.get('sst'), row.get('sst_sub'))
 
-        stage_truth = all_data[valid_truth].copy()
+        stage_truth = all_data.loc[valid_truth].copy()
+        stage_truth['truth_final'] = y_true.values
         stage_truth['truth_1'] = stage_truth.apply(lambda r: truth_map('1', r), axis=1)
         stage_truth['truth_11'] = stage_truth.apply(lambda r: truth_map('11', r), axis=1)
         stage_truth['truth_12'] = stage_truth.apply(lambda r: truth_map('12', r), axis=1)
@@ -670,7 +709,7 @@ class ValidateData:
         m_after_branch[is_other] = m_after_1[is_other] & branch_correct_other[is_other]
         m_after_branch[~is_other] = m_after_1[~is_other] & branch_correct_me[~is_other]
 
-        final_correct = (all_data.loc[valid_truth, 'results'].astype(str).values == stage_truth['sst'].astype(str).values)
+        final_correct = (all_data.loc[valid_truth, 'results'].astype(str).values == stage_truth['truth_final'].astype(str).values)
         m_final_correct = m_after_branch & final_correct
 
         # NEW: integrity check – funnel final vs overall correct
@@ -691,7 +730,7 @@ class ValidateData:
         for src in ['model', 'age_direct', 'rule']:
             smask = (all_data['source'] == src) & valid_truth
             n = int(smask.sum())
-            c = int(((all_data['results'] == all_data['sst']) & smask).sum())
+            c = int((((all_data.loc[valid_truth, 'source'] == src) & correct_mask)).sum())
             source_accuracy[src] = {
                 'count': n,
                 'correct': c,
@@ -750,7 +789,7 @@ class ValidateData:
         # Endlevel-Fehler: erwartetes sst vs. finale results
         idx_end = np.where(wrong_stage == 'endlevel')[0]
         if idx_end.size > 0:
-            expected_at_first[idx_end] = stage_truth['sst'].astype(str).values[idx_end]
+            expected_at_first[idx_end] = stage_truth['truth_final'].astype(str).values[idx_end]
             predicted_at_first[idx_end] = all_data.loc[valid_truth, 'results'].astype(str).values[idx_end]
 
         # Aggregationen
@@ -793,6 +832,7 @@ class ValidateData:
             'correct_total': correct_total,
             'end_to_end_accuracy': end_to_end_accuracy,
             'total_count': total_count,
+            'unscored_count': int((~valid_truth).sum()),
             'total_TP': correct_total,
             'total_TN': 0,
             'total_FP': int((~correct_mask).sum()),

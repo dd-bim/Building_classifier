@@ -556,4 +556,4 @@ def create_feature_importance_figure(feature_importance_data):
 # Starte den Server
 if __name__ == '__main__':
     # Debug=False verhindert den Flask/Werkzeug Reloader (keine Zusatzprozesse)
-    app.run_server(debug=False, port=8050)
+    app.run(debug=False, port=8050)

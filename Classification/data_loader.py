@@ -2,7 +2,7 @@ from qgis.core import QgsVectorLayer, QgsField, QgsFeature, QgsGeometry, QgsProj
 from qgis.PyQt.QtCore import QVariant
 import pandas as pd
 import os
-import configparser
+from .config_loader import get_config, get_option
 
 class DataLoader:
     def __init__(self, conn, cur, connection_params):
@@ -12,9 +12,8 @@ class DataLoader:
         self.connection_params = connection_params
         self.conn = conn
         self.cur = cur
-        config = configparser.ConfigParser()
-        config.read(os.path.join(os.path.dirname(__file__), 'config.ini'))
-        
+        config = get_config()
+        self.schema = config.get('Database', 'schema')
         self.paths = {
             'building_development': os.path.join(os.path.dirname(__file__), config.get('Paths', 'building_development')),
             'parcels': os.path.join(os.path.dirname(__file__), config.get('Paths', 'parcels'))
@@ -47,7 +46,9 @@ class DataLoader:
             df = df[['blocknr', 'sst_liste', 'sst_lv_2_liste', 'sst_lv_3_liste', 'desk3', 'shape']]
             
             # Extrahiere Geometrie und SRID
-            df[['srid_building_development', 'geometry_building_development']] = df['shape'].apply(DataLoader.extract_geometry).apply(pd.Series)
+            geom_data = df['shape'].apply(DataLoader.extract_geometry)
+            df['srid_building_development'] = geom_data.apply(lambda x: x[0])
+            df['geometry_building_development'] = geom_data.apply(lambda x: x[1])
             df = df.drop(columns=['shape'])
             QgsMessageLog.logMessage(f"Filtered building_development DataFrame columns: {df.columns}", level=Qgis.Info)
             QgsMessageLog.logMessage(f"Filtered building_development DataFrame head: {df.head()}", level=Qgis.Info)
@@ -57,7 +58,9 @@ class DataLoader:
             df = df[['id', 'shape']]
             
             # Extrahiere Geometrie und SRID
-            df[['srid_parcels', 'geometry_parcels']] = df['shape'].apply(DataLoader.extract_geometry).apply(pd.Series)
+            geom_data = df['shape'].apply(DataLoader.extract_geometry)
+            df['srid_parcels'] = geom_data.apply(lambda x: x[0])
+            df['geometry_parcels'] = geom_data.apply(lambda x: x[1])
             df = df.drop(columns=['shape'])
             QgsMessageLog.logMessage(f"Filtered parcels DataFrame columns: {df.columns}", level=Qgis.Info)
             QgsMessageLog.logMessage(f"Filtered parcels DataFrame head: {df.head()}", level=Qgis.Info)
@@ -91,6 +94,12 @@ class DataLoader:
         """
         Erstellt einen temporären Vektorlayer aus einem DataFrame und fügt ihn zu QGIS hinzu.
         """
+        if df.empty or srid_column not in df.columns or geometry_column not in df.columns:
+            QgsMessageLog.logMessage(
+                f"Skipping layer '{layer_name}': DataFrame is empty or missing geometry/SRID columns.",
+                level=Qgis.Warning
+            )
+            return None
         # Entferne ggf. bestehenden Layer mit gleichem Namen
         existing_layer = QgsProject.instance().mapLayersByName(layer_name)
         if existing_layer:
@@ -123,29 +132,55 @@ class DataLoader:
         QgsProject.instance().addMapLayer(layer)
         return layer
     
-    def export_layer_to_citydb(self, layer, table_name, drop_existing=False):
+    def create_schema_if_not_exists(self):
+        """
+        Legt das Schema an.
+        """
+        try:
+            # Erst das Schema erstellen, falls es nicht existiert
+            self.cur.execute(f'CREATE SCHEMA IF NOT EXISTS "{self.schema}";')
+            self.conn.commit()
+
+            QgsMessageLog.logMessage(f"Schema '{self.schema}' ensured", level=Qgis.Info)
+        except Exception as e:
+            self.conn.rollback()
+            QgsMessageLog.logMessage(f"Error creating schema in CityDB: {str(e)}", level=Qgis.Critical)
+    
+    def export_layer_to_citydb(self, layer, table_name):
         """
         Exportiert einen QGIS-Layer in eine CityDB-Tabelle (PostGIS).
+        Prüft zuerst, ob die Tabelle existiert:
+        - recreate_tables=true (config.ini):  vorhandene Tabelle wird gedroppt, dann neu exportiert.
+        - recreate_tables=false (config.ini): vorhandene Tabelle bleibt erhalten, Export wird übersprungen.
         """
         QgsMessageLog.logMessage(f"Starting export of layer to table {table_name}", level=Qgis.Info)
-        
+
         try:
-            # Prüfe, ob Tabelle existiert
-            self.cur.execute(f"SELECT EXISTS (SELECT FROM information_schema.tables WHERE table_schema = 'MPSCDresden' AND table_name = '{table_name}');")
+            recreate = get_option('recreate_tables', 'false').strip().lower() == 'true'
+
+            # Prüfen, ob die Tabelle bereits existiert
+            self.cur.execute(
+                "SELECT EXISTS (SELECT 1 FROM information_schema.tables WHERE table_schema = %s AND table_name = %s);",
+                (self.schema, table_name)
+            )
             table_exists = self.cur.fetchone()[0]
-            
+
             if table_exists:
-                # Lösche bestehende Tabelle
-                self.cur.execute(f'DROP TABLE IF EXISTS "MPSCDresden".{table_name};')
-                self.conn.commit()
-                QgsMessageLog.logMessage(f"Table {table_name} dropped", level=Qgis.Info)
-            
-            # Setze Datenbankverbindung
+                if recreate:
+                    self.cur.execute(f'DROP TABLE IF EXISTS "{self.schema}"."{table_name}" CASCADE;')
+                    self.conn.commit()
+                    QgsMessageLog.logMessage(f"Dropped existing table {table_name} (recreate_tables=true)", level=Qgis.Info)
+                else:
+                    QgsMessageLog.logMessage(
+                        f"Table {table_name} already exists and recreate_tables=false – export skipped.",
+                        level=Qgis.Warning
+                    )
+                    return
+
             uri = QgsDataSourceUri()
             uri.setConnection(self.connection_params['host'], self.connection_params['port'], self.connection_params['dbname'], self.connection_params['user'], self.connection_params['password'])
-            uri.setDataSource('MPSCDresden', table_name, 'geom')
+            uri.setDataSource(self.schema, table_name, 'geom')
 
-            # Exportiere Layer
             error = QgsVectorLayerExporter.exportLayer(layer, uri.uri(), 'postgres', layer.crs(), False)
             if error[0] != QgsVectorLayerExporter.NoError:
                 QgsMessageLog.logMessage(f"Error exporting layer to CityDB: {error[1]}", level=Qgis.Warning)

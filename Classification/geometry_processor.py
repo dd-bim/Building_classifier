@@ -1,3 +1,4 @@
+from .config_loader import get_schema
 from qgis.core import QgsMessageLog, Qgis
 
 class GeometryProcessor:
@@ -8,58 +9,33 @@ class GeometryProcessor:
         self.connection_params = connection_params
         self.conn = conn
         self.cur = cur
+        self.schema = get_schema()
         self.kartierung_dd_gesamt_layer = None
-
-    def create_schema_if_not_exists(self):
-        """
-        Legt die Tabellen 'parcels' und 'building_development' im Schema an, falls sie nicht existieren.
-        """
-        try:                        
-            create_parcels_table_query = """
-            CREATE TABLE IF NOT EXISTS "MPSCDresden".parcels (
-                id SERIAL PRIMARY KEY,
-                geom geometry(Polygon, 4326)
-            );
-            """
-            self.cur.execute(create_parcels_table_query)
-            
-            create_building_development_table_query = """
-            CREATE TABLE IF NOT EXISTS "MPSCDresden".building_development (
-                id SERIAL PRIMARY KEY,
-                geom geometry(Polygon, 4326)
-            );
-            """
-            self.cur.execute(create_building_development_table_query)
-            self.conn.commit()
-            QgsMessageLog.logMessage("Tables 'parcels' and 'building_development' created", level=Qgis.Info)
-        except Exception as e:
-            self.conn.rollback()
-            QgsMessageLog.logMessage(f"Error creating tables in CityDB: {str(e)}", level=Qgis.Critical)
 
     def create_built_up_parcel_table(self):
         """
-        Legt die Tabelle 'built_up_parcel' an, falls sie nicht existiert und Daten vorhanden sind.
+        Legt die Tabelle 'built_up_parcel' an. Eine vorhandene Tabelle wird immer gedroppt,
+        da der SRID von den aktuellen Quelldaten abhängt und eine alte Tabelle zu
+        Koordinatensystem-Konflikten führen würde.
         """
         try:
-            self.cur.execute('SELECT EXISTS (SELECT FROM information_schema.tables WHERE table_schema = %s AND table_name = %s)', ('MPSCDresden', 'built_up_parcel'))
-            exists = self.cur.fetchone()[0]
-            
-            if not exists:
-                # Prüfen, ob `parcels` Daten hat
-                self.cur.execute('SELECT COUNT(*) FROM "MPSCDresden".parcels;')
-                parcel_count = self.cur.fetchone()[0]
-                
-                if parcel_count == 0:
-                    QgsMessageLog.logMessage("Parcels table is empty, skipping built_up_parcel creation", level=Qgis.Warning)
-                    return
-                
-                # SRID sicher abrufen
-                self.cur.execute('SELECT ST_SRID(geom) FROM "MPSCDresden".parcels WHERE geom IS NOT NULL LIMIT 1;')
-                srid = self.cur.fetchone()
-                srid = srid[0] if srid else 4326  # Standardwert setzen
+            # Prüfen, ob `parcels` Daten hat
+            self.cur.execute(f'SELECT COUNT(*) FROM "{self.schema}".parcels;')
+            parcel_count = self.cur.fetchone()[0]
 
-                create_table_query = f"""
-                CREATE TABLE "MPSCDresden".built_up_parcel (
+            if parcel_count == 0:
+                QgsMessageLog.logMessage("Parcels table is empty, skipping built_up_parcel creation", level=Qgis.Warning)
+                return
+
+            # SRID aus aktuellen Quelldaten abrufen
+            self.cur.execute(f'SELECT ST_SRID(geom) FROM "{self.schema}".parcels WHERE geom IS NOT NULL LIMIT 1;')
+            srid = self.cur.fetchone()
+            srid = srid[0] if srid else 4326
+
+            # Immer droppen und neu anlegen (SRID muss zu Quelldaten passen)
+            self.cur.execute(f'DROP TABLE IF EXISTS "{self.schema}".built_up_parcel CASCADE;')
+            self.cur.execute(f"""
+                CREATE TABLE "{self.schema}".built_up_parcel (
                     TOPO_ID SERIAL PRIMARY KEY,
                     GUID_ALKIS VARCHAR UNIQUE NOT NULL,
                     blocknr VARCHAR,
@@ -69,12 +45,9 @@ class GeometryProcessor:
                     development_type_Code VARCHAR,
                     geom geometry(Polygon, {srid})
                 );
-                """
-                self.cur.execute(create_table_query)
-                self.conn.commit()
-                QgsMessageLog.logMessage("built_up_parcel table created in CityDB", level=Qgis.Info)
-            else:
-                QgsMessageLog.logMessage("built_up_parcel table already exists in CityDB", level=Qgis.Info)
+            """)
+            self.conn.commit()
+            QgsMessageLog.logMessage(f"built_up_parcel table (re)created with SRID {srid}", level=Qgis.Info)
 
         except Exception as e:
             self.conn.rollback()
@@ -86,9 +59,9 @@ class GeometryProcessor:
         """
         try:
             # Indizes für schnellere Geometrieabfragen
-            self.cur.execute('CREATE INDEX IF NOT EXISTS idx_parcels_geom ON "MPSCDresden".parcels USING GIST (geom);')
-            self.cur.execute('CREATE INDEX IF NOT EXISTS idx_building_development_geom ON "MPSCDresden".building_development USING GIST (geom);')
-            self.cur.execute('CREATE INDEX IF NOT EXISTS idx_built_up_parcel_geom ON "MPSCDresden".built_up_parcel USING GIST (geom);')
+            self.cur.execute(f'CREATE INDEX IF NOT EXISTS idx_parcels_geom ON "{self.schema}".parcels USING GIST (geom);')
+            self.cur.execute(f'CREATE INDEX IF NOT EXISTS idx_building_development_geom ON "{self.schema}".building_development USING GIST (geom);')
+            self.cur.execute(f'CREATE INDEX IF NOT EXISTS idx_built_up_parcel_geom ON "{self.schema}".built_up_parcel USING GIST (geom);')
             self.conn.commit()
             QgsMessageLog.logMessage("Indexes on geometry columns ensured", level=Qgis.Info)
         except Exception as e:
@@ -101,10 +74,10 @@ class GeometryProcessor:
         """
         try:
             # Prüfe, ob benötigte Tabellen existieren
-            self.cur.execute("SELECT EXISTS (SELECT FROM information_schema.tables WHERE table_schema = 'MPSCDresden' AND table_name = 'parcels');")
+            self.cur.execute(f"SELECT EXISTS (SELECT FROM information_schema.tables WHERE table_schema = '{self.schema}' AND table_name = 'parcels');")
             parcels_exists = self.cur.fetchone()[0]
-            
-            self.cur.execute("SELECT EXISTS (SELECT FROM information_schema.tables WHERE table_schema = 'MPSCDresden' AND table_name = 'building_development');")
+
+            self.cur.execute(f"SELECT EXISTS (SELECT FROM information_schema.tables WHERE table_schema = '{self.schema}' AND table_name = 'building_development');")
             building_development_exists = self.cur.fetchone()[0]
             
             if not parcels_exists or not building_development_exists:
@@ -114,21 +87,42 @@ class GeometryProcessor:
             self.cur.execute("BEGIN;")
 
             # SRID-Werte abrufen
-            self.cur.execute("SELECT Find_SRID('MPSCDresden', 'built_up_parcel', 'geom');")
-            target_srid = self.cur.fetchone()[0]
-
-            self.cur.execute("SELECT Find_SRID('MPSCDresden', 'parcels', 'geom');")
+            self.cur.execute(f"SELECT Find_SRID('{self.schema}', 'parcels', 'geom');")
             parcels_srid = self.cur.fetchone()[0]
 
-            self.cur.execute("SELECT Find_SRID('MPSCDresden', 'building_development', 'geom');")
+            self.cur.execute(f"SELECT Find_SRID('{self.schema}', 'building_development', 'geom');")
             building_development_srid = self.cur.fetchone()[0]
+            
+            # Target SRID anpassen: Verwende parcels_srid als Standard, falls beide verfügbar sind
+            if parcels_srid and building_development_srid:
+                target_srid = parcels_srid  # Oder building_development_srid, je nach Präferenz
+            elif parcels_srid:
+                target_srid = parcels_srid
+            elif building_development_srid:
+                target_srid = building_development_srid
+            else:
+                target_srid = 4326  # Fallback auf WGS84
+                
+            # built_up_parcel SRID abrufen, falls Tabelle existiert
+            try:
+                self.cur.execute(f"SELECT Find_SRID('{self.schema}', 'built_up_parcel', 'geom');")
+                existing_target_srid = self.cur.fetchone()[0]
+                if existing_target_srid and existing_target_srid != target_srid:
+                    QgsMessageLog.logMessage(f"Warning: built_up_parcel has SRID {existing_target_srid}, but using {target_srid} from source tables", level=Qgis.Warning)
+            except:
+                # Tabelle existiert noch nicht, das ist normal
+                pass
 
             QgsMessageLog.logMessage(f"SRIDs - Target: {target_srid}, Parcels: {parcels_srid}, Buildings: {building_development_srid}", level=Qgis.Info)
 
             batch_size = 1000 # Verarbeitung als Batch, um Zeit zu sparen
 
+            # SQL-Query mit SRID-Transformation, falls nötig
+            parcels_geom = f"ST_Transform(a.geom, {target_srid})" if parcels_srid != target_srid else "a.geom"
+            building_geom = f"ST_Transform(b.geom, {target_srid})" if building_development_srid != target_srid else "b.geom"
+            
             # Cursor für große Datenmengen verwenden
-            self.cur.execute("""
+            overlap_query = f"""
                 DECLARE overlap_cursor CURSOR FOR 
                 SELECT 
                     a.id AS GUID_ALKIS,
@@ -137,12 +131,14 @@ class GeometryProcessor:
                     b.sst_lv_2_liste AS development_type_Lv2,
                     b.sst_lv_3_liste AS development_type_Lv3,
                     b.desk3 AS development_type_Code,
-                    a.geom
-                FROM "MPSCDresden".parcels a
-                JOIN "MPSCDresden".building_development b 
-                    ON ST_Intersects(a.geom, b.geom) 
-                    AND NOT ST_Touches(a.geom, b.geom);
-            """)
+                    {parcels_geom} AS geom
+                FROM "{self.schema}".parcels a
+                JOIN "{self.schema}".building_development b 
+                    ON ST_Intersects({parcels_geom}, {building_geom}) 
+                    AND NOT ST_Touches({parcels_geom}, {building_geom});
+            """
+            
+            self.cur.execute(overlap_query)
 
             while True:
                 self.cur.execute(f"FETCH {batch_size} FROM overlap_cursor;")
@@ -152,8 +148,8 @@ class GeometryProcessor:
                     break
 
                 # Batch-Insert für Performance
-                self.cur.executemany("""
-                    INSERT INTO "MPSCDresden".built_up_parcel 
+                self.cur.executemany(f"""
+                    INSERT INTO "{self.schema}".built_up_parcel 
                     (GUID_ALKIS, blocknr, development_type, development_type_Lv2, development_type_Lv3, development_type_Code, geom)
                     VALUES (%s, %s, %s, %s, %s, %s, %s)
                     ON CONFLICT (GUID_ALKIS) DO NOTHING;
@@ -167,7 +163,7 @@ class GeometryProcessor:
             self.cur.execute("COMMIT;")
 
             # Finales Logging
-            self.cur.execute('SELECT COUNT(*) FROM "MPSCDresden".built_up_parcel;')
+            self.cur.execute(f'SELECT COUNT(*) FROM "{self.schema}".built_up_parcel;')
             row_count = self.cur.fetchone()[0]
             QgsMessageLog.logMessage(f"Inserted {row_count} rows into built_up_parcel", level=Qgis.Info)
             QgsMessageLog.logMessage("Overlapping geometries process completed successfully", level=Qgis.Info)
@@ -182,7 +178,7 @@ class GeometryProcessor:
         """
         try:
             transform_query = f"""
-            ALTER TABLE "MPSCDresden".built_up_parcel
+            ALTER TABLE "{self.schema}".built_up_parcel
             ALTER COLUMN geom TYPE geometry(Polygon, {target_epsg})
             USING ST_Transform(geom, {target_epsg});
             """

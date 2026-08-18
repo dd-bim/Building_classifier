@@ -1,5 +1,6 @@
 <RCC>
     <qresource prefix="/plugins/building_classificator" >
         <file>icon.png</file>
+        <file>icon_short.png</file>
     </qresource>
 </RCC>

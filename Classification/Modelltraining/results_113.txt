@@ -2,26 +2,26 @@
 RandomForest Model Training Summary for 113
 ============================================================
 
-🔹 Best Score: 0.7812
+🔹 Best Score: 0.7445
 🔹 Best Parameters:
-{'class_weight': 'balanced', 'max_depth': 10, 'min_samples_leaf': 1, 'min_samples_split': 10, 'n_estimators': 100}
+{'class_weight': 'balanced', 'max_depth': 10, 'min_samples_leaf': 4, 'min_samples_split': 10, 'n_estimators': 100}
 
-🔹 Training Samples: 4605
+🔹 Training Samples: 4642
 🔹 CV Folds: 5
 🔹 Features Used: 24
 
 🔹 Top 10 Feature Importances:
-              Feature  Importance
-         building_age    0.166934
-   neighbour_avg_size    0.090036
- height_to_area_ratio    0.081115
-development_type_code    0.056815
-   building_footprint    0.052050
-    roof_ridge_height    0.049045
- number_roof_surfaces    0.047592
-          compactness    0.044502
-      building_volume    0.043769
-    neighbour_density    0.040877
+               Feature  Importance
+          building_age    0.151542
+    neighbour_avg_size    0.128170
+  height_to_area_ratio    0.065378
+    building_footprint    0.058841
+     roof_ridge_height    0.051058
+       building_volume    0.045764
+ development_type_code    0.044119
+             roof_type    0.042058
+ground_area_per_storey    0.041118
+        rectangularity    0.037125
 
 🔹 Training Configuration:
  - RandomForest with adaptive class weights
